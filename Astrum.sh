@@ -11,7 +11,9 @@
 read -p 'Enter Hostname or IP: ' host
 
 #VJN 9/7/2020 6:57pm - This will test to see if the IP is valid or not Reference: https://www.linuxjournal.com/content/validating-ip-address-bash-script
-if [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+if [[ $host =~ [a-zA-Z] ]]; then
+    stat=2
+elif [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
     OIFS=$IFS
     IFS='.'
     ip=($host)
@@ -20,7 +22,8 @@ if [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
     stat=$?
 fi
 
-#VJN 9/7/2020 7:04pm - stat tells you if the IP is valid or not. 0 = valid, 1 = invalid
-echo $stat
+#VJN 9/7/2020 7:04pm - stat tells you if the IP is valid or not or if its a Hostname. 0 = IP valid, 1 = IP invalid, 2 = Hostname
+echo "status options: 0 = IP valid, 1 = IP invalid, 2 = Hostname"
+echo "status:   $stat"
 #VJN 9/7/2020 7:04pm - this is being used to debug. tells the host being scanned 
-echo $host
+echo "host:     $host"
