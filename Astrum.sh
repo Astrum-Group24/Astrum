@@ -22,7 +22,7 @@ elif [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
     stat=$?
 fi
 
-#VJN 9/7/2020 7:04pm - stat tells you if the IP is valid or not or if its a Hostname. 0 = IP valid, 1 = IP invalid, 2 = Hostname
+#VJN 9/7/2020 7:04pm - This is for debug. stat tells you if the IP is valid or not or if its a Hostname. 0 = IP valid, 1 = IP invalid, 2 = Hostname
 echo "status options: 0 = IP valid, 1 = IP invalid, 2 = Hostname"
 echo "status:   $stat"
 #VJN 9/7/2020 7:04pm - this is being used to debug. tells the host being scanned 
