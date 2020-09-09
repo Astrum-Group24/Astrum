@@ -25,32 +25,51 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 
 # Variable Reference Sheet:
 
-    # Global Variables:
+##### Global Variables:
 
-    host: The raw input that the user types into the CLI. This will either be an IP by itself, an IP with cidr, or a hostname.
-    
-    ipaddress: The IP will be stored here if an IP and cidr are entered into host.
+- host: The raw input that the user types into the CLI. This will either be an IP by itself, an IP with cidr, or a hostname.
+- ipaddress: The IP will be stored here if an IP and cidr are entered into host.
+- cidr: The cidr will be stored here if an IP and cidr ar entered into host.
+- stat: The verified status of the input. 
 
-    cidr: The cidr will be stored here if an IP and cidr ar entered into host.
+    | Number | Meaning |
+    | ------ | ------ |
+    | 0 | IP & Cidr valid |
+    | 1 | IP invalid & cidr valid (or no cidr) |
+    | 2 | IP valid & cidr invalid |
+    | 3 | IP invalid & cidr invalid |
+    | 4 | Hostname (not verified) |
 
-    stat: The verified status of the input. 0 = IP & Cidr valid, 1 = IP invalid & cidr valid (or no cidr), 2 = IP valid & cidr invalid, 3 = IP invalid & cidr invalid, 4 = Hostname (not verified)
+#### Local Variables:
+- ipstat: The verified status of the IP.
+    | Number | Meaning |
+    | ------ | ------ |
+    | 0 | Valid |
+    | 1 | Invalid |
+- cidrstat: The verified status of the cidr. 
+    | Number | Meaning |
+    | ------ | ------ |
+    | 0 | Valid |
+    | 1 | Invalid |
+- OIFS: This is used to verify the IP address. Used to seperate IP by "."
+- IFS: This is used to verify the IP address. Used to seperate IP by "."
+- ip: This is used to verify the IP address. This is the individual blocks of the IP.
 
-    # Local Variables:
-
-    ipstat: The verified status of the IP. 0 = Valid, 1 = Invalid
-    
-    cidrstat: The verified status of the cidr. 0 = Valid, 1 = Invalid
-    
-    OIFS: This is used to verify the IP address. Used to seperate IP by "."
-    
-    IFS: This is used to verify the IP address. Used to seperate IP by "."
-    
-    ip: This is used to verify the IP address. This is the individual blocks of the IP.
+# Tech:
 
 # Credits: 
 
-    This is where we will put credits of who worked on the project. 
+Vincent Neiheisel – UX Designer 
+- Designing the frontend / user interface  
+- Assisting with script development 
 
-# Anything Else I Missed Above:
+Brenna Martz – Bug Tester (QA) / Network Admin 
+- Assisting with script development, server set up and deployment 
+- Reviewing script and scenarios to test for bugs 
+- Designing the report that is generated from the scanner 
 
-    This is where we will put stuff that i missed above. 
+Brett Johnson – Hardware Architect  
+- Set up the web server 
+- Assisting with script development  
+
+Ryan Moore - Technical Practicum Advisor 
