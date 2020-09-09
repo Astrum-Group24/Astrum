@@ -25,7 +25,7 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 
 # Variable Reference Sheet:
 
-##### Global Variables:
+### Global Variables:
 
 - host: The raw input that the user types into the CLI. This will either be an IP by itself, an IP with cidr, or a hostname.
 - ipaddress: The IP will be stored here if an IP and cidr are entered into host.
@@ -40,7 +40,7 @@ This is where we will describe what Astrum is, what it is used for, why it was a
     | 3 | IP invalid & cidr invalid |
     | 4 | Hostname (not verified) |
 
-#### Local Variables:
+## Local Variables:
 - ipstat: The verified status of the IP.
     | Number | Meaning |
     | ------ | ------ |
