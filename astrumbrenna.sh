@@ -74,12 +74,26 @@ echo "status:   $stat" #VJN 9/9/2020 11:42am - This is for debug.
 echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells the host being scanned 
 
 
-#BMM 9/9/2020 4:04pm - This will ensure that the stat information above is valid and then run an nmap on valid hosts only
+#BMM 9/9/2020 4:04pm - This will ensure that the stat information above is valid and then run an nmap on valid hosts and output to an XML file
     if [ "$stat" -eq "0" ]; then
-        nmap -n -sL -T4 $host
+        echo "Scanning many hosts can take a while. Would you like to perform a light scan? This can save time."
+
+#BMM 9/10/2020 8:30am - The 'light scan' option is for having nmap scan only 100 ports versus 1000        
+
+        read -p 'Run light scan? [y/n]: ' answer
+            if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
+                echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
+                nmap -F -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml
+            elif [ "$answer" = "N" ] || ["$answer" = "n" ]; then
+                echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
+                nmap -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml 
+            else
+                echo "Error. Please try again."
+            fi
     else
         echo "Sorry, something is wrong with that information. Please try again."
     fi
 
-#BMM 9/9/2020 4:06pm - I will continue work on this tomorrow 9/10 to format the raw nmap information into something nice
+echo "Scan complete. It took <find time from XML file> minutes and <yeah> seconds." 
 
+#BMM 9/10/2020 7:57am - BTW during the script you can press enter to see the status of the nmap. It does take a while on a deep scan, so we can try some things to make it faster. 
