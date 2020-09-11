@@ -83,10 +83,10 @@ echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells
         read -p 'Run light scan? [y/n]: ' answer
             if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -F -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml
+                nmap -F -T4 $host -oX rawlogs/$host_$(date +"%Y-%m-%d").xml
             elif [ "$answer" = "N" ] || ["$answer" = "n" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml 
+                nmap -T4 $host -oX rawlogs/$host_$(date +"%Y-%m-%d").xml 
             else
                 echo "Error. Please try again."
             fi
