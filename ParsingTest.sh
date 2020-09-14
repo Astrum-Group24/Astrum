@@ -1,5 +1,5 @@
-file="subnetoutput.xml"
-#file="2020-09-10.xml"
+file="rawlogs/subnetoutput.xml"
+#file="rawlogs/2020-09-10.xml"
 
 selected=$(cat $file | grep -ie "<hostname name=\|<address addr=\|<port protocol=")
 scanned=$(cat $file | grep -ia "<scaninfo type=" | awk -F'services="' '{ print $3 }' | awk -F'"' '{ print $1 }')
