@@ -1,14 +1,11 @@
 #!/bin/bash
-#
 #Astrum Created by Vincent Neiheisel, Brett Johnson, and Brenna Martz
-#
 #Created on 9/7/2020 at 6:33pm 
-#
 #This script will be used to scan a host and gather open ports, vulnerabilities, etc. 
 #This will then be used to generate a report, generate a script to resolve issues, and meet compliance standards.
 
 #VJN 9/7/2020 6:50pm - host will house the machine being scanned. This will either be a Hostname or an IP address. 
-read -p 'Enter Hostname or IP: ' host
+read -p 'Enter Hostname or IP (with or without cidr): ' host
 
 #VJN 9/9/2020 11:42am - This will test to see if the IP and or cidr is valid or if it is a hostname is valid or not Reference: https://www.linuxjournal.com/content/validating-ip-address-bash-script
 if [[ $host =~ [a-zA-Z] ]]; then
