@@ -97,3 +97,4 @@ echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells
 echo "Scan complete. It took <find time from XML file> minutes and <yeah> seconds." 
 
 #BMM 9/10/2020 7:57am - BTW during the script you can press enter to see the status of the nmap. It does take a while on a deep scan, so we can try some things to make it faster. 
+#BRJ - Branching Test
