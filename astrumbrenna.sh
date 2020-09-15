@@ -76,17 +76,18 @@ echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells
 
 #BMM 9/9/2020 4:04pm - This will ensure that the stat information above is valid and then run an nmap on valid hosts and output to an XML file
     if [ "$stat" -eq "0" ]; then
-        echo "Scanning many hosts can take a while. Would you like to perform a light scan? This can save time."
+        echo "Scanning many hosts will take a long time. Would you like to perform a light scan? This will save significant time but may provide less information."
 
-#BMM 9/10/2020 8:30am - The 'light scan' option is for having nmap scan only 100 ports versus 1000        
+#BMM 9/10/2020 8:30am - The 'light scan' option is for having nmap scan only 100 ports versus 1000 
+#BMM 9/14/202 7:58pm - Added the option for OS scanning, the light option omits devices it deems "uninportant" 
 
         read -p 'Run light scan? [y/n]: ' answer
             if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -F -T4 $host -oX rawlogs/$host_$(date +"%Y-%m-%d").xml
-            elif [ "$answer" = "N" ] || ["$answer" = "n" ]; then
+                nmap -F -O --osscan-limit -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml
+            elif [ "$answer" = "N" ] || [ "$answer" = "n" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -T4 $host -oX rawlogs/$host_$(date +"%Y-%m-%d").xml 
+                nmap -O -T4 $host -oX $host_$(date +”%Y-%m-%d”).xml 
             else
                 echo "Error. Please try again."
             fi
@@ -94,7 +95,7 @@ echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells
         echo "Sorry, something is wrong with that information. Please try again."
     fi
 
-echo "Scan complete. It took <find time from XML file> minutes and <yeah> seconds." 
+echo "Scan complete." 
 
 #BMM 9/10/2020 7:57am - BTW during the script you can press enter to see the status of the nmap. It does take a while on a deep scan, so we can try some things to make it faster. 
 #BRJ - Branching Test
