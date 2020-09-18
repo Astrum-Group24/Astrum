@@ -84,11 +84,10 @@ echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells
         read -p 'Run light scan? [y/n]: ' answer
             if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -F -O --osscan-limit -T4 --webxml $host -oX $host_$(date +"%Y-%m-%d--%T").xml
+                nmap -F -O --osscan-limit -T4 $host --stylesheet astrum.xsl -oX $host_/home/astrum/git_Main/xml/$(date +"%Y-%m-%d--%H%M%S").xml 
             elif [ "$answer" = "N" ] || [ "$answer" = "n" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -O -T4 --webxml $host -oX $host_$(date +"%Y-%m-%d--%T").xml 
-            else
+                nmap -O -T4 $host --stylesheet astrum.xsl -oX $host_/home/astrum/git_Main/xml/$(date +"%Y-%m-%d--%H%M%S").xml 
                 echo "Error. Please try again."
             fi
     else
