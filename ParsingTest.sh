@@ -1,5 +1,3 @@
-#file="rawlogs/subnetoutput.xml"
-#file="rawlogs/2020-09-10.xml"
 file="rawlogs/longscan.xml"
 vulnerabilityfile="vulnerabilities.txt"
 
@@ -22,9 +20,6 @@ for r in "${selected[@]}"; do
 done
 
 file=($(ls temp))
-# echo "# of entries in file: ${#file[@]}" #Debug checks size of array
-
-#for i in "${scanned[@]}"; do echo "Scanned Port: $i"; done
 
 for f in "${file[@]}"; do
 
@@ -44,12 +39,8 @@ for f in "${file[@]}"; do
     osmatch=($(echo $osmatch | tr "\n" "\n"))
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
-    # echo " " #This is for debug purposes 
-    # echo "From File: temp/$f" #This is for debug purposes 
-
     echo "Host Machine: $hostname ($address)" >> reports/$address.txt
     echo "Possible Operating System:" >> reports/$address.txt
-    
     if [ -z "$osmatch" ]; then
         printf "\tNo Operating Sysem could be discerned.\n" >> reports/$address.txt
     else
@@ -62,7 +53,6 @@ for f in "${file[@]}"; do
     fi
 
     echo "Vulnerable Ports:" >> reports/$address.txt
-
     if [ -z "$port" ]; then
         printf "\tNo vulnerable ports found.\n" >> reports/$address.txt
     else
@@ -71,22 +61,24 @@ for f in "${file[@]}"; do
         do
             vulnerability=$(cat $vulnerabilityfile | grep -w "${port[$t]}" | grep -w "${protocal[$t]}" | awk '{$1=$2=$3=""; print $0}' | awk '{$1=$1};1' | sed -z 's/\n/, /g')
             if [ -z "$vulnerability" ]; then
-                printf "\t(${state[$t]})\t${port[$t]}\\${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> reports/$address.txt
             else
-                printf "\t(${state[$t]})\t${port[$t]}\\${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> reports/$address.txt
             fi 
             t=$((t+1))
         done
     fi
 
+    rm temp/$f
+
+    # DEBUG SECTION
+    # echo "# of entries in file: ${#file[@]}" #Debug checks size of array
     # echo "# of entries in hostname: ${#hostname[@]}" #Debug checks size of array
     # echo "# of entries in address: ${#address[@]}" #Debug checks size of array
     # echo "# of entries in port: ${#port[@]}" #Debug checks size of array
     # echo "# of entries in service: ${#service[@]}" #Debug checks size of array
     # echo "# of entries in state: ${#state[@]}" #Debug checks size of array
     # echo "# of entries in scanned: ${#scanned[@]}" #Debug checks size of array
-    #echo "# of entries in scanned: ${#accuracy[@]}" #Debug checks size of array
-    #echo "# of entries in scanned: ${#osmatch[@]}" #Debug checks size of array
-    rm temp/$f
-
+    # echo "# of entries in accuracy: ${#accuracy[@]}" #Debug checks size of array
+    # echo "# of entries in osmatch: ${#osmatch[@]}" #Debug checks size of array
 done
