@@ -1,2 +1,2 @@
-#BRJ 09/17/2020 04:56 - Ignore xml files
-#*.xml
+#BRJ 09/17/2020 04:56 - Ignore xml files in /xml directory
+/xml/*.xml
