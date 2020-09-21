@@ -34,7 +34,7 @@
 
 <!-- global variables      -->
 <!-- ............................................................ -->
-<xsl:variable name="astrum_xsl_version">0.9a</xsl:variable>
+<xsl:variable name="nmap_xsl_version">0.9c</xsl:variable>
 <!-- ............................................................ -->
 <xsl:variable name="start"><xsl:value-of select="/nmaprun/@startstr"/></xsl:variable>
 <xsl:variable name="end"><xsl:value-of select="/nmaprun/runstats/finished/@timestr"/> </xsl:variable>
@@ -55,7 +55,7 @@
 <head>
 
 
-<xsl:comment>generated with astrum.xsl - version <xsl:value-of select="$nmap_xsl_version"/> by Brett Johnson, Brenna Martz, and Vincent Neiheisel </xsl:comment>
+<xsl:comment>generated with nmap.xsl - version <xsl:value-of select="$nmap_xsl_version"/> by Benjamin Erb - http://www.benjamin-erb.de/nmap_xsl.php </xsl:comment>
 
 <style type="text/css">
 /* stylesheet print */
@@ -459,7 +459,7 @@
     <h2>Scan Summary</h2>
 
     <p>
-      Astrum <xsl:value-of select="@version"/> was initiated at <xsl:value-of select="$start"/> with these arguments:<br/>
+      Nmap <xsl:value-of select="@version"/> was initiated at <xsl:value-of select="$start"/> with these arguments:<br/>
       <i><xsl:value-of select="@args"/></i><br/>
     </p>
     <p>
