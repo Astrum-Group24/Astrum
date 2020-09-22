@@ -1,16 +1,15 @@
-file="rawlogs/longscan.xml"
+file="rawlogs/2020-09-21--191900.xml"
 vulnerabilityfile="vulnerabilities.txt"
 
 selected=$(cat $file | grep -ie "<hostname name=\|<address addr=\|<port protocol=\|<osmatch name=")
 scanned=$(cat $file | grep -ia "<scaninfo type=" | awk -F'services="' '{ print $3 }' | awk -F'"' '{ print $1 }')
 
-scanned=($(echo $scanned | tr "," "\n"))
 selected=($(echo $selected | tr " " "-"))
 selected=($(echo $selected | tr "<" "\n"))
 
 j=0
 for r in "${selected[@]}"; do
-    if [[ "$r" == *"address"* ]]; then
+    if [[ "$r" == *"ipv4"* ]]; then
         j=$((j+1))
     fi
     
@@ -24,7 +23,8 @@ file=($(ls temp))
 for f in "${file[@]}"; do
 
     hostname=$(cat temp/$f | grep -ia "hostname-name=" | awk -F'hostname-name="' '{ print $2 }' | awk -F'"' '{ print $1 }')  
-    address=$(cat temp/$f | grep -ia "address-addr=" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
+    addressip=$(cat temp/$f | grep -ia "ipv4" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
+    addressmac=$(cat temp/$f | grep -ia "mac" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     port=$(cat temp/$f | grep -ia "portid=" | awk -F'portid="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     service=$(cat temp/$f | grep -ia "service-name=" | awk -F'service-name="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     state=$(cat temp/$f | grep -ia "state-state=" | awk -F'state-state="' '{ print $2 }' | awk -F'"' '{ print $1 }')
@@ -39,31 +39,51 @@ for f in "${file[@]}"; do
     osmatch=($(echo $osmatch | tr "\n" "\n"))
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
-    echo "Host Machine: $hostname ($address)" >> reports/$address.txt
-    echo "Possible Operating System:" >> reports/$address.txt
+    output="reports/$addressip.txt"
+
+    if [ -z "$addressip" ] && [ -z "$addressmac" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: Nothing Found" >> $output
+    elif [ -z "$addressip" ] && [ -z "$addressmac" ]; then
+        echo "Host Machine: $hostname" >> $output
+    elif [ -z "$addressip" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: $addressmac" >> $output
+    elif [ -z "$addressmac" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: $addressip" >> $output
+    elif [ -z "$addressip" ]; then
+        echo "Host Machine: $hostname ($addressmac)" >> $output
+    elif [ -z "$addressmac" ]; then
+        echo "Host Machine: $hostname ($addressip)" >> $output
+    else
+        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $output
+    fi
+    
+    echo "Ports Scanned:" >> $output
+    printf "\t$scanned\n" >> $output
+
+    echo "Possible Operating System:" >> $output
     if [ -z "$osmatch" ]; then
-        printf "\tNo Operating Sysem could be discerned.\n" >> reports/$address.txt
+        printf "\tNo Operating Sysem could be discerned.\n" >> $output
     else
         e=0
         for r in "${osmatch[@]}"
         do    
-            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> reports/$address.txt
+            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $output
             e=$((e+1))
         done
     fi
 
-    echo "Vulnerable Ports:" >> reports/$address.txt
+    echo "Vulnerable Ports:" >> $output
     if [ -z "$port" ]; then
-        printf "\tNo vulnerable ports found.\n" >> reports/$address.txt
+        printf "\tNo vulnerable ports found.\n" >> $output
     else
         t=0
         for g in "${port[@]}"
         do
             vulnerability=$(cat $vulnerabilityfile | grep -w "${port[$t]}" | grep -w "${protocal[$t]}" | awk '{$1=$2=$3=""; print $0}' | awk '{$1=$1};1' | sed -z 's/\n/, /g')
             if [ -z "$vulnerability" ]; then
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $output
             else
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $output
             fi 
             t=$((t+1))
         done

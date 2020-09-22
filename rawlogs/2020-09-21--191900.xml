@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="astrum.xsl" type="text/xsl"?>
+<!-- Nmap 7.70 scan initiated Mon Sep 21 19:19:04 2020 as: nmap -F -O -&#45;osscan-limit -T4 -&#45;stylesheet astrum.xsl -oX rawlogs/2020-09-21-&#45;191900.xml 10.191.55.0/28 -->
+<nmaprun scanner="nmap" args="nmap -F -O -&#45;osscan-limit -T4 -&#45;stylesheet astrum.xsl -oX rawlogs/2020-09-21-&#45;191900.xml 10.191.55.0/28" start="1600730344" startstr="Mon Sep 21 19:19:04 2020" version="7.70" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="100" services="7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,993,995,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1600730344" endtime="1600730354"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.1" addrtype="ipv4"/>
+<address addr="F8:B7:E2:4D:41:4D" addrtype="mac" vendor="Cisco Systems"/>
+<hostnames>
+<hostname name="brenna-test-pod-gw.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="254"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="33938"/>
+<osmatch name="Cisco Aironet 1141N (IOS 12.4) or 3602I (IOS 15.3) WAP" accuracy="100" line="17939">
+<osclass type="WAP" vendor="Cisco" osfamily="IOS" osgen="12.X" accuracy="100"><cpe>cpe:/o:cisco:ios:12.4</cpe></osclass>
+<osclass type="WAP" vendor="Cisco" osfamily="IOS" osgen="15.X" accuracy="100"><cpe>cpe:/h:cisco:aironet_1141n</cpe><cpe>cpe:/h:cisco:aironet_3602i</cpe><cpe>cpe:/o:cisco:ios:12.4</cpe><cpe>cpe:/o:cisco:ios:15.3</cpe></osclass>
+</osmatch>
+<osmatch name="Cisco Aironet 2600-series WAP (IOS 15.2(2))" accuracy="100" line="18384">
+<osclass type="WAP" vendor="Cisco" osfamily="IOS" osgen="15.X" accuracy="100"><cpe>cpe:/o:cisco:ios:15.2</cpe></osclass>
+</osmatch>
+</os>
+<distance value="1"/>
+<tcpsequence index="260" difficulty="Good luck!" values="C1C2CDE6,62B36B08,9B373F49,A74A2C57,13D965BF,D16EA014"/>
+<ipidsequence class="Randomized" values="6DB2,F3C6,F8A0,6E06,6773,887F"/>
+<tcptssequence class="none returned (unsupported)"/>
+<times srtt="544" rttvar="86" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730349"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.2" addrtype="ipv4"/>
+<address addr="00:2F:5C:3B:0A:41" addrtype="mac"/>
+<hostnames>
+<hostname name="brenna-test-pod.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="100">
+<extrareasons reason="resets" count="100"/>
+</extraports>
+</ports>
+<times srtt="1055" rttvar="151" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730374"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.3" addrtype="ipv4"/>
+<address addr="02:81:15:3B:73:DC" addrtype="mac"/>
+<hostnames>
+<hostname name="zeropi-01.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="35237"/>
+<osmatch name="Linux 2.6.32" accuracy="96" line="55173">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6.32</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2 - 4.9" accuracy="96" line="65105">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS 2100 (RAIDiator 4.2.24)" accuracy="96" line="88041">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="96"><cpe>cpe:/o:netgear:raidiator:4.2.24</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.10" accuracy="96" line="56381">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osmatch name="Ruckus ZoneFlex R710 WAP (Linux 3.4)" accuracy="95" line="95161">
+<osclass type="WAP" vendor="Ruckus" osfamily="embedded" accuracy="95"><cpe>cpe:/h:ruckus:zoneflex_r710</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="95"><cpe>cpe:/o:linux:linux_kernel:3.4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.1" accuracy="94" line="62708">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.1</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2" accuracy="94" line="64455">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.2</cpe></osclass>
+</osmatch>
+<osmatch name="AXIS 210A or 211 Network Camera (Linux 2.6.17)" accuracy="94" line="61606">
+<osclass type="webcam" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6.17</cpe></osclass>
+<osclass type="webcam" vendor="AXIS" osfamily="embedded" accuracy="94"><cpe>cpe:/h:axis:210a_network_camera</cpe><cpe>cpe:/h:axis:211_network_camera</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS device (RAIDiator 4.2.21 - 4.2.27)" accuracy="94" line="88061">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="94"><cpe>cpe:/o:netgear:raidiator:4.2</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 2.6.35" accuracy="94" line="56153">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.70%E=4%D=9/21%OT=22%CT=7%CU=35237%PV=Y%DS=1%DC=D%G=Y%M=028115%T&#xa;OS:M=5F693507%P=x86_64-redhat-linux-gnu)SEQ(SP=106%GCD=1%ISR=109%TI=Z%CI=Z%&#xa;OS:TS=A)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5&#xa;OS:=M5B4ST11NW6%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=&#xa;OS:FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%&#xa;OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0&#xa;OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S&#xa;OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R&#xa;OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N&#xa;OS:%T=40%CD=S)&#xa;"/>
+</os>
+<uptime seconds="222787" lastboot="Sat Sep 19 05:26:28 2020"/>
+<distance value="1"/>
+<tcpsequence index="262" difficulty="Good luck!" values="C19FA646,CD73CD87,3AA6DB74,319B6CDE,84DD6273,C6239642"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="D476772,D4767D6,D47683A,D47689E,D476902,D476966"/>
+<times srtt="557" rttvar="129" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730374"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.5" addrtype="ipv4"/>
+<address addr="02:81:E9:9F:57:F3" addrtype="mac"/>
+<hostnames>
+<hostname name="zeropi-05.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="31030"/>
+<osmatch name="Linux 2.6.32" accuracy="96" line="55173">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6.32</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2 - 4.9" accuracy="96" line="65105">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS 2100 (RAIDiator 4.2.24)" accuracy="96" line="88041">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="96"><cpe>cpe:/o:netgear:raidiator:4.2.24</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.10" accuracy="96" line="56381">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osmatch name="Ruckus ZoneFlex R710 WAP (Linux 3.4)" accuracy="95" line="95161">
+<osclass type="WAP" vendor="Ruckus" osfamily="embedded" accuracy="95"><cpe>cpe:/h:ruckus:zoneflex_r710</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="95"><cpe>cpe:/o:linux:linux_kernel:3.4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.1" accuracy="94" line="62708">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.1</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2" accuracy="94" line="64455">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.2</cpe></osclass>
+</osmatch>
+<osmatch name="AXIS 210A or 211 Network Camera (Linux 2.6.17)" accuracy="94" line="61606">
+<osclass type="webcam" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6.17</cpe></osclass>
+<osclass type="webcam" vendor="AXIS" osfamily="embedded" accuracy="94"><cpe>cpe:/h:axis:210a_network_camera</cpe><cpe>cpe:/h:axis:211_network_camera</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS device (RAIDiator 4.2.21 - 4.2.27)" accuracy="94" line="88061">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="94"><cpe>cpe:/o:netgear:raidiator:4.2</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 2.6.35" accuracy="94" line="56153">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.70%E=4%D=9/21%OT=22%CT=7%CU=31030%PV=Y%DS=1%DC=D%G=Y%M=0281E9%T&#xa;OS:M=5F693507%P=x86_64-redhat-linux-gnu)SEQ(SP=108%GCD=1%ISR=10B%TI=Z%CI=Z%&#xa;OS:TS=A)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5&#xa;OS:=M5B4ST11NW6%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=&#xa;OS:FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%&#xa;OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0&#xa;OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S&#xa;OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R&#xa;OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N&#xa;OS:%T=40%CD=S)&#xa;"/>
+</os>
+<uptime seconds="340971" lastboot="Thu Sep 17 20:36:44 2020"/>
+<distance value="1"/>
+<tcpsequence index="264" difficulty="Good luck!" values="BB136260,14019F81,E426E90,82ACE016,938930B2,371E31DF"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="1452BF39,1452BF9D,1452C001,1452C065,1452C0C9,1452C12E"/>
+<times srtt="539" rttvar="97" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730374"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.7" addrtype="ipv4"/>
+<address addr="02:81:94:D6:93:B0" addrtype="mac"/>
+<hostnames>
+<hostname name="zeropi-03.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="38933"/>
+<osmatch name="Linux 2.6.32" accuracy="96" line="55173">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6.32</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2 - 4.9" accuracy="96" line="65105">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.10" accuracy="96" line="56381">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS 2100 (RAIDiator 4.2.24)" accuracy="96" line="88041">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="96"><cpe>cpe:/o:netgear:raidiator:4.2.24</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.1" accuracy="94" line="62708">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.1</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2" accuracy="94" line="64455">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.2</cpe></osclass>
+</osmatch>
+<osmatch name="AXIS 210A or 211 Network Camera (Linux 2.6.17)" accuracy="94" line="61606">
+<osclass type="webcam" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6.17</cpe></osclass>
+<osclass type="webcam" vendor="AXIS" osfamily="embedded" accuracy="94"><cpe>cpe:/h:axis:210a_network_camera</cpe><cpe>cpe:/h:axis:211_network_camera</cpe></osclass>
+</osmatch>
+<osmatch name="Ruckus ZoneFlex R710 WAP (Linux 3.4)" accuracy="94" line="95161">
+<osclass type="WAP" vendor="Ruckus" osfamily="embedded" accuracy="94"><cpe>cpe:/h:ruckus:zoneflex_r710</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 2.6.35" accuracy="94" line="56153">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.5" accuracy="94" line="56585">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.70%E=4%D=9/21%OT=22%CT=7%CU=38933%PV=Y%DS=1%DC=D%G=Y%M=028194%T&#xa;OS:M=5F693507%P=x86_64-redhat-linux-gnu)SEQ(SP=101%GCD=1%ISR=FE%TI=Z%CI=Z%T&#xa;OS:S=A)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=&#xa;OS:M5B4ST11NW6%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=F&#xa;OS:E88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A&#xa;OS:=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%&#xa;OS:Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=&#xa;OS:A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=&#xa;OS:Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%&#xa;OS:T=40%CD=S)&#xa;"/>
+</os>
+<uptime seconds="2735711" lastboot="Fri Aug 21 03:24:24 2020"/>
+<distance value="1"/>
+<tcpsequence index="257" difficulty="Good luck!" values="2AE1A208,E893B519,DF3071FA,DC6E515E,D890A512,BB0226FE"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="A30F95F8,A30F965C,A30F96C1,A30F9725,A30F9789,A30F97ED"/>
+<times srtt="535" rttvar="93" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730374"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.9" addrtype="ipv4"/>
+<address addr="02:81:33:BC:23:A6" addrtype="mac"/>
+<hostnames>
+<hostname name="zeropi-04.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="34465"/>
+<osmatch name="Linux 2.6.32" accuracy="96" line="55173">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6.32</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2 - 4.9" accuracy="96" line="65105">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.10" accuracy="96" line="56381">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS 2100 (RAIDiator 4.2.24)" accuracy="96" line="88041">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="96"><cpe>cpe:/o:netgear:raidiator:4.2.24</cpe></osclass>
+</osmatch>
+<osmatch name="Ruckus ZoneFlex R710 WAP (Linux 3.4)" accuracy="95" line="95161">
+<osclass type="WAP" vendor="Ruckus" osfamily="embedded" accuracy="95"><cpe>cpe:/h:ruckus:zoneflex_r710</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="95"><cpe>cpe:/o:linux:linux_kernel:3.4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.1" accuracy="94" line="62708">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.1</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2" accuracy="94" line="64455">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.2</cpe></osclass>
+</osmatch>
+<osmatch name="AXIS 210A or 211 Network Camera (Linux 2.6.17)" accuracy="94" line="61606">
+<osclass type="webcam" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6.17</cpe></osclass>
+<osclass type="webcam" vendor="AXIS" osfamily="embedded" accuracy="94"><cpe>cpe:/h:axis:210a_network_camera</cpe><cpe>cpe:/h:axis:211_network_camera</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS device (RAIDiator 4.2.21 - 4.2.27)" accuracy="94" line="88061">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="94"><cpe>cpe:/o:netgear:raidiator:4.2</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 2.6.35" accuracy="94" line="56153">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.70%E=4%D=9/21%OT=22%CT=7%CU=34465%PV=Y%DS=1%DC=D%G=Y%M=028133%T&#xa;OS:M=5F693507%P=x86_64-redhat-linux-gnu)SEQ(SP=106%GCD=1%ISR=105%TI=Z%CI=Z%&#xa;OS:TS=A)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5&#xa;OS:=M5B4ST11NW6%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=&#xa;OS:FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%&#xa;OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0&#xa;OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S&#xa;OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R&#xa;OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N&#xa;OS:%T=40%CD=S)&#xa;"/>
+</os>
+<uptime seconds="3703665" lastboot="Sun Aug  9 22:31:50 2020"/>
+<distance value="1"/>
+<tcpsequence index="262" difficulty="Good luck!" values="9EAB5B02,907D96A1,75BD943B,88890B7A,FB63C117,E52A5CAD"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="DCC1623B,DCC1629F,DCC16303,DCC16367,DCC163CB,DCC1642F"/>
+<times srtt="545" rttvar="95" to="100000"/>
+</host>
+<host starttime="1600730344" endtime="1600730374"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="10.191.55.11" addrtype="ipv4"/>
+<address addr="02:81:96:D5:2C:6E" addrtype="mac"/>
+<hostnames>
+<hostname name="zeropi-02.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="99">
+<extrareasons reason="resets" count="99"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="36955"/>
+<osmatch name="Linux 2.6.32" accuracy="96" line="55173">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6.32</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2 - 4.9" accuracy="96" line="65105">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS 2100 (RAIDiator 4.2.24)" accuracy="96" line="88041">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="96"><cpe>cpe:/o:netgear:raidiator:4.2.24</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 3.10" accuracy="96" line="56381">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="96"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+<osmatch name="Ruckus ZoneFlex R710 WAP (Linux 3.4)" accuracy="95" line="95161">
+<osclass type="WAP" vendor="Ruckus" osfamily="embedded" accuracy="95"><cpe>cpe:/h:ruckus:zoneflex_r710</cpe></osclass>
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="95"><cpe>cpe:/o:linux:linux_kernel:3.4</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.1" accuracy="94" line="62708">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.1</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 3.2" accuracy="94" line="64455">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:3.2</cpe></osclass>
+</osmatch>
+<osmatch name="AXIS 210A or 211 Network Camera (Linux 2.6.17)" accuracy="94" line="61606">
+<osclass type="webcam" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6.17</cpe></osclass>
+<osclass type="webcam" vendor="AXIS" osfamily="embedded" accuracy="94"><cpe>cpe:/h:axis:210a_network_camera</cpe><cpe>cpe:/h:axis:211_network_camera</cpe></osclass>
+</osmatch>
+<osmatch name="Netgear ReadyNAS device (RAIDiator 4.2.21 - 4.2.27)" accuracy="94" line="88061">
+<osclass type="storage-misc" vendor="Netgear" osfamily="RAIDiator" osgen="4.X" accuracy="94"><cpe>cpe:/o:netgear:raidiator:4.2</cpe></osclass>
+</osmatch>
+<osmatch name="Linux 2.6.32 - 2.6.35" accuracy="94" line="56153">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="94"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.70%E=4%D=9/21%OT=22%CT=7%CU=36955%PV=Y%DS=1%DC=D%G=Y%M=028196%T&#xa;OS:M=5F693507%P=x86_64-redhat-linux-gnu)SEQ(SP=103%GCD=1%ISR=10C%TI=Z%CI=Z%&#xa;OS:TS=A)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5&#xa;OS:=M5B4ST11NW6%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=&#xa;OS:FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%&#xa;OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0&#xa;OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S&#xa;OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R&#xa;OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N&#xa;OS:%T=40%CD=S)&#xa;"/>
+</os>
+<uptime seconds="2709956" lastboot="Fri Aug 21 10:33:39 2020"/>
+<distance value="1"/>
+<tcpsequence index="259" difficulty="Good luck!" values="D6234CF7,B8860758,85C3A322,45888AB7,B04C5056,10F2971A"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="A186968D,A18696F1,A1869755,A18697B9,A186981D,A1869881"/>
+<times srtt="546" rttvar="86" to="100000"/>
+</host>
+<host starttime="1600730375" endtime="1600730379"><status state="up" reason="localhost-response" reason_ttl="0"/>
+<address addr="10.191.55.10" addrtype="ipv4"/>
+<hostnames>
+<hostname name="astrum.hpbd.uc.edu" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="97">
+<extrareasons reason="resets" count="97"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="111"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="rpcbind" method="table" conf="3"/></port>
+<port protocol="tcp" portid="3389"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ms-wbt-server" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="tcp" portid="7"/>
+<portused state="closed" proto="udp" portid="42048"/>
+<osmatch name="Linux 3.7 - 3.10" accuracy="100" line="65736">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="3.X" accuracy="100"><cpe>cpe:/o:linux:linux_kernel:3</cpe></osclass>
+</osmatch>
+</os>
+<uptime seconds="2245858" lastboot="Wed Aug 26 19:28:41 2020"/>
+<distance value="0"/>
+<tcpsequence index="260" difficulty="Good luck!" values="1BE93061,B846AC7D,C2F4942B,F3F9B9B6,39E999EF,8DE7592C"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="1000HZ" values="85DD0CBF,85DD0D23,85DD0D8D,85DD0DF1,85DD0E55,85DD0EB9"/>
+<times srtt="39" rttvar="0" to="100000"/>
+</host>
+<runstats><finished time="1600730379" timestr="Mon Sep 21 19:19:39 2020" elapsed="36.17" summary="Nmap done at Mon Sep 21 19:19:39 2020; 16 IP addresses (8 hosts up) scanned in 36.17 seconds" exit="success"/><hosts up="8" down="8" total="16"/>
+</runstats>
+</nmaprun>

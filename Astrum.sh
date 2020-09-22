@@ -71,11 +71,9 @@ elif [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}$ ]]
     fi
 fi
 
-echo "status options: 0 = IP & Cidr valid, 1 = IP invalid & cidr valid (or no cidr), 2 = IP valid & cidr invalid, 3 = IP invalid & cidr invalid, 4 = Hostname (not verified)" #VJN 9/9/2020 11:42am - This is for debug. description for the user of the status 
-
-echo "status:   $stat" #VJN 9/9/2020 11:42am - This is for debug. 
-
-echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells the host being scanned 
+# echo "status options: 0 = IP & Cidr valid, 1 = IP invalid & cidr valid (or no cidr), 2 = IP valid & cidr invalid, 3 = IP invalid & cidr invalid, 4 = Hostname (not verified)" #VJN 9/9/2020 11:42am - This is for debug. description for the user of the status 
+# echo "status:   $stat" #VJN 9/9/2020 11:42am - This is for debug. 
+# echo "host:     $host" #VJN 9/7/2020 7:04pm - this is being used to debug. tells the host being scanned 
 
 file="rawlogs/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
 
@@ -102,18 +100,22 @@ file="rawlogs/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
 echo "Scan complete." 
 
 #BMM 9/10/2020 7:57am - BTW during the script you can press enter to see the status of the nmap. It does take a while on a deep scan, so we can try some things to make it faster. 
+
+#VJN 9/21/2020 7:17pm - vulnerabilities.txt is a database of ports and known uses / vulnerabilities 
 vulnerabilityfile="vulnerabilities.txt"
 
+#VJN 9/21/2020 7:18pm - select is used to grab only the useful information out of the raw nmap output. scanned grabs the section of the nmap output that shows what ports it scanned.
 selected=$(cat $file | grep -ie "<hostname name=\|<address addr=\|<port protocol=\|<osmatch name=")
 scanned=$(cat $file | grep -ia "<scaninfo type=" | awk -F'services="' '{ print $3 }' | awk -F'"' '{ print $1 }')
 
-scanned=($(echo $scanned | tr "," "\n"))
+#VJN 9/21/2020 8:56pm - This section is used to consolidate all of the seperate lines into one line to be queried later
 selected=($(echo $selected | tr " " "-"))
 selected=($(echo $selected | tr "<" "\n"))
 
+#VJN 9/21/2020 8:59pm - This section is used to break the selected variable into seperate temp files that contain each individual machine
 j=0
 for r in "${selected[@]}"; do
-    if [[ "$r" == *"address"* ]]; then
+    if [[ "$r" == *"ipv4"* ]]; then
         j=$((j+1))
     fi
     
@@ -122,12 +124,16 @@ for r in "${selected[@]}"; do
     fi
 done
 
+#VJN 9/21/2020 9:00pm - This reads the temp files and puts them into an array
 file=($(ls temp))
 
+#VJN 9/21/2020 9:01pm - This iterates through each temp file and grabs imporant info
 for f in "${file[@]}"; do
 
+    #VJN 9/21/2020 9:02pm - This section identifies each data type and puts them into a array
     hostname=$(cat temp/$f | grep -ia "hostname-name=" | awk -F'hostname-name="' '{ print $2 }' | awk -F'"' '{ print $1 }')  
-    address=$(cat temp/$f | grep -ia "address-addr=" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
+    addressip=$(cat temp/$f | grep -ia "ipv4" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
+    addressmac=$(cat temp/$f | grep -ia "mac" | awk -F'address-addr="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     port=$(cat temp/$f | grep -ia "portid=" | awk -F'portid="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     service=$(cat temp/$f | grep -ia "service-name=" | awk -F'service-name="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     state=$(cat temp/$f | grep -ia "state-state=" | awk -F'state-state="' '{ print $2 }' | awk -F'"' '{ print $1 }')
@@ -135,6 +141,7 @@ for f in "${file[@]}"; do
     osmatch=$(cat temp/$f | grep -ia "osmatch-name=" | awk -F'osmatch-name="' '{ print $2 }' | awk -F'"' '{ print $1 }')
     accuracy=$(cat temp/$f | grep -ia "osmatch-name=" | awk -F'accuracy="' '{ print $2 }' | awk -F'"' '{ print $1 }')
        
+    #VJN 9/21/2020 9:20pm - This section seperates the variables from one line into an array
     port=($(echo $port | tr "\n" "\n"))
     service=($(echo $service | tr "\n" "\n"))
     state=($(echo $state | tr "\n" "\n"))
@@ -142,35 +149,61 @@ for f in "${file[@]}"; do
     osmatch=($(echo $osmatch | tr "\n" "\n"))
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
-    echo "Host Machine: $hostname ($address)" >> reports/$address.txt
-    echo "Possible Operating System:" >> reports/$address.txt
+    #VJN 9/22/2020 12:36pm - output specifies the file in which each report will be deposited in
+    output="reports/$addressip.txt"
+
+    #VJN 9/22/2020 12:38pm - This section is used to print the hostname and/or IP address and/or Mac address 
+    if [ -z "$addressip" ] && [ -z "$addressmac" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: Nothing Found" >> $output
+    elif [ -z "$addressip" ] && [ -z "$addressmac" ]; then
+        echo "Host Machine: $hostname" >> $output
+    elif [ -z "$addressip" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: $addressmac" >> $output
+    elif [ -z "$addressmac" ] && [ -z "$hostname" ]; then
+        echo "Host Machine: $addressip" >> $output
+    elif [ -z "$addressip" ]; then
+        echo "Host Machine: $hostname ($addressmac)" >> $output
+    elif [ -z "$addressmac" ]; then
+        echo "Host Machine: $hostname ($addressip)" >> $output
+    else
+        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $output
+    fi
+    
+    #VJN 9/22/2020 12:40pm - This section prints out the prots scanned by nmap 
+    echo "Ports Scanned:" >> $output
+    printf "\t$scanned\n" >> $output
+
+    #VJN 9/22/2020 12:41pm - This section is used to print out the presumed Operating System of the host machine
+    echo "Possible Operating System:" >> $output
     if [ -z "$osmatch" ]; then
-        printf "\tNo Operating Sysem could be discerned.\n" >> reports/$address.txt
+        printf "\tNo Operating Sysem could be discerned.\n" >> $output
     else
         e=0
         for r in "${osmatch[@]}"
         do    
-            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> reports/$address.txt
+            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $output
             e=$((e+1))
         done
     fi
 
-    echo "Vulnerable Ports:" >> reports/$address.txt
+    #VJN 9/22/2020 12:36pm - This section is used to print out the vulnerable ports 
+    echo "Vulnerable Ports:" >> $output
     if [ -z "$port" ]; then
-        printf "\tNo vulnerable ports found.\n" >> reports/$address.txt
+        printf "\tNo vulnerable ports found.\n" >> $output
     else
         t=0
         for g in "${port[@]}"
         do
             vulnerability=$(cat $vulnerabilityfile | grep -w "${port[$t]}" | grep -w "${protocal[$t]}" | awk '{$1=$2=$3=""; print $0}' | awk '{$1=$1};1' | sed -z 's/\n/, /g')
             if [ -z "$vulnerability" ]; then
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $output
             else
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> reports/$address.txt
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $output
             fi 
             t=$((t+1))
         done
     fi
 
+    #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
     rm temp/$f
 done
