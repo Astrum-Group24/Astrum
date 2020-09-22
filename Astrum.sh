@@ -90,8 +90,7 @@ file="rawlogs/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
                 nmap -F -O --osscan-limit -T4 $host --stylesheet astrum.xsl -oX $file
             elif [ "$answer" = "N" ] || [ "$answer" = "n" ]; then
                 echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -O -T4 $host --stylesheet astrum.xsl -oX $file
-                echo "Error. Please try again."
+                nmap -O -T4 $host --stylesheet astrum.xsl -oX $file              
             fi
     else
         echo "Sorry, something is wrong with that information. Please try again."
