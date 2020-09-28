@@ -57,7 +57,11 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 
 # Tech:
 
-    Lists the indidual Tech products we are using for this project
+    NodeJS
+    Bash
+    Curl
+    Nmap
+    
 
 # Credits: 
 
