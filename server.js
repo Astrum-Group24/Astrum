@@ -3,8 +3,7 @@
 var http = require("http");
 var util = require("util");
 var fs = require("fs");
-const { spawn } = require("child_process");
-const hello = spawn('bash', ['hello-world.sh']);
+const shell = require('shelljs')
 
 //Creating the server
 var server = http.createServer(function(req, res)
@@ -37,18 +36,7 @@ var server = http.createServer(function(req, res)
         });
     }
 
-    else if(req.url.match("/script"))
-    {
-        // use hello.stdout.setEncoding('utf8'); if you want text chunks
-        hello.stdout.on('data', (chunk) => 
-        {
-            // data from the standard output is here as buffers
-        });
-  
-        hello.on('close', (code) => 
-        {
-            console.log(`child process exited with code ${code}`);
-        });
+    else if(req.
     }
 
     //contingency when things are broken
