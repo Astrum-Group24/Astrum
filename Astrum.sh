@@ -12,7 +12,34 @@
 [ -e "vulnerabilities.txt" ] || curl https://isc.sans.edu/services.html >> vulnerabilities.txt
 
 #VJN 9/7/2020 6:50pm - host will house the machine being scanned. This will either be a Hostname or an IP address. 
-read -p 'Enter Hostname or IP (with or without cidr): ' host
+#read -p 'Enter Hostname or IP (with or without cidr): ' host
+
+#VJN 9/28/2020 7:04pm - Setting passed variables to nothing
+scantype=
+host=
+username=
+password=
+
+#VJN 9/28/2020 7:08pm - This section grabs the passed variables and assigns them to internal variables
+while getopts "s:h:u:p:" opt; do
+  case $opt in
+    s) scantype=$OPTARG   ;;
+    h) host=$OPTARG       ;;
+    u) username=$OPTARG   ;;
+    p) password=$OPTARG   ;;
+    *) echo 'Error: Invalid argument.'
+       exit 1
+  esac
+done
+
+#VJN 9/28/2020 7:15pm - This section will be used to validate the scantype variable. The input has not been chosen as of now so this will be updated at a later date
+if [[ $scantype =~ [a-zA-Z] ]]; then
+    #TO BE EDITED WHEN WEB INTERFACE IS FURTHER ALONG
+elif [[ $scantype =~ [a-zA-Z] ]]; then
+    #TO BE EDITED WHEN WEB INTERFACE IS FURTHER ALONG
+else 
+    #TO BE EDITED WHEN WEB INTERFACE IS FURTHER ALONG
+fi 
 
 #VJN 9/9/2020 11:42am - This will test to see if the IP and or cidr is valid or if it is a hostname is valid or not Reference: https://www.linuxjournal.com/content/validating-ip-address-bash-script
 if [[ $host =~ [a-zA-Z] ]]; then
@@ -79,18 +106,19 @@ file="rawlogs/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
 
 #BMM 9/9/2020 4:04pm - This will ensure that the stat information above is valid and then run an nmap on valid hosts and output to an XML file
     if [ "$stat" -eq "0" ]; then
-        echo "Scanning many hosts will take a long time. Would you like to perform a light scan? This will save significant time but may provide less information."
+        #echo "Scanning many hosts will take a long time. Would you like to perform a light scan? This will save significant time but may provide less information."
 
-#BMM 9/10/2020 8:30am - The 'light scan' option is for having nmap scan only 100 ports versus 1000 
-#BMM 9/14/202 7:58pm - Added the option for OS scanning, the light option omits devices it deems "uninportant" 
+        #BMM 9/10/2020 8:30am - The 'light scan' option is for having nmap scan only 100 ports versus 1000 
+        #BMM 9/14/202 7:58pm - Added the option for OS scanning, the light option omits devices it deems "uninportant" 
 
-        read -p 'Run light scan? [y/n]: ' answer
-            if [ "$answer" = "Y" ] || [ "$answer" = "y" ]; then
-                echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
+        #read -p 'Run light scan? [y/n]: ' scantype
+            if [ "$scantype" = "Y" ] || [ "$scantype" = "y" ]; then
+                #echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
                 nmap -F -O --osscan-limit -T4 $host --stylesheet astrum.xsl -oX $file
-            elif [ "$answer" = "N" ] || [ "$answer" = "n" ]; then
-                echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
-                nmap -O -T4 $host --stylesheet astrum.xsl -oX $file              
+            elif [ "$scantype" = "N" ] || [ "$scantype" = "n" ]; then
+                #echo "Starting scan, this could take a while depending on the number of devices Astrum scans."
+                nmap -O -T4 $host --stylesheet astrum.xsl -oX $file
+                #echo "Error. Please try again."
             fi
     else
         echo "Sorry, something is wrong with that information. Please try again."
