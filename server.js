@@ -36,7 +36,9 @@ var server = http.createServer(function(req, res)
         });
     }
 
-    else if(req.
+    else if(req.url.match("/script"))
+    {
+        shell.exec('./hello-world.sh')
     }
 
     //contingency when things are broken
