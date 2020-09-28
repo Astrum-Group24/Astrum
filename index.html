@@ -3,13 +3,16 @@
     <head>
         <title>Astrum Network Analysis</title>
     </head>
-
-    <h1>Astrum Network Analysis</h1>
-    
-    <form action="/var/www/cgi-bin/hello-world.sh" method="POST">
-        <label for="host">Click button to run script:</label><br>
-        <input type="text" id="host" name="host"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-
+    <body>
+        <h1>Astrum Network Analysis</h1>
+        <form>
+            <h3>Scan Speed</h3>
+            <input type="radio" id="Fast" name="speed" value="fast">
+            <label for="Fast">Fast</label>
+            <input type="radio" id="Slow" name="speed" value="slow">
+            <label for="Fast">Slow</label>
+            <label for="host">Network & Subnet</label>
+            <input type="text" value="Start" onclick="hello()">
+        </form>
+    </body>
 </html>

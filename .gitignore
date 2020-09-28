@@ -1,8 +1,8 @@
-#BRJ 09/17/2020 04:56 - Ignore xml files in /xml directory
-/xml/*.xml
+#BRJ 09/17/2020 04:56 - Ignore xml files in xml/ directory
+xml/*.xml
 
-#BRJ 09/22/2020 02:31 - Ignore xml files in /rawlogs directory
-/rawlogs/*.xml
+#BRJ 09/22/2020 02:31 - Ignore xml files in rawlogs/ directory
+rawlogs/*.xml
 
-#BRJ 09/22/2020 02:32 - Ignore txt files in reports
-/reports/*.txt
+#BRJ 09/22/2020 02:32 - Ignore txt files in reports/
+reports/*.txt
