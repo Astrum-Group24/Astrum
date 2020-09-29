@@ -176,60 +176,85 @@ for f in "${file[@]}"; do
     osmatch=($(echo $osmatch | tr "\n" "\n"))
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
-    #VJN 9/22/2020 12:36pm - output specifies the file in which each report will be deposited in
-    output="reports/$addressip.txt"
+    #VJN 9/22/2020 12:36pm - outputtxt specifies the file in which each txt report will be deposited in
+    outputtxt="reports/$addressip.txt"
+    #VJN 9/29/2020 7:06pm - outputxml specifies the file in which each xml report will be deposited in
+    outputxml="reports/$addressip.xml"
+
+    #VJN 9/29/2020 7:06pm - This specifies the type of xml we are exporting
+    echo '<?xml version="1.0" encoding="UTF-8"?>' >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
     #VJN 9/22/2020 12:38pm - This section is used to print the hostname and/or IP address and/or Mac address 
     if [ -z "$addressip" ] && [ -z "$addressmac" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: Nothing Found" >> $output
+        echo "Host Machine: Nothing Found" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     elif [ -z "$addressip" ] && [ -z "$addressmac" ]; then
-        echo "Host Machine: $hostname" >> $output
+        echo "Host Machine: $hostname" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine hostname=\"$hostname\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     elif [ -z "$addressip" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: $addressmac" >> $output
+        echo "Host Machine: $addressmac" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine macaddress=\"$addressmac\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     elif [ -z "$addressmac" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: $addressip" >> $output
+        echo "Host Machine: $addressip" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine ipaddress=\"$addressip\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     elif [ -z "$addressip" ]; then
-        echo "Host Machine: $hostname ($addressmac)" >> $output
+        echo "Host Machine: $hostname ($addressmac)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine hostname=\"$hostname\" macaddress=\"$addressmac\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     elif [ -z "$addressmac" ]; then
-        echo "Host Machine: $hostname ($addressip)" >> $output
+        echo "Host Machine: $hostname ($addressip)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     else
-        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $output
+        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\" macaddress=\"$addressmac\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     fi
     
     #VJN 9/22/2020 12:40pm - This section prints out the prots scanned by nmap 
-    echo "Ports Scanned:" >> $output
-    printf "\t$scanned\n" >> $output
+    echo "Ports Scanned:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+    printf "\t$scanned\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+
+    echo "<scanned ports=\"$scanned\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
     #VJN 9/22/2020 12:41pm - This section is used to print out the presumed Operating System of the host machine
-    echo "Possible Operating System:" >> $output
+    echo "Possible Operating System:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
     if [ -z "$osmatch" ]; then
-        printf "\tNo Operating Sysem could be discerned.\n" >> $output
+        printf "\tNo Operating Sysem could be discerned.\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<osmatch type=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     else
+        echo "<osmatchs>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         e=0
         for r in "${osmatch[@]}"
         do    
-            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $output
+            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             e=$((e+1))
         done
+        echo "</osmatchs>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     fi
 
     #VJN 9/22/2020 12:36pm - This section is used to print out the vulnerable ports 
-    echo "Vulnerable Ports:" >> $output
+    echo "Vulnerable Ports:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
     if [ -z "$port" ]; then
-        printf "\tNo vulnerable ports found.\n" >> $output
+        printf "\tNo vulnerable ports found.\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+        echo "<port number=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     else
+        echo "<ports>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         t=0
         for g in "${port[@]}"
         do
             vulnerability=$(cat $vulnerabilityfile | grep -w "${port[$t]}" | grep -w "${protocal[$t]}" | awk '{$1=$2=$3=""; print $0}' | awk '{$1=$1};1' | sed -z 's/\n/, /g')
             if [ -z "$vulnerability" ]; then
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $output
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             else
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $output
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
+                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"${vulnerability::-2}\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             fi 
             t=$((t+1))
         done
+        echo "</ports>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     fi
+
+    echo "</machine>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
     #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
     rm temp/$f

@@ -56,7 +56,8 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 - protocal: This tells you if the port is TCP or UDP.
 - osmatch: This will list out the possible Operating Systems the machine could be. 
 - accuracy: This tells how accurate the osmatch is. 
-- output: This is the location and name of the report.txt files. 
+- outputtxt: This is the location and name of the .txt report files. 
+- outputxml: This is the location and name of the .xml report files. 
 
 ## Local Variables:
 - ipstat: The verified status of the IP.

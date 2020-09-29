@@ -39,55 +39,78 @@ for f in "${file[@]}"; do
     osmatch=($(echo $osmatch | tr "\n" "\n"))
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
-    output="reports/$addressip.txt"
+    outputtxt="reports/$addressip.txt"
+    outputxml="reports/$addressip.xml"
+    
+    echo '<?xml version="1.0" encoding="UTF-8"?>' >> $outputxml
 
     if [ -z "$addressip" ] && [ -z "$addressmac" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: Nothing Found" >> $output
+        echo "Host Machine: Nothing Found" >> $outputtxt
+        echo "<machine>" >> $outputxml
     elif [ -z "$addressip" ] && [ -z "$addressmac" ]; then
-        echo "Host Machine: $hostname" >> $output
+        echo "Host Machine: $hostname" >> $outputtxt
+        echo "<machine hostname=\"$hostname\">" >> $outputxml
     elif [ -z "$addressip" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: $addressmac" >> $output
+        echo "Host Machine: $addressmac" >> $outputtxt
+        echo "<machine macaddress=\"$addressmac\">" >> $outputxml
     elif [ -z "$addressmac" ] && [ -z "$hostname" ]; then
-        echo "Host Machine: $addressip" >> $output
+        echo "Host Machine: $addressip" >> $outputtxt
+        echo "<machine ipaddress=\"$addressip\">" >> $outputxml
     elif [ -z "$addressip" ]; then
-        echo "Host Machine: $hostname ($addressmac)" >> $output
+        echo "Host Machine: $hostname ($addressmac)" >> $outputtxt
+        echo "<machine hostname=\"$hostname\" macaddress=\"$addressmac\">" >> $outputxml
     elif [ -z "$addressmac" ]; then
-        echo "Host Machine: $hostname ($addressip)" >> $output
+        echo "Host Machine: $hostname ($addressip)" >> $outputtxt
+        echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\">" >> $outputxml
     else
-        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $output
+        echo "Host Machine: $hostname ($addressip, $addressmac)" >> $outputtxt
+        echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\" macaddress=\"$addressmac\">" >> $outputxml
     fi
     
-    echo "Ports Scanned:" >> $output
-    printf "\t$scanned\n" >> $output
+    echo "Ports Scanned:" >> $outputtxt
+    printf "\t$scanned\n" >> $outputtxt
 
-    echo "Possible Operating System:" >> $output
+    echo "<scanned ports=\"$scanned\"/>" >> $outputxml
+
+    echo "Possible Operating System:" >> $outputtxt
     if [ -z "$osmatch" ]; then
-        printf "\tNo Operating Sysem could be discerned.\n" >> $output
+        printf "\tNo Operating Sysem could be discerned.\n" >> $outputtxt
+        echo "<osmatch type=\"N/A\"/>" >> $outputxml
     else
         e=0
+        echo "<osmatchs>" >> $outputxml
         for r in "${osmatch[@]}"
         do    
-            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $output
+            printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $outputtxt
+            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}\"/>" >> $outputxml
             e=$((e+1))
         done
+        echo "</osmatchs>" >> $outputxml
     fi
 
-    echo "Vulnerable Ports:" >> $output
+    echo "Vulnerable Ports:" >> $outputtxt
     if [ -z "$port" ]; then
-        printf "\tNo vulnerable ports found.\n" >> $output
+        printf "\tNo vulnerable ports found.\n" >> $outputtxt
+        echo "<port number=\"N/A\"/>" >> $outputxml
     else
+        echo "<ports>" >> $outputxml
         t=0
         for g in "${port[@]}"
         do
             vulnerability=$(cat $vulnerabilityfile | grep -w "${port[$t]}" | grep -w "${protocal[$t]}" | awk '{$1=$2=$3=""; print $0}' | awk '{$1=$1};1' | sed -z 's/\n/, /g')
             if [ -z "$vulnerability" ]; then
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $output
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $outputtxt
+                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"N/A\"/>" >> $outputxml
             else
-                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $output
+                printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $outputtxt
+                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"${vulnerability::-2}\"/>" >> $outputxml
             fi 
             t=$((t+1))
         done
+        echo "</ports>" >> $outputxml
     fi
+
+    echo "</machine>" >> $outputxml
 
     rm temp/$f
 
