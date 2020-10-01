@@ -260,7 +260,7 @@ for f in "${file[@]}"; do
         do    
             printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
             
-            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}%\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             
             printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t<td>${osmatch[$e]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report

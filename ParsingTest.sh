@@ -99,7 +99,7 @@ for f in "${file[@]}"; do
         for r in "${osmatch[@]}"
         do    
             printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $outputtxt
-            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}%%\"/>" >> $outputxml
+            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}%\"/>" >> $outputxml
             printf "\t<tr>\n" >> $outputhtml
             printf "\t\t<td>${osmatch[$e]}</td>\n" >> $outputhtml
             printf "\t\t<td>${accuracy[$e]}%%</td>\n" >> $outputhtml
