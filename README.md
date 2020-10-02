@@ -58,6 +58,7 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 - accuracy: This tells how accurate the osmatch is. 
 - outputtxt: This is the location and name of the .txt report files. 
 - outputxml: This is the location and name of the .xml report files. 
+- outputhtml: This is the location and name of the .html report files.
 
 ## Local Variables:
 - ipstat: The verified status of the IP.
