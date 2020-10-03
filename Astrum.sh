@@ -6,8 +6,13 @@
 
 #VJN 9/21/2020 7:06pm - This checks and verifies that the required directories and files are present. If not it creates them. 
 [ -d "temp" ] || mkdir temp 
-[ -d "reports" ] || mkdir reports 
-[ -d "rawlogs" ] || mkdir rawlogs 
+[ -d "reports" ] || mkdir reports
+[ -d "reports/html" ] || mkdir reports/html
+[ -d "reports/json" ] || mkdir reports/json
+[ -d "reports/ndjson" ] || mkdir reports/ndjson 
+[ -d "reports/txt" ] || mkdir reports/txt 
+[ -d "reports/xml" ] || mkdir reports/xml
+[ -d "rawlogs/" ] || mkdir rawlogs 
 [ -d "xml" ] || mkdir xml 
 [ -e "vulnerabilities.txt" ] || curl https://isc.sans.edu/services.html >> vulnerabilities.txt
 
@@ -177,11 +182,15 @@ for f in "${file[@]}"; do
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
     #VJN 9/22/2020 12:36pm - outputtxt specifies the file in which each txt report will be deposited in
-    outputtxt="reports/$addressip.txt"
+    outputtxt="reports/txt/$addressip.txt"
     #VJN 9/29/2020 7:06pm - outputxml specifies the file in which each xml report will be deposited in
-    outputxml="reports/$addressip.xml"
+    outputxml="reports/xml/$addressip.xml"
     #VJN 10/1/2020 12:30pm - outputhtml specifies the file in which each html report will be deposited in
-    outputhtml="reports/$addressip.html"
+    outputhtml="reports/html/$addressip.html"
+    #VJN 10/1/2020 5:30pm - outputjson specifies the file in which each json report will be deposited in
+    outputjson="reports/json/$addressip.json"
+    #VJN 10/1/2020 5:30pm - outputndjson specifies the file in which each ndjson report will be deposited in
+    outputndjson="reports/ndjson/$addressip.ndjson"
 
     #VJN 9/29/2020 7:06pm - This specifies the type of xml we are exporting
     echo '<?xml version="1.0" encoding="UTF-8"?>' >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
@@ -189,14 +198,20 @@ for f in "${file[@]}"; do
     #VJN 10/1/2020 12:30pm - This specifies the type of html we are exporting
     echo "<!DOCTYPE html>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     echo "<html lang=\"en\">" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    echo "<head>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<link href=\"astrum.css\" rel=\"stylesheet\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<link rel=\"icon\" href=\"../logos/aslt.ico\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<meta charset=\"utf-8\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<title>$addressip Vulnerability Report</title>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    echo "</head>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    echo "<body>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t<head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<link href=\"astrum.css\" rel=\"stylesheet\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<link rel=\"icon\" href=\"../logos/aslt.ico\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<meta charset=\"utf-8\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<title>$addressip Vulnerability Report</title>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t</head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t<body>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+
+    #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
+    printf "{\n\t\"machine\":\n\t{\n" >> $outputjson #VJN 10/2/2020 10:48pm - for ndjson report
+
+    #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
+    printf "{\"machine\": { " >> $outputndjson #VJN 10/2/2020 10:48pm - for json report
 
     #VJN 9/22/2020 12:38pm - This section is used to print the hostname and/or IP address and/or Mac address 
     if [ -z "$addressmac" ] && [ -z "$hostname" ]; then
@@ -204,100 +219,147 @@ for f in "${file[@]}"; do
         
         echo "<machine ipaddress=\"$addressip\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        printf "\t<h1>$addressip</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<h1>$addressip</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\"ipaddress\": \"$addressip\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "\"ipaddress\": \"$addressip\", " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     elif [ -z "$hostname" ]; then
         echo "Host Machine: $addressip ($addressmac)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
         echo "<machine ipaddress=\"$addressip\" macaddress=\"$addressmac\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        printf "\t<h1>$addressip ($addressmac)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<h1>$addressip ($addressmac)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\"ipaddress\": \"$addressip\",\n\t\t\"macaddress\": \"$addressmac\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+    
+        printf "\"ipaddress\": \"$addressip\", \"macaddress\": \"$addressmac\", " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     elif [ -z "$addressmac" ]; then
         echo "Host Machine: $hostname ($addressip)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
         echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        printf "\t<h1>$hostname ($addressip)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<h1>$hostname ($addressip)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\"hostname\": \"$hostname\",\n\t\t\"ipaddress\": \"$addressip\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "\"hostname\": \"$hostname\", \"ipaddress\": \"$addressip\", " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     else
         echo "Host Machine: $hostname ($addressip, $addressmac)" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
         echo "<machine hostname=\"$hostname\" ipaddress=\"$addressip\" macaddress=\"$addressmac\">" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report            
         
-        printf "\t<h1>$hostname ($addressip, $addressmac)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<h1>$hostname ($addressip, $addressmac)</h1>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\"hostname\": \"$hostname\",\n\t\t\"ipaddress\": \"$addressip\",\n\t\t\"macaddress\": \"$addressmac\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "\"hostname\": \"$hostname\", \"ipaddress\": \"$addressip\", \"macaddress\": \"$addressmac\", " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
     
     #VJN 9/22/2020 12:40pm - This section prints out the prots scanned by nmap 
     echo "Ports Scanned:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
     printf "\t$scanned\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
-    echo "<scanned ports=\"$scanned\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+    printf "\t<scanned ports=\"$scanned\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-    echo "<h2>Ports Scanned</h2>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t<p>$scanned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<h2>Ports Scanned</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t<p>$scanned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+
+    printf "\t\t\"scannedports\": \"$scanned\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+    printf "\"scannedports\": \"$scanned\", " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 
     #VJN 9/22/2020 12:41pm - This section is used to print out the presumed Operating System of the host machine
     echo "Possible Operating System:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
     
-    echo "<h2>Possible Operating System</h2>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<h2>Possible Operating System</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     
+    printf "\t\t\"osmatches\":\n\t\t[\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+    printf "\"osmatches\": [ " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+
     if [ -z "$osmatch" ]; then    
         printf "\tNo Operating Sysem could be discerned\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
-        echo "<osmatch type=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t<osmatch name=\"N/A\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        printf "\t<p>No Operating Sysem could be discerned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<p>No Operating Sysem could be discerned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\t{\n\t\t\t\t\"name\": \"N/A\",\n\t\t\t\t\"accuracy\": \"N/A\"\n\t\t\t}\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "{ \"name\": \"N/A\", \"accuracy\": \"N/A\" } " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     else
         e=0
         
-        echo "<osmatchs>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t<osmatches>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        echo "<table>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Operating System Guess</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Accuracy</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Operating System Guess</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Accuracy</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         
         for r in "${osmatch[@]}"
         do    
             printf "\t(${accuracy[$e]}%%)\t${osmatch[$e]}\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
             
-            echo "<osmatch type=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}%\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+            printf "\t\t<osmatch name=\"${osmatch[$e]}\" accuracy=\"${accuracy[$e]}%%\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             
-            printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-            printf "\t\t<td>${osmatch[$e]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-            printf "\t\t<td>${accuracy[$e]}%%</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-            printf "\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t\t<td>${osmatch[$e]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t\t<td>${accuracy[$e]}%%</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             
+            if [ "$e" -eq "$((${#osmatch[@]}-1))" ]; then
+                printf "\t\t\t{\n\t\t\t\t\"name\": \"${osmatch[$e]}\",\n\t\t\t\t\"accuracy\": \"${accuracy[$e]}\"\n\t\t\t}\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                printf "{ \"name\": \"${osmatch[$e]}\", \"accuracy\": \"${accuracy[$e]}\" } " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+            else 
+                printf "\t\t\t{\n\t\t\t\t\"name\": \"${osmatch[$e]}\",\n\t\t\t\t\"accuracy\": \"${accuracy[$e]}\"\n\t\t\t},\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                printf "{ \"name\": \"${osmatch[$e]}\", \"accuracy\": \"${accuracy[$e]}\" }, " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+            fi
             e=$((e+1))
         done
-        echo "</osmatchs>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t</osmatches>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        echo "</table>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t</table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+
+        printf "\t\t],\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
 
     #VJN 9/22/2020 12:36pm - This section is used to print out the vulnerable ports 
     echo "Vulnerable Ports:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
     
-    echo "<h2>Vulnerable Ports</h2>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<h2>Vulnerable Ports</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     
+    printf "\t\t\"ports\":\n\t\t[\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+    printf "\"ports\": [ " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+
     if [ -z "$port" ]; then
         printf "\tNo vulnerable ports found\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
-        echo "<port number=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t<port number=\"N/A\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        printf "\t<p>No vulnerable ports found</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<p>No vulnerable ports found</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    
+        printf "\t\t\t{\n\t\t\t\t\"number\": \"N/A\",\n\t\t\t\t\"protocal\": \"N/A\",\n\t\t\t\t\"state\": \"N/A\",\n\t\t\t\t\"service\": \"N/A\",\n\t\t\t\t\"description\": \"N/A\"\n\t\t\t}\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "{ \"number\": \"N/A\", \"protocal\": \"N/A\", \"state\": \"N/A\", \"service\": \"N/A\", \"description\": \"N/A\" } " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     else
         t=0
 
-        echo "<ports>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t<ports>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
         
-        echo "<table>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Port</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Protocal</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>State</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Service</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Port</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Protocal</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>State</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Service</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 
         for g in "${port[@]}"
         do
@@ -305,39 +367,63 @@ for f in "${file[@]}"; do
             if [ -z "$vulnerability" ]; then
                 printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: N/A\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
                 
-                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"N/A\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+                printf "\t\t<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"N/A\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
                 
-                printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${port[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${protocal[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
-                printf "\t\t<td>${state[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${service[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>N/A</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${port[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${protocal[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
+                printf "\t\t\t\t<td>${state[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${service[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>N/A</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            
+                if [ "$t" -eq "$((${#port[@]}-1))" ]; then
+                    printf "\t\t\t{\n\t\t\t\t\"number\": \"${port[$t]}\",\n\t\t\t\t\"protocal\": \"${protocal[$t]}\",\n\t\t\t\t\"state\": \"${state[$t]}\",\n\t\t\t\t\"service\": \"${service[$t]}\",\n\t\t\t\t\"description\": \"N/A\"\n\t\t\t}\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                    printf "{ \"number\": \"${port[$t]}\", \"protocal\": \"${protocal[$t]}\", \"state\": \"${state[$t]}\", \"service\": \"${service[$t]}\", \"description\": \"N/A\" } " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+                else 
+                    printf "\t\t\t{\n\t\t\t\t\"number\": \"${port[$t]}\",\n\t\t\t\t\"protocal\": \"${protocal[$t]}\",\n\t\t\t\t\"state\": \"${state[$t]}\",\n\t\t\t\t\"service\": \"${service[$t]}\",\n\t\t\t\t\"description\": \"N/A\"\n\t\t\t},\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                    printf "{ \"number\": \"${port[$t]}\", \"protocal\": \"${protocal[$t]}\", \"state\": \"${state[$t]}\", \"service\": \"${service[$t]}\", \"description\": \"N/A\" }, " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+                fi
             else
                 printf "\t(${state[$t]})\t${port[$t]}\t${protocal[$t]}\t[${service[$t]}]\tDescription: ${vulnerability::-2}\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
                 
-                echo "<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"${vulnerability::-2}\"/>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+                printf "\t\t<port number=\"${port[$t]}\" protocal=\"${protocal[$t]}\" state=\"${state[$t]}\" service=\"${service[$t]}\" description=\"${vulnerability::-2}\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
             
-                printf "\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${port[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${protocal[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${state[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${service[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t\t<td>${vulnerability::-2}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                printf "\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${port[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${protocal[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${state[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${service[$t]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t<td>${vulnerability::-2}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            
+                if [ "$t" -eq "$((${#port[@]}-1))" ]; then
+                    printf "\t\t\t{\n\t\t\t\t\"number\": \"${port[$t]}\",\n\t\t\t\t\"protocal\": \"${protocal[$t]}\",\n\t\t\t\t\"state\": \"${state[$t]}\",\n\t\t\t\t\"service\": \"${service[$t]}\",\n\t\t\t\t\"description\": \"${vulnerability::-2}\"\n\t\t\t}\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                    printf "{ \"number\": \"${port[$t]}\", \"protocal\": \"${protocal[$t]}\", \"state\": \"${state[$t]}\", \"service\": \"${service[$t]}\", \"description\": \"${vulnerability::-2}\"} " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+                else 
+                    printf "\t\t\t{\n\t\t\t\t\"number\": \"${port[$t]}\",\n\t\t\t\t\"protocal\": \"${protocal[$t]}\",\n\t\t\t\t\"state\": \"${state[$t]}\",\n\t\t\t\t\"service\": \"${service[$t]}\",\n\t\t\t\t\"description\": \"${vulnerability::-2}\"\n\t\t\t},\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+                    printf "{ \"number\": \"${port[$t]}\", \"protocal\": \"${protocal[$t]}\", \"state\": \"${state[$t]}\", \"service\": \"${service[$t]}\", \"description\": \"${vulnerability::-2}\"}, " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
+                fi
             fi 
             t=$((t+1))
         done
-        echo "</ports>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
+        printf "\t</ports>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-        echo "</table>" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t</table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+
+        printf "\t\t]\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+        printf "] " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
 
     echo "</machine>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-    echo '</body>' >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf '\t</body>\n' >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     echo '</html>' >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+
+    printf "\t}\n}" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+
+    printf "} }" >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 
     #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
     rm temp/$f

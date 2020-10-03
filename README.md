@@ -59,6 +59,8 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 - outputtxt: This is the location and name of the .txt report files. 
 - outputxml: This is the location and name of the .xml report files. 
 - outputhtml: This is the location and name of the .html report files.
+- outputjson: This is the location and name of the .json report files.
+- outputndjson: This is the location and name of the .ndjson report files.
 
 ## Local Variables:
 - ipstat: The verified status of the IP.
