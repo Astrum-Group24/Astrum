@@ -67,7 +67,7 @@ for f in "${file[@]}"; do
     printf "\t<head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t<link href=\"astrum.css\" rel=\"stylesheet\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t<link rel=\"icon\" href=\"../logos/aslt.ico\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t<link rel=\"icon\" href=\"../../logos/aslt.ico\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t<meta charset=\"utf-8\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t<title>$addressip Vulnerability Report</title>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t</head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
