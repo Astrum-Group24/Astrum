@@ -74,10 +74,10 @@ for f in "${file[@]}"; do
     printf "\t<body>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 
     #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
-    printf "{\n\t\"machine\":\n\t{\n" >> $outputjson #VJN 10/2/2020 10:48pm - for ndjson report
+    printf "{\n\t\"machine\":\n\t{\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
 
-    #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
-    printf "{\"machine\": { " >> $outputndjson #VJN 10/2/2020 10:48pm - for json report
+    #VJN 10/2/2020 3:25pm - This specifies the type of ndjson we are exporting
+    printf "{\"machine\": { " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 
     #VJN 9/22/2020 12:38pm - This section is used to print the hostname and/or IP address and/or Mac address 
     if [ -z "$addressmac" ] && [ -z "$hostname" ]; then
