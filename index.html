@@ -5,12 +5,12 @@
     </head>
     <body>
         <h1>Astrum Network Analysis</h1>
-        <form>
-            <h3>Scan Speed</h3>
+        <form action="/" method="POST">
+            <h3>Scan Type</h3>
             <input type="radio" id="Fast" name="speed" value="fast">
-            <label for="Fast">Fast</label>
+            <label for="Fast">QuickScan</label>
             <input type="radio" id="Slow" name="speed" value="slow">
-            <label for="Fast">Slow</label></br></br>
+            <label for="Fast">DeepScan</label></br></br>
             <h3>Scan Range</h3>
             <label for="host">Network & Subnet</label>
             <input type="text" id="host" name="host"></br></br>
@@ -19,7 +19,7 @@
             <input type="text" id="username" name="username"></br>
             <label for="password">Password</label>
             <input type="text" id="password" name="password"></br></br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Start Scan">
         </form>
     </body>
 </html>
