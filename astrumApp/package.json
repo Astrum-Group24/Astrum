@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Astrum-Group24/Main#readme",
   "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "i": "^0.3.6",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
