@@ -1,0 +1,23 @@
+{
+  "name": "astrumapp",
+  "version": "1.0.0",
+  "description": "Astrum Network Analyzer",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Astrum-Group24/Main.git"
+  },
+  "author": "Brett Johnson, Brenna Martz, Vincent Neiheisel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Astrum-Group24/Main/issues"
+  },
+  "homepage": "https://github.com/Astrum-Group24/Main#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
