@@ -19,5 +19,8 @@
   "homepage": "https://github.com/Astrum-Group24/Main#readme",
   "devDependencies": {
     "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
