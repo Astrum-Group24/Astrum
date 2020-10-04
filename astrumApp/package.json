@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./index.js",
+    "ui": "browser-sync start --proxy=localhost:3000 --files='**/*.css, **/*.pug, **/*.js' --ignore=node_modules --reload-delay 10 --no-ui --no-notify  --open=false",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,11 +19,11 @@
   },
   "homepage": "https://github.com/Astrum-Group24/Main#readme",
   "devDependencies": {
-    "browser-sync": "^2.26.12",
     "i": "^0.3.6",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
+    "browser-sync": "^2.26.12",
     "express": "^4.17.1",
     "pug": "^3.0.0"
   }
