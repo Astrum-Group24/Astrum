@@ -46,9 +46,12 @@ app.use(express.static(path.join(__dirname, "public")));
     res.render("index", { title: "Home"});
 });
 
-//**IMCOMPLETE** NEEDS PARAMS FOR SCRIPT. Run script when post is rec'd from root 
+//Run script when post is rec'd from root
 app.post("/", (req, res) => {
-    shell.exec('bash Astrum.sh ')
+    
+    //Proof-of-concept statement, creates a testFile in /home/brett/Documents/
+    shell.exec('touch /home/brett/Documents/testFile');
+
 });
 
 
@@ -63,4 +66,3 @@ app.post("/", (req, res) => {
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
 });
-
