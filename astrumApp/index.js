@@ -6,6 +6,7 @@
 
 const express = require("express");
 const path = require("path");
+const shell = require("shelljs");
 
 
 
@@ -40,8 +41,14 @@ app.use(express.static(path.join(__dirname, "public")));
  * Routes Definitions
  */
 
-app.get("/", (req, res) => {
+//Show index.pug when navigting to root address
+ app.get("/", (req, res) => {
     res.render("index", { title: "Home"});
+});
+
+//**IMCOMPLETE** NEEDS PARAMS FOR SCRIPT. Run script when post is rec'd from root 
+app.post("/", (req, res) => {
+    shell.exec('bash Astrum.sh ')
 });
 
 
