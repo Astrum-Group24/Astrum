@@ -35,8 +35,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 
-
-
 /**
  * Routes Definitions
  */
@@ -44,14 +42,17 @@ app.use(express.static(path.join(__dirname, "public")));
 //Show index.pug when navigting to root address
  app.get("/", (req, res) => {
     res.render("index", { title: "Home"});
+    res.end();
 });
 
 //Run script when post is rec'd from root
 app.post("/", (req, res) => {
+    var bodyParser = require('body-parser');
+    
     
     //Proof-of-concept statement, creates a testFile in /home/brett/Documents/
     shell.exec('touch /home/brett/Documents/testFile');
-
+    res.end()
 });
 
 
