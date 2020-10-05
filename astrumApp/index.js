@@ -32,7 +32,8 @@ const port = process.env.PORT || "8000";
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 /**
@@ -47,12 +48,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Run script when post is rec'd from root
 app.post("/", (req, res) => {
-    var bodyParser = require('body-parser');
-    
-    
+
+        
     //Proof-of-concept statement, creates a testFile in /home/brett/Documents/
-    shell.exec('touch /home/brett/Documents/testFile');
-    res.end()
+    //shell.exec('touch /home/brett/Documents/testFile2');
+
+    //Second proof-of-concept, uses form values
+    var uName = req.body.username;
+    var pWord = req.body.password;
+    
+    res.send('Username is ' + uName + '. Password is ' + pWord );
+    
+    //go back to root when done
+    //res.render("index", { title: "Home"});
 });
 
 
