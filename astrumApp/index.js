@@ -54,10 +54,10 @@ app.post("/", (req, res) => {
         
     //take values and create complete command for Astrum script
 
-    var commandString = './Astrum -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + password;
+    var commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
     
     //execute command
-    shelljs.exec(commandString);
+    shell.exec(commandString);
 
     //go back to root when done
     //res.render("index", { title: "Home"});
