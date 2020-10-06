@@ -6,3 +6,6 @@ rawlogs/*.xml
 
 #BRJ 09/22/2020 02:32 - Ignore txt files in reports/
 reports/*.txt
+
+#BRJ 10/06/2020 04:32 - Ignore this file created when the script runs
+astrumApp/vulnerabilities.txt
