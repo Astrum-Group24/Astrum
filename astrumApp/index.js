@@ -52,15 +52,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/", (req, res) => {
 
         
-    //Proof-of-concept statement, creates a testFile in /home/brett/Documents/
-    //shell.exec('touch /home/brett/Documents/testFile2');
+    //take values and create complete command for Astrum script
 
-    //Second proof-of-concept, uses form values
-    var uName = req.body.username;
-    var pWord = req.body.password;
+    var commandString = './Astrum -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + password;
     
-    res.send('Username is ' + uName + '. Password is ' + pWord );
-    
+    //execute command
+    shelljs.exec(commandString);
+
     //go back to root when done
     //res.render("index", { title: "Home"});
 });
