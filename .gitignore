@@ -9,3 +9,9 @@ reports/*.txt
 
 #BRJ 10/06/2020 04:32 - Ignore this file created when the script runs
 astrumApp/vulnerabilities.txt
+
+#BRJ 10/07/2020 04:37 - Ignore astrumApp/reports
+astrumApp/reports/
+
+#BRJ 10/07/2020 04:42 - Ignore astrumApp/rawlogs
+astrumApp/rawlogs/
