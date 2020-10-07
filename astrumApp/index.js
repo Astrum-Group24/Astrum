@@ -60,7 +60,9 @@ app.post("/", (req, res) => {
     shell.exec(commandString);
 
     //go back to root when done
-    //res.render("index", { title: "Home"});
+    res.render("index", { title: "Home"});
+
+    res.end();
 });
 
 
