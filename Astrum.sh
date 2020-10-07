@@ -38,15 +38,20 @@ while getopts "s:h:u:p:" opt; do
 done
 
 #VJN 9/28/2020 7:15pm - This section will be used to validate the scantype variable. The input has not been chosen as of now so this will be updated at a later date
-#BRJ 10/06/2020 05:33 - Updated to an intermediate state, fast scans should work with this config
-if  $scantype == 'fast'; then
+#BRJ 10/07/2020 02:02 - Updated to interpret html form values into values that will be valid arguments later in the script
     #If fast scan is selected, set $scantype equal to 'y'
+if  $scantype == 'fast'; then
     $scantype = 'y'
-#elif [[ $scantype =~ [a-zA-Z] ]]; then
-    #TO BE EDITED WHEN WEB INTERFACE IS FURTHER ALONG
-#else 
-    #TO BE EDITED WHEN WEB INTERFACE IS FURTHER ALONG
-#fi 
+
+    #If slow scan is selected, set $scantype equal to 'n'
+elif $scantype == 'slow'; then
+    $scantype = 'n'
+    
+    #Exit with error for all other values
+else 
+    echo "Error. Invalid scan type"
+    exit 1
+fi 
 
 #VJN 9/9/2020 11:42am - This will test to see if the IP and or cidr is valid or if it is a hostname is valid or not Reference: https://www.linuxjournal.com/content/validating-ip-address-bash-script
 if [[ $host =~ [a-zA-Z] ]]; then
