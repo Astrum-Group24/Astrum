@@ -12,9 +12,9 @@
 
 sshpass -p 'A5t7um' ssh root@zeropi-01.hpbd.uc.edu '
 
-for i in $(usb-devices | awk -F":" '\''{'print $2'}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done
+for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
 
-df -h 
+df -hP | grep -v Filesystem | awk '\''0+$5 >= 75  {print ;}'\''
 
 sestatus 
 
@@ -22,7 +22,6 @@ firewall-cmd --state
 
 awk -F: '\''{ print $1}'\'' /etc/passwd 
 
-' > device.temp
+' > device.txt
 
-#BMM 10/7/2020 8:47am I need to continue with parsing. If run against the zeropi's nothing will show for usb devcies because it is looking for the Manufactuer value of the usb device and only reporting on what is not a Linux device. This line is able to locate a webcam or mouse, for instance. Will test with personal raspberry pi.
-
+#BMM 10/7/2020 3:23pm I need to continue with parsing. I need an output for testing and I can gather with a Raspberry Pi 3. 
