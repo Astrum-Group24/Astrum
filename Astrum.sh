@@ -43,12 +43,10 @@ done
     #If fastscan/quickscan is selected, set $scantype equal to 'y'
 if  [ $scantype = "fast" ]; then
     scantype="y"
-    echo $scantype
 
     #If slow scan/deepscan is selected, set $scantype equal to 'n'
 elif [ $scantype = "slow" ]; then
     scantype="n"
-    echo $scantype
 
     #error exit on invalid $scantype
 else 
