@@ -1,11 +1,11 @@
 #BRJ 09/17/2020 04:56 - Ignore xml files in xml/ directory
 xml/*.xml
 
-#BRJ 09/22/2020 02:31 - Ignore xml files in rawlogs/ directory
-rawlogs/*.xml
+#BRJ 09/22/2020 02:31 - Ignore files in rawlogs/ directory
+rawlogs/
 
-#BRJ 09/22/2020 02:32 - Ignore txt files in reports/
-reports/*.txt
+#BRJ 09/22/2020 02:32 - Ignore files in reports/
+reports/
 
 #BRJ 10/06/2020 04:32 - Ignore this file created when the script runs
 astrumApp/vulnerabilities.txt
