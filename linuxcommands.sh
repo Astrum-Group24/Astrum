@@ -8,9 +8,9 @@
 
 #Variables from Astrum.sh can be passed as password, username, and hostname
 
-#BMM 10/7/2020 7:30am These are the remote commands that will run on the Linux device. They will be outputted to a temp file for further parsing.
+#BMM 10/7/2020 7:30am These are the remote commands that will run on the Linux device. 
 
-sshpass -p 'A5t7um' ssh root@zeropi-01.hpbd.uc.edu '
+sshpass -p 'A5t7um' ssh -o stricthostkeychecking=no root@zeropi-01.hpbd.uc.edu '
 
 for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
 
