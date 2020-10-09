@@ -20,6 +20,8 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
+var records;
+
 
 
 
@@ -52,7 +54,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Run script when post is rec'd from root
 app.post("/", (req, res) => {
     var commandString
-    const dir = './astrumApp/reports/html/'
+    const dir = './reports/html/'
+    
 
     //take values and create complete command for Astrum script
 
@@ -63,10 +66,11 @@ app.post("/", (req, res) => {
 
     //Count HTML files in ../astrumApp/reports/html/ to determine number of links to make
     fs.readdir(dir, (err, files) => {
-     console.log(files.length);
+        console.log(files);
+        records = files
     });
 
-    res.render("index", { title: "Home"});
+    res.render("results", { title: "Results"});
 
     res.end();
 });
