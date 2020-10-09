@@ -7,7 +7,7 @@
 const express = require("express");
 const path = require("path");
 const shell = require("shelljs");
-const fs = req("fs");
+const fs = require("fs");
 
 
 
