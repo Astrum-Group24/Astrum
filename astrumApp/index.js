@@ -20,7 +20,7 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
-var records;
+app.locals.records;
 
 
 
@@ -56,7 +56,6 @@ app.post("/", (req, res) => {
     var commandString
     const dir = './reports/html/'
     
-
     //take values and create complete command for Astrum script
 
     commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
@@ -70,8 +69,8 @@ app.post("/", (req, res) => {
         records = files
     });
 
-    res.render("results", { title: "Results"});
-
+    //res.render("results", records);
+    res.render("index", { title: "Home"});
     res.end();
 });
 
