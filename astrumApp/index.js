@@ -55,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
-//Run script when post is rec'd from root
+//Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
     var commandString;
     const dir = './reports/html/';
@@ -105,9 +105,13 @@ app.post("/", (req, res) => {
     res.end();
 });
 
+//send html files when reports are accessed
+app.get('/reports/html/*', (req, res) => {
 
-
-
+    console.log(req.originalUrl);
+    res.sendFile(req.originalUrl);
+    res.end();
+});
 
 
 /**
