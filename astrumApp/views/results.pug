@@ -13,9 +13,7 @@ block layout-content
         div.Body
 
           ul
-            
-            //-li= records[0]
 
+            each val in records
 
-
-      
+              li: a( href = '/' + val ) 
