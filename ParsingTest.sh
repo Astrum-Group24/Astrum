@@ -294,3 +294,9 @@ for f in "${file[@]}"; do
     #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
     rm temp/$f
 done
+
+#VJN 10/12/2020 8:41pm - This is used to test the Generator.sh Script. DEBUGGING
+#file=($(ls reports/json))
+#for f in "${file[@]}"; do
+#    ./Generator.sh -f $f
+#done 
