@@ -59,7 +59,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
     var commandString;
-    const dir = './reports/html/';
 
     //take values and create complete command for Astrum script
     commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
@@ -67,17 +66,14 @@ app.post("/", (req, res) => {
     //execute command in shell
     shell.exec(commandString);
 
-    //Iterate thru filenames and add directory port to create relative path
-    fs.readdir(dir, (err, files) => {
-        
+    //Iterate thru filenames to create array for links and link labels
+    fs.readdir('./reports/html/', (err, files) => {
+               
         //variable to hold filenames
-        var fileNames = files;
-        
-        //call function to add path to front of filenames in array
         records = files;
-       
+
         //call function to remove file extension for link labels in pug
-        ipAddresses = fileNames.map(removeExtension);
+        ipAddresses = records.map(removeExtension);
    
     });
 
@@ -87,7 +83,10 @@ app.post("/", (req, res) => {
         //remove last five characters of each element
         return value.substring(0, value.length - 5);
 
-    }
+    };
+
+
+
 
     //show array on console for debugging
     console.log("type of record is: " + typeof records)
