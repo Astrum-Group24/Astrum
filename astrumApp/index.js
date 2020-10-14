@@ -37,6 +37,7 @@ var ipAddresses;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "reports/html")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -73,20 +74,13 @@ app.post("/", (req, res) => {
         var fileNames = files;
         
         //call function to add path to front of filenames in array
-        records = fileNames.map(addPath);
+        records = files;
        
         //call function to remove file extension for link labels in pug
         ipAddresses = fileNames.map(removeExtension);
    
     });
 
-    //function to add directory to filename to create relative path.
-    function addPath(value) {
-
-        //return with relative path added
-        return `reports/html/${value}`;
-
-    }
 
     function removeExtension(value) {
 
@@ -101,7 +95,6 @@ app.post("/", (req, res) => {
     console.log(ipAddresses);
 
     res.render("results", {records, ipAddresses, title: 'Results'});
-    //res.render("index", { title: "Home"});
     res.end();
 });
 
