@@ -22,6 +22,7 @@ const app = express();
 const port = process.env.PORT || "8000";
 var records;
 var ipAddresses;
+var ipAddressesLink;
 
 
 
@@ -69,31 +70,48 @@ app.post("/", (req, res) => {
     //Iterate thru filenames to create array for links and link labels
     fs.readdir('./reports/html/', (err, files) => {
                
-        //variable to hold filenames
+        //variable to hold IPs
         records = files;
 
-        //call function to remove file extension for link labels in pug
         ipAddresses = records.map(removeExtension);
+
+        //sort IP addresses ascending, needs syncrounous controls to work
+        /*
+        ipAddresses.sort((a, b) => {
+            const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+            const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+            return num1-num2 + '.html';
+        });
+        */
+
+        //call function to remove file extension for link labels in pug
+        ipAddressesLink = ipAddresses.map(addHtml);
    
     });
 
-
+    //function to remove last five characters of each element
     function removeExtension(value) {
 
-        //remove last five characters of each element
         return value.substring(0, value.length - 5);
 
     };
+
+    //function to ad html extension to IP address (or anything, really)
+    function addHtml(value) {
+
+        return value + '.html'
+
+    }
 
 
 
 
     //show array on console for debugging
-    console.log("type of record is: " + typeof records)
-    console.log(records);
+    console.log("type of record is: " + typeof ipAddressesLink);
+    console.log(ipAddressesLink);
     console.log(ipAddresses);
 
-    res.render("results", {records, ipAddresses, title: 'Results'});
+    res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
     res.end();
 });
 
