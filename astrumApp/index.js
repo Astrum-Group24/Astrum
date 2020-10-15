@@ -67,27 +67,34 @@ app.post("/", (req, res) => {
     //execute command in shell
     shell.exec(commandString);
 
-    //Iterate thru filenames to create array for links and link labels
-    fs.readdir('./reports/html/', (err, files) => {
-               
-        //variable to hold IPs
-        records = files;
+    readFolder();
+    
+    renderPage();
+    
+    
+    //Iterate thru filenames to create arrays for links and link labels
+    function readFolder() {
 
-        ipAddresses = records.map(removeExtension);
+        fs.readdir('./reports/html/', (err, files) => {
+                
+            //variable & method for links to html records pages
+            ipAddressesLink = files;
+            
+            //variable and method to remove file extension for link labels in pug
+            ipAddresses = files.map(removeExtension);
 
-        //sort IP addresses ascending, needs syncrounous controls to work
-        /*
-        ipAddresses.sort((a, b) => {
-            const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-            const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-            return num1-num2 + '.html';
+            //sort IP addresses ascending, needs syncrounous controls to work
+            /*
+            ipAddresses.sort((a, b) => {
+                const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+                const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+                return num1-num2 + '.html';
+            });
+            */
+            
         });
-        */
 
-        //call function to remove file extension for link labels in pug
-        ipAddressesLink = ipAddresses.map(addHtml);
-   
-    });
+    }
 
     //function to remove last five characters of each element
     function removeExtension(value) {
@@ -96,14 +103,12 @@ app.post("/", (req, res) => {
 
     };
 
-    //function to ad html extension to IP address (or anything, really)
-    function addHtml(value) {
+    //function to render the page
+    function renderPage() {
 
-        return value + '.html'
+        res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
 
     }
-
-
 
 
     //show array on console for debugging
@@ -111,7 +116,6 @@ app.post("/", (req, res) => {
     console.log(ipAddressesLink);
     console.log(ipAddresses);
 
-    res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
     res.end();
 });
 
