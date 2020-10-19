@@ -1,4 +1,18 @@
 file="rawlogs/2020-09-21--191900.xml"
+
+timeran=$(date +'%Y-%m-%d-%H-%M')
+[ -d "temp" ] || mkdir temp 
+[ -d "reports" ] || mkdir reports
+[ -d "reports/$timeran" ] || mkdir reports/$timeran
+[ -d "reports/$timeran/html" ] || mkdir reports/$timeran/html
+[ -d "reports/$timeran/json" ] || mkdir reports/$timeran/json
+[ -d "reports/$timeran/ndjson" ] || mkdir reports/$timeran/ndjson 
+[ -d "reports/$timeran/txt" ] || mkdir reports/$timeran/txt 
+[ -d "reports/$timeran/xml" ] || mkdir reports/$timeran/xml
+[ -d "rawlogs/" ] || mkdir rawlogs 
+[ -d "xml" ] || mkdir xml 
+[ -e "vulnerabilities.txt" ] || curl https://isc.sans.edu/services.html >> vulnerabilities.txt
+
 #VJN 9/21/2020 7:17pm - vulnerabilities.txt is a database of ports and known uses / vulnerabilities 
 vulnerabilityfile="vulnerabilities.txt"
 
@@ -48,15 +62,15 @@ for f in "${file[@]}"; do
     accuracy=($(echo $accuracy | tr "\n" "\n"))
 
     #VJN 9/22/2020 12:36pm - outputtxt specifies the file in which each txt report will be deposited in
-    outputtxt="reports/txt/$addressip.txt"
+    outputtxt="reports/$timeran/txt/$addressip.txt"
     #VJN 9/29/2020 7:06pm - outputxml specifies the file in which each xml report will be deposited in
-    outputxml="reports/xml/$addressip.xml"
+    outputxml="reports/$timeran/xml/$addressip.xml"
     #VJN 10/1/2020 12:30pm - outputhtml specifies the file in which each html report will be deposited in
-    outputhtml="reports/html/$addressip.html"
+    outputhtml="reports/$timeran/html/$addressip.html"
     #VJN 10/1/2020 5:30pm - outputjson specifies the file in which each json report will be deposited in
-    outputjson="reports/json/$addressip.json"
+    outputjson="reports/$timeran/json/$addressip.json"
     #VJN 10/1/2020 5:30pm - outputndjson specifies the file in which each ndjson report will be deposited in
-    outputndjson="reports/ndjson/$addressip.ndjson"
+    outputndjson="reports/$timeran/ndjson/$addressip.ndjson"
 
     #VJN 9/29/2020 7:06pm - This specifies the type of xml we are exporting
     echo '<?xml version="1.0" encoding="UTF-8"?>' >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
