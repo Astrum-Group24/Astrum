@@ -1,0 +1,82 @@
+<usb>
+T:  Bus=01 Lev=03 Prnt=03 Port=01 Cnt=02 Dev#=  8 Spd=480 MxCh= 3
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=05ac ProdID=1006 Rev=96.15
+S:  Manufacturer=Apple, Inc.
+S:  Product=Keyboard Hub
+S:  SerialNumber=000000000000
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=300mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+T:  Bus=01 Lev=03 Prnt=03 Port=01 Cnt=02 Dev#=  8 Spd=480 MxCh= 3
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=05ac ProdID=1006 Rev=96.15
+S:  Manufacturer=Apple, Inc.
+S:  Product=Keyboard Hub
+S:  SerialNumber=000000000000
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=300mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+--
+T:  Bus=01 Lev=04 Prnt=08 Port=01 Cnt=01 Dev#=  9 Spd=1.5 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=05ac ProdID=024f Rev=00.74
+S:  Manufacturer=Apple Inc.
+S:  Product=Apple Keyboard
+C:  #Ifs= 2 Cfg#= 1 Atr=a0 MxPwr=20mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=01 Driver=usbhid
+I:  If#= 1 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=00 Prot=00 Driver=usbhid
+T:  Bus=01 Lev=03 Prnt=03 Port=01 Cnt=02 Dev#=  8 Spd=480 MxCh= 3
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=05ac ProdID=1006 Rev=96.15
+S:  Manufacturer=Apple, Inc.
+S:  Product=Keyboard Hub
+S:  SerialNumber=000000000000
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=300mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+</usb>
+<drivespace>
+/dev/sda1            976M  283M  627M  32% /boot
+</drivespace>
+<selinux>
+SELinux status:                 disabled
+</selinux>
+<firewalld>
+running
+</firewalld>
+<iptables>
+iptables.service - IPv4 firewall with iptables
+          Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled)
+          Active: active (exited) since Sun, 11 Oct 2020 19:50:53 -0500; 2min 5s ago
+         Process: 565 ExecStart=/usr/libexec/iptables.init start (code=exited, status=0/SUCCESS)
+          CGroup: name=systemd:/system/iptables.service
+</iptables>
+<users>
+root
+daemon
+bin
+sys
+sync
+games
+man
+lp
+mail
+news
+uucp
+proxy
+www-data
+backup
+list
+irc
+gnats
+nobody
+systemd-timesync
+systemd-network
+systemd-resolve
+systemd-bus-proxy
+_apt
+messagebus
+statd
+sshd
+avahi
+lightdm
+martzbm
+</users>
