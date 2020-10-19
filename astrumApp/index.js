@@ -20,7 +20,6 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
-var records;
 var ipAddresses;
 var ipAddressesLink;
 
@@ -59,23 +58,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
-    var commandString;
-
     //take values and create complete command for Astrum script
-    commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-    
-    //execute command in shell
-    shell.exec(commandString);
+    var commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    var pathToReports = './reports/html';
+  
+    runScript(commandString);
 
-    readFolder();
+    readFolder(pathToReports);
     
     renderPage();
     
     
     //Iterate thru filenames to create arrays for links and link labels
-    function readFolder() {
+    function readFolder(pathValue) {
 
-        fs.readdir('./reports/html/', (err, files) => {
+        fs.readdir(pathValue, (err, files) => {
                 
             //variable & method for links to html records pages
             ipAddressesLink = files;
@@ -107,6 +104,13 @@ app.post("/", (req, res) => {
     function renderPage() {
 
         res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
+
+    }
+
+    //function to execute command in shell
+    function runScript(value) {
+
+        shell.exec(value);
 
     }
 
