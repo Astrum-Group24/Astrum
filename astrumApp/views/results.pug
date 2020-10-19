@@ -10,18 +10,18 @@ block layout-content
         
         h1 Astrum Network Analysis
       
-        div.Body
-
-          div.form-group
+        div.Body          
+          
+          div.multiple-group
           
             h3 Heading
-            label(for='whitelist') Whitelist
             select(id='whitelist', name='whitelist' size='6' multiple)
               option(value="volvo") Volvo
               option(value="saab") Saab
               option(value="fiat") Fiat
               option(value="audi") Audi
               option(value="bmw") BMW
+
 
           div.form-group
 
@@ -33,6 +33,6 @@ block layout-content
             
             ul
 
-              each val, index in records
+              each val, index in ipAddressesLink
 
-                li: a( href = '/' + val ) #{ipAddresses[index]}
+                li: a( href = val ) #{ipAddresses[index]}

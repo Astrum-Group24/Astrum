@@ -20,8 +20,8 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
-var records;
 var ipAddresses;
+var ipAddressesLink;
 
 
 
@@ -37,6 +37,7 @@ var ipAddresses;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "reports/html")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -57,51 +58,68 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
-    var commandString;
-    const dir = './reports/html/';
-
     //take values and create complete command for Astrum script
-    commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    var commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    var pathToReports = './reports/html';
+  
+    runScript(commandString);
+
+    readFolder(pathToReports);
     
-    //execute command in shell
-    shell.exec(commandString);
+    renderPage();
+    
+    
+    //Iterate thru filenames to create arrays for links and link labels
+    function readFolder(pathValue) {
 
-    //Iterate thru filenames and add directory port to create relative path
-    fs.readdir(dir, (err, files) => {
-        
-        //variable to hold filenames
-        var fileNames = files;
-        
-        //call function to add path to front of filenames in array
-        records = fileNames.map(addPath);
-       
-        //call function to remove file extension for link labels in pug
-        ipAddresses = fileNames.map(removeExtension);
-   
-    });
+        fs.readdir(pathValue, (err, files) => {
+                
+            //variable & method for links to html records pages
+            ipAddressesLink = files;
+            
+            //variable and method to remove file extension for link labels in pug
+            ipAddresses = files.map(removeExtension);
 
-    //function to add directory to filename to create relative path.
-    function addPath(value) {
-
-        //return with relative path added
-        return `reports/html/${value}`;
+            //sort IP addresses ascending, needs syncrounous controls to work
+            /*
+            ipAddresses.sort((a, b) => {
+                const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+                const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+                return num1-num2 + '.html';
+            });
+            */
+            
+        });
 
     }
 
+    //function to remove last five characters of each element
     function removeExtension(value) {
 
-        //remove last five characters of each element
         return value.substring(0, value.length - 5);
+
+    };
+
+    //function to render the page
+    function renderPage() {
+
+        res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
 
     }
 
+    //function to execute command in shell
+    function runScript(value) {
+
+        shell.exec(value);
+
+    }
+
+
     //show array on console for debugging
-    console.log("type of record is: " + typeof records)
-    console.log(records);
+    console.log("type of record is: " + typeof ipAddressesLink);
+    console.log(ipAddressesLink);
     console.log(ipAddresses);
 
-    res.render("results", {records, ipAddresses, title: 'Results'});
-    //res.render("index", { title: "Home"});
     res.end();
 });
 
