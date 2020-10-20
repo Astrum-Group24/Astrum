@@ -3,6 +3,9 @@
 #Created on 10/5/2020 at 8:03pm 
 #This script will take the output of Astrum.sh and will generate a scriipt that the user can use to fix vulnerabilities. 
 
+#VJN 10/19/2020 9:52pm - This section grabs the newest batch of reports and uses them to generate the script
+timedirectory=($(ls reports | sort -nr | head -n1))
+
 #VJN 10/5/2020 8:39pm - This checks and verifies that the required directories are present.  
 [ -d "generatedscripts" ] || mkdir generatedscripts 
 
@@ -26,7 +29,7 @@ whitelist=($(echo $whitelist | tr "," "\n"))
 #VJN 10/5/2020 8:34pm - This is the location of the generated script output 
 output="generatedscripts/${file::-5}.sh"
 
-ports=$(cat reports/json/$file | grep -ia "number" | awk -F'"number": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+ports=$(cat reports/$timedirectory/json/$file | grep -ia "number" | awk -F'"number": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 ports=($(echo $ports | tr "\n" "\n"))
 
 #VJN 10/12/2020 7:58pm - This section will go through each vulnerable port and will cross reference it with the whitelist

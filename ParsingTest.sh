@@ -1,4 +1,5 @@
 file="rawlogs/2020-09-21--191900.xml"
+#file="rawlogs/longscan.xml"
 
 timeran=$(date +'%Y-%m-%d-%H-%M')
 [ -d "temp" ] || mkdir temp 
@@ -71,6 +72,62 @@ for f in "${file[@]}"; do
     outputjson="reports/$timeran/json/$addressip.json"
     #VJN 10/1/2020 5:30pm - outputndjson specifies the file in which each ndjson report will be deposited in
     outputndjson="reports/$timeran/ndjson/$addressip.ndjson"
+
+    #VJN 10/19/2020 7:53pm - This section will determin if the machine being scan is windows or linux and will run the appropriate commands respectivly
+    if [[ "${osmatch[0]}" == *"Windows"* ]];then
+        echo "Windows!"
+
+        #VJN 10/19/2020 8:45pm - This section will contain the windows specific commands 
+
+    else
+        echo "Linux!" #VJN 10/19/2020 - 8:42pm - This is for debug 
+        #BMM 10/6/2020 6:10am this script portion is designed to remotley access a Linux machine and run the respective commands
+        #BMM 10/6/2020 6:10am In order for the script to connect back to Astrum.sh it must have a clause for if the OS value equals Linux and the ability to repeat the commands for each device that it determines is Linux.
+        #BMM 10/6/2020 6:40am SSHPASS MUST BE INSTALLED ON ASTRUM
+        #BMM 10/7/2020 7:30am Variables from Astrum.sh can be passed as password, username, and hostname
+
+        sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress '
+
+        echo '\''<usb>'\''
+        for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
+        echo '\''</usb>'\''
+
+        echo '\''<drivespace>'\''
+        df -hP | grep -v Filesystem | awk '\''0+$5 >= 75  {print ;}'\''
+        echo '\''</drivespace>'\''
+
+        echo '\''<selinux>'\''
+        sestatus 
+        echo '\''</selinux>'\''
+
+        echo '\''<firewalld>'\''
+        firewall-cmd --state 
+        echo '\''</firewalld>'\''
+
+        echo '\''<iptables>'\''
+        service iptables status
+        echo '\''</iptables>'\''
+
+        echo '\''<users>'\''
+        awk -F: '\''{ print $1}'\'' /etc/passwd 
+        echo '\''</users>'\''
+
+        ' > temp/$addressip.temp
+
+        selinuxstatus=$(sed -n '/<selinux/{n;:a;p;n;/<\/selinux>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $3 }')
+        drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $1 }')
+        drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $2 }')
+        driveused=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $3 }')
+        driveavalible=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $4 }')
+        driveusage=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $5 }')
+        drivepath=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $6 }')
+        firewalldstatus=$(sed -n '/<firewalld/{n;:a;p;n;/<\/firewalld>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $1 }')
+        iptablesstatustemp=$(sed -n '/<iptables/{n;:a;p;n;/<\/iptables>/!ba}' temp/$addressip.temp | awk -F' ' '{ print $2 }')
+        iptablesstatustemp=($(echo $iptablesstatustemp | tr "\n" "\n"))
+        iptablesstatus=${iptablesstatustemp[2]}
+        users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' temp/$addressip.temp)
+        users=($(echo $users | tr "\n" "\n"))
+    fi 
 
     #VJN 9/29/2020 7:06pm - This specifies the type of xml we are exporting
     echo '<?xml version="1.0" encoding="UTF-8"?>' >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
@@ -307,6 +364,7 @@ for f in "${file[@]}"; do
 
     #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
     rm temp/$f
+    rm temp/$addressip.temp
 done
 
 #VJN 10/12/2020 8:41pm - This is used to test the Generator.sh Script. DEBUGGING
