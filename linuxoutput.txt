@@ -35,6 +35,11 @@ I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
 </usb>
 <drivespace>
 /dev/sda1            976M  283M  627M  32% /boot
+16K	.
+4.0K	./zeropi.txt
+4.0K	./linuxcommands.sh
+4.0K	./device.txt
+4.0K	./anotherone.txt
 </drivespace>
 <selinux>
 SELinux status:                 disabled
