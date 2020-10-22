@@ -16,6 +16,7 @@ echo '\''</usb>'\''
 
 echo '\''<drivespace>'\''
 df -hP | grep -v Filesystem | awk '\''0+$5 >= 75  {print ;}'\''
+du -ahx | sort -rh | head -40
 echo '\''</drivespace>'\''
 
 echo '\''<selinux>'\''
