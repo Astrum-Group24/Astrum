@@ -1328,6 +1328,41 @@ SERVICE_NAME: WinDefend
         CHECKPOINT         : 0x0
         WAIT_HINT          : 0x0
 </windefend> 
+<mcafee> 
+
+SERVICE_NAME: mfemms 
+        TYPE               : 20  WIN32_SHARE_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+</mcafee> 
+<norton> 
+
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+</norton> 
+<kapersky> 
+
+SERVICE_NAME: klnagent
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+</kapersky> 
+<ciscoamp> 
+
+
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+</ciscoamp> 
 <users> 
 
 User accounts for \\DESKTOP-N8JB8FT
