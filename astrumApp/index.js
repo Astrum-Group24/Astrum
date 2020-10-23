@@ -73,9 +73,13 @@ app.post("/", (req, res) => {
     function readFolder(pathValue) {
 
         fs.readdir(pathValue, (err, files) => {
+
+            console.log(files)
                 
             //variable & method for links to html records pages
             ipAddressesLink = files;
+
+            console.log(ipAddressesLink);
             
             //variable and method to remove file extension for link labels in pug
             ipAddresses = files.map(removeExtension);
@@ -110,7 +114,7 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        shell.exec(value);
+        //shell.exec(value);
 
     }
 
