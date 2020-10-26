@@ -69,31 +69,27 @@ app.post("/", (req, res) => {
     renderPage();
     
     
-    //Iterate thru filenames to create arrays for links and link labels
-    function readFolder(pathValue) {
+    //funxction to sort IPs ascending
+    function ipSortAscending(values){
 
-        fs.readdir(pathValue, (err, files) => {
-
-            console.log(files)
-                
-            //variable & method for links to html records pages
-            ipAddressesLink = files;
-
-            console.log(ipAddressesLink);
-            
-            //variable and method to remove file extension for link labels in pug
-            ipAddresses = files.map(removeExtension);
-
-            //sort IP addresses ascending, needs syncrounous controls to work
-            /*
             ipAddresses.sort((a, b) => {
                 const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
                 const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
                 return num1-num2 + '.html';
             });
-            */
-            
-        });
+
+    }
+    
+    //Iterate thru filenames to create arrays for links and link labels
+    function readFolder(pathValue) {
+
+        //variable & method for links to html records pages
+        ipAddressesLink = fs.readdirSync(pathValue);
+
+        console.log(ipAddressesLink);
+        
+        //variable and method to remove file extension for link labels in pug
+        ipAddresses = ipAddressesLink.map(removeExtension);
 
     }
 
@@ -107,16 +103,18 @@ app.post("/", (req, res) => {
     //function to render the page
     function renderPage() {
 
-        res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
+        res.render("results", {ipAddressesLink: ipAddressesLink, ipAddresses: ipAddresses, title: 'Results'});
 
     }
 
     //function to execute command in shell
     function runScript(value) {
 
-        //shell.exec(value);
+        shell.exec(value);
 
     }
+
+
 
 
     //show array on console for debugging
