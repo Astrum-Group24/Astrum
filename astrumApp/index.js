@@ -73,19 +73,20 @@ app.post("/", (req, res) => {
     //Iterate thru filenames to create arrays for links and link labels
     function readFolder(pathValue) {
 
-        //variable & method for links to html records pages
+        //variable & method for reading records filenames into an array
         filenames = fs.readdirSync(pathValue);
 
-        //variable and method to remove file extension for link labels in pug
+        //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
 
-        //method to sort ips ascending
+        //method to sort labels ascending
         ipAddresses.sort((a, b) => {
             const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
             const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
             return num1-num2;
         });
 
+        //add .html to ips to create links
         ipAddressesLink = ipAddresses.map(addExtension);
 
 
@@ -98,6 +99,7 @@ app.post("/", (req, res) => {
 
     };
 
+    //function that adds .html to the end of an item
     function addExtension(value) {
 
         return value + '.html'
