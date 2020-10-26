@@ -22,6 +22,7 @@ const app = express();
 const port = process.env.PORT || "8000";
 var ipAddresses;
 var ipAddressesLink;
+var filenames;
 
 
 
@@ -68,28 +69,25 @@ app.post("/", (req, res) => {
     
     renderPage();
     
-    
-    //funxction to sort IPs ascending
-    function ipSortAscending(values){
 
-            ipAddresses.sort((a, b) => {
-                const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-                const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-                return num1-num2 + '.html';
-            });
-
-    }
-    
     //Iterate thru filenames to create arrays for links and link labels
     function readFolder(pathValue) {
 
         //variable & method for links to html records pages
-        ipAddressesLink = fs.readdirSync(pathValue);
+        filenames = fs.readdirSync(pathValue);
 
-        console.log(ipAddressesLink);
-        
         //variable and method to remove file extension for link labels in pug
-        ipAddresses = ipAddressesLink.map(removeExtension);
+        ipAddresses = filenames.map(removeExtension);
+
+        //method to sort ips ascending
+        ipAddresses.sort((a, b) => {
+            const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+            const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
+            return num1-num2;
+        });
+
+        ipAddressesLink = ipAddresses.map(addExtension);
+
 
     }
 
@@ -99,6 +97,12 @@ app.post("/", (req, res) => {
         return value.substring(0, value.length - 5);
 
     };
+
+    function addExtension(value) {
+
+        return value + '.html'
+
+    }
 
     //function to render the page
     function renderPage() {
@@ -110,7 +114,7 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        shell.exec(value);
+        //shell.exec(value);
 
     }
 
