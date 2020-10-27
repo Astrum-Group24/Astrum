@@ -109,7 +109,7 @@ app.post("/", (req, res) => {
     //function to render the page
     function renderPage() {
 
-        res.render("results", {ipAddressesLink: ipAddressesLink, ipAddresses: ipAddresses, title: 'Results'});
+        res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
 
     }
 
