@@ -38,7 +38,7 @@ var filenames;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "reports/*")));
+app.use(express.static(path.join(__dirname, "reports/html")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -133,7 +133,7 @@ app.post("/", (req, res) => {
 });
 
 //send html files when reports are accessed
-app.get('/reports/*', (req, res) => {
+app.get('/reports/html', (req, res) => {
 
     console.log(req.originalUrl);
     res.sendFile(req.originalUrl);
