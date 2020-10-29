@@ -1,0 +1,87 @@
+		"usbs":
+		[
+			{
+				"manufacturer": "(Standardkeyboards)",
+				"class": "Keyboard",
+				"description": "HIDKeyboardDevice",
+				"guid": "{4d36e96b-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(Standardkeyboards)",
+				"class": "Keyboard",
+				"description": "HIDKeyboardDevice",
+				"guid": "{4d36e96b-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "Microsoft",
+				"class": "Mouse",
+				"description": "HID-compliantmouse",
+				"guid": "{4d36e96f-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(Standardmonitortypes)",
+				"class": "Monitor",
+				"description": "GenericPnPMonitor",
+				"guid": "{4d36e96e-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(Standardmonitortypes)",
+				"class": "Monitor",
+				"description": "GenericPnPMonitor",
+				"guid": "{4d36e96e-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "GenericUSBxHCIHostController",
+				"class": "USB",
+				"description": "NVIDIAUSB3.10eXtensibleHostController-1.10(Microsoft)",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(StandardUSBHUBs)",
+				"class": "USB",
+				"description": "GenericUSBHub",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(StandardUSBHUBs)",
+				"class": "USB",
+				"description": "USBRootHub(USB3.0)",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "Microsoft",
+				"class": "Mouse",
+				"description": "HID-compliantmouse",
+				"guid": "{4d36e96f-e325-11ce-bfc1-08002be10318}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(StandardUSBHUBs)",
+				"class": "USB",
+				"description": "USBRootHub(USB3.0)",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(StandardUSBHUBs)",
+				"class": "USB",
+				"description": "USBRootHub(USB3.0)",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+			{
+				"manufacturer": "(StandardUSBHostController)",
+				"class": "USB",
+				"description": "USBCompositeDevice",
+				"guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+				"status": "Started"
+			},
+		],
