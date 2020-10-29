@@ -39,3 +39,13 @@ block layout-content
             label(for='whitelistButton')
             input(type='submit' value='Whitelist Ports')
 
+          
+          div.link-list
+          
+            h3 Hosts Found:  
+              
+              ul
+
+                each val, index in ipAddressesLink
+
+                  li: a( href = val ) #{ipAddresses[index]}
