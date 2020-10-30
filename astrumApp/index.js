@@ -73,6 +73,27 @@ app.post("/", (req, res) => {
     renderPage();
     
 
+    //find newest folder, used to find the most recent (and likely most-relevant) reports folder
+    findNewestFolder(roothPath) {
+
+        directoryEntries = fs.readdirSync(roothPath);
+
+        var subfolders = directoryEntries.filter(isFolder);
+
+        subfolders.sort((a,b) => {
+
+            
+
+        }
+
+    }
+
+    isFolder(value) {
+
+        return fs.Dirent.isDirectory(value);
+
+    }
+
     //Iterate thru filenames to create arrays for links and link labels
     function readFolder(pathValue) {
 
