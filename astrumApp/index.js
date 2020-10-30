@@ -63,7 +63,7 @@ app.post("/", (req, res) => {
     var timeRan = '2020-10-29-03-01';
     
     //take values and create complete command for Astrum script
-    var commandString = 'bash /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
     var pathToReports = './reports/' + timeRan + '/html';
   
     runScript(commandString);
@@ -119,7 +119,7 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        //shell.exec(value);
+        shell.exec(value);
 
     }
 
