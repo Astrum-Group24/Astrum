@@ -80,7 +80,7 @@ for f in "${file[@]}"; do
         #windowscommandoutput="temp/$addressip.temp"
         windowscommandoutput="windowsoutput.txt" #VJN 10/26/2020 11:05pm - This is for debugging
 
-        #sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress 'echo ^<usb^> && pnputil /enum-devices /connected && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend && echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms && echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc && echo ^</norton^> && echo ^<kapersky^> && sc query klnagent && echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP && echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $windowscommandoutput
+        #sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $windowscommandoutput
 
         drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F' ' '{ print $1 }' | tr -d "\n")
         drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F'=' '{ print $3 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
@@ -90,6 +90,35 @@ for f in "${file[@]}"; do
         defenderstatus=$(sed -n '/<windefend/{n;:a;p;n;/<\/windefend>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
         users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $windowscommandoutput | sed -n '/----------/{n;:a;p;n;/The command completed successfully./!ba}')
         users=($(echo $users | tr "\n" "\n"))
+
+        usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput | grep -ia "Instance" | wc -l)
+        usb=$(cat $windowscommandoutput | sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' ) 
+
+        usbstatus=$(cat $windowscommandoutput | grep -ia "Status: " | awk -F'Status: ' '{ print $2 }' | awk -F' ' '{ print $1 }')
+        usbclass=$(cat $windowscommandoutput | awk -F'Class Name: ' '{ print $2 }' | awk -F'Class' '{ print $1 }')
+        usbmanufacturertemp=$(cat $windowscommandoutput | awk -F'Manufacturer Name: ' '{ print $2 }' | awk -F'Status:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+        usbdescriptiontemp=$(cat $windowscommandoutput | awk -F'Device Description: ' '{ print $2 }' | awk -F'Class Name:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+        usbguid=$(cat $windowscommandoutput | awk -F'Class GUID: ' '{ print $2 }' | awk -F'Manufacturer Name:' '{ print $1 }')
+        usbinstancetemp=$(cat $windowscommandoutput | awk -F'Instance ID: ' '{ print $2 }' | awk -F'Instance ID:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+
+        usbstatus=($(echo $usbstatus | tr "\n" "\n"))
+        usbclass=($(echo $usbclass | tr "\n" "\n"))
+        usbguid=($(echo $usbguid | tr "\n" "\n"))
+
+        usbdescription=()
+        while IFS= read -r usbdescriptiontemp; do
+            usbdescription+=( "$usbdescriptiontemp" )
+        done <<< "$usbdescriptiontemp"
+
+        usbmanufacturer=()
+        while IFS= read -r usbmanufacturertemp; do
+            usbmanufacturer+=( "$usbmanufacturertemp" )
+        done <<< "$usbmanufacturertemp"
+
+        usbinstance=()
+        while IFS= read -r usbinstancetemp; do
+            usbinstance+=( "$usbinstancetemp" )
+        done <<< "$usbinstancetemp"
     else
         echo "Linux!" #VJN 10/19/2020 - 8:42pm - This is for debug 
         #BMM 10/6/2020 6:10am this script portion is designed to remotley access a Linux machine and run the respective commands
@@ -497,54 +526,37 @@ for f in "${file[@]}"; do
             printf "\t\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t\t<td>Manufacturer</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-            printf "\t\t\t\t\t<td>Product</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t\t\t<td>Class</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+            printf "\t\t\t\t\t<td>Instance</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t\t<td>GUID</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t\t<td>Status</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 
-            usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput )
-            usbstatusnumber=8
-            usbclassnumber=5
-            usbmanufacturernumber=7
-            usbdescriptionnumber=4
-            usbguidnumber=6
-            for r in $(seq 1 $usbnumber)
-            do 
-                usbstatus=$(echo "$usb" | sed -n "$usbstatusnumber"p | awk -F':' '{ print $2 }' | tr -d '[:space:]')
-                usbclass=$(echo "$usb" | sed -n "$usbclassnumber"p | awk -F':' '{ print $2 }' | tr -d '[:space:]')
-                usbmanufacturer=$(echo "$usb" | sed -n "$usbmanufacturernumber"p | awk -F':' '{ print $2 }' | tr -d '[:space:]')
-                usbdescription=$(echo "$usb" | sed -n "$usbdescriptionnumber"p | awk -F':' '{ print $2 }' | tr -d '[:space:]')
-                usbguid=$(echo "$usb" | sed -n "$usbguidnumber"p | awk -F':' '{ print $2 }' | tr -d '[:space:]')
+            for i in $(seq 0 $usbnumber)
+            do
+                if [ ! -z "${usbstatus[$i]}" ]; then
+                    printf "\t[${usbstatus[$i]}] ${usbclass[$i]}, ${usbmanufacturer[$i+1]}, ${usbdescription[$i+1]},\t Instance: ${usbinstance[$i+1]},\t GUID: ${usbguid[$i]}\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
-                if [ "$usbstatus" == "Started" ]; then
-                    if [[ "$usbclass" == *"Keyboard"* ]] || [[ "$usbclass" == *"Mouse"* ]] || [[ "$usbclass" == *"Monitor"* ]] || [[ "$usbclass" == *"USB"* ]] || [[ "$usbclass" == *"DiskDrive"* ]]; then
-                        printf "\t$usbmanufacturer, $usbproduct \t Serial Number: $usbserialnumber\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
+                    printf "\t\t<usb manufacturer=\"${usbmanufacturer[$i+1]}\" class=\"${usbclass[$i]}\" description=\"${usbdescription[$i+1]}\" guid=\"${usbguid[$i]}\" status=\"${usbstatus[$i]}\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
 
-                        printf "\t\t<usb manufacturer=\"$usbmanufacturer\" product=\"$usbproduct\" serial=\"$usbserialnumber\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
-
-                        printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                        printf "\t\t\t\t\t<td>$usbmanufacturer</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                        printf "\t\t\t\t\t<td>$usbclass</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
-                        printf "\t\t\t\t\t<td>$usbdescription</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                        printf "\t\t\t\t\t<td>$usbguid</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                        printf "\t\t\t\t\t<td>$usbstatus</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                        printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-
-                        if [ "$r" -eq "$usbnumber" ]; then
-                            printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"class\": \"$usbclass\",\n\t\t\t\t\"description\": \"$usbdescription\",\n\t\t\t\t\"guid\": \"$usbguid\",\n\t\t\t\t\"status\": \"$usbstatus\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                            printf "{ \"manufacturer\": \"$usbmanufacturer\", \"class\": \"$usbclass\", \"description\": \"$usbdescription\", \"guid\": \"$usbguid\", \"status\": \"$usbstatus\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
-                        else 
-                            printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"class\": \"$usbclass\",\n\t\t\t\t\"description\": \"$usbdescription\",\n\t\t\t\t\"guid\": \"$usbguid\",\n\t\t\t\t\"status\": \"$usbstatus\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                            printf "{ \"manufacturer\": \"$usbmanufacturer\", \"class\": \"$usbclass\", \"description\": \"$usbdescription\", \"guid\": \"$usbguid\", \"status\": \"$usbstatus\" }, " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
-                        fi    
-                    fi
+                    printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t\t<td>${usbmanufacturer[$i+1]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t\t<td>${usbclass[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
+                    printf "\t\t\t\t\t<td>${usbdescription[$i+1]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t\t<td>${usbinstance[$i+1]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t\t<td>${usbguid[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t\t<td>${usbstatus[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                    
+                    if [ "$i" = "$((usbnumber-1))" ]; then
+                        printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"${usbmanufacturer[$i+1]}\",\n\t\t\t\t\"class\": \"${usbclass[$i]}\",\n\t\t\t\t\"description\": \"${usbdescription[$i+1]}\",\n\t\t\t\t\"guid\": \"${usbguid[$i]}\",\n\t\t\t\t\"instance\": \"${usbinstance[$i+1]}\",\n\t\t\t\t\"status\": \"${usbstatus[$i]}\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                        printf "{ \"manufacturer\": \"${usbmanufacturer[$i+1]}\", \"class\": \"${usbclass[$i]}\", \"description\": \"${usbdescription[$i+1]}\", \"guid\": \"${usbguid[$i]}\", \"instance\": \"${usbinstance[$i+1]}\", \"status\": \"${usbstatus[$i]}\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
+                    else 
+                        printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"${usbmanufacturer[$i+1]}\",\n\t\t\t\t\"class\": \"${usbclass[$i]}\",\n\t\t\t\t\"description\": \"${usbdescription[$i+1]}\",\n\t\t\t\t\"guid\": \"${usbguid[$i]}\",\n\t\t\t\t\"instance\": \"${usbinstance[$i+1]}\",\n\t\t\t\t\"status\": \"${usbstatus[$i]}\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                        printf "{ \"manufacturer\": \"${usbmanufacturer[$i+1]}\", \"class\": \"${usbclass[$i]}\", \"description\": \"${usbdescription[$i+1]}\", \"guid\": \"${usbguid[$i]}\", \"instance\": \"${usbinstance[$i+1]}\", \"status\": \"${usbstatus[$i]}\" }, " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
+                    fi    
                 fi
-                usbstatusnumber=$((usbstatusnumber+8))
-                usbclassnumber=$((usbclassnumber+8))
-                usbmanufacturernumber=$((usbmanufacturernumber+8))
-                usbdescriptionnumber=$((usbdescriptionnumber+8))
-                usbguidnumber=$((usbguidnumber+8))
             done
             printf "\t\t\t</table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
             
