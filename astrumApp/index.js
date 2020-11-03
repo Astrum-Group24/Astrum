@@ -23,7 +23,7 @@ const port = process.env.PORT || "8000";
 var ipAddresses;
 var ipAddressesLink;
 var filenames;
-
+var pathToReports
 
 
 
@@ -38,7 +38,7 @@ var filenames;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "reports/**")));
+app.use(express.static(path.join(__dirname, "reports")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -73,10 +73,10 @@ app.post("/", (req, res) => {
     renderPage();
     
 
-    //function that adds .html to the end of an item
-    function addExtension(value) {
+    //function that adds path and extension to ips to create links
+    function addLinkElements(value) {
 
-        return value + '.html'
+        return pathToReports.substring(1, (pathToReports.length)) + '/' + value + '.html'
 
     }
     
@@ -87,7 +87,7 @@ app.post("/", (req, res) => {
         directoryEntries = fs.readdirSync(rootPath);
 
         //append root and child folders
-        const pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
+        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
 
         //return latesst entry
         return pathToReports;
@@ -111,8 +111,10 @@ app.post("/", (req, res) => {
             return num1-num2;
         });
 
-        //add .html to ips to create links
-        ipAddressesLink = ipAddresses.map(addExtension);
+        //add elements and extension to ips to create links
+        ipAddressesLink = ipAddresses.map(addLinkElements);
+
+        console.log(ipAddressesLink);
 
 
     }
