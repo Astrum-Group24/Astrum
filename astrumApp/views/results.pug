@@ -13,23 +13,39 @@ block layout-content
         div.Body          
           
           div.multiple-group
-          h3 Hosts Found
-          select(id='whitelist', name='hosts' size='6' multiple)
-            each val in ipAddresses
-              option(value = val) #{val}
+            form(method='POST' action='/')
+              h3 Hosts Found
+              select(id='host', name='host' size='6' multiple)
+                each val in ipAddresses
+                  option(value = val) #{val}
+            
+          div.form-group
+            label(for='showReportButton')
+            input(type='submit' value='Show Report')
 
 
           div.multiple-group
-          h3 Open Ports
-          select(id='whitelist', name='whitelist' size='6' multiple)
-            option(value="volvo") Volvo
-            option(value="saab") Saab
-            option(value="fiat") Fiat
-            option(value="audi") Audi
-            option(value="bmw") BMW
+            form(method='POST' action='/')
+              h3 Open Ports
+              select(id='whitelist', name='whitelist' size='6' multiple)
+                option(value="volvo") Volvo
+                option(value="saab") Saab
+                option(value="fiat") Fiat
+                option(value="audi") Audi
+                option(value="bmw") BMW
 
           div.form-group
 
             label(for='whitelistButton')
             input(type='submit' value='Whitelist Ports')
 
+          
+          div.link-list
+          
+            h3 Hosts Found:  
+              
+              ul
+
+                each val, index in ipAddressesLink
+
+                  li: a( href = val ) #{ipAddresses[index]}
