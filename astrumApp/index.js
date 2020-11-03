@@ -60,45 +60,52 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
     //hardcoded time for development purposes
-    var timeRan = '2020-10-29-03-01';
+    var timeRan = '2020-10-30-03-57-16';
     
     //take values and create complete command for Astrum script
     var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-    var pathToReports = './reports/' + timeRan + '/html';
+    //var pathToReports = './reports/' + timeRan + '/html';
   
     runScript(commandString);
 
-    readFolder(pathToReports);
+    readFolder(findNewestFolder('./reports'));
     
     renderPage();
     
 
+    //function that adds .html to the end of an item
+    function addExtension(value) {
+
+        return value + '.html'
+
+    }
+    
+
     //find newest folder, used to find the most recent (and likely most-relevant) reports folder
-    findNewestFolder(roothPath) {
+    function findNewestFolder(rootPath) {
 
-        directoryEntries = fs.readdirSync(roothPath);
+        directoryEntries = fs.readdirSync(rootPath);
 
-        var subfolders = directoryEntries.filter(isFolder);
+        //append root and child folders
+        const pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
 
-        subfolders.sort((a,b) => {
+        console.log(pathToReports);
 
-            
-
-        }
-
-    }
-
-    isFolder(value) {
-
-        return fs.Dirent.isDirectory(value);
+        //return latesst entry
+        return pathToReports;
 
     }
+
 
     //Iterate thru filenames to create arrays for links and link labels
     function readFolder(pathValue) {
 
+        console.log(pathValue);
+
         //variable & method for reading records filenames into an array
         filenames = fs.readdirSync(pathValue);
+
+        console.log(filenames);
 
         //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
@@ -123,13 +130,6 @@ app.post("/", (req, res) => {
 
     };
 
-    //function that adds .html to the end of an item
-    function addExtension(value) {
-
-        return value + '.html'
-
-    }
-
     //function to render the page
     function renderPage() {
 
@@ -140,21 +140,17 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        shell.exec(value);
+        //shell.exec(value);
+        
 
     }
 
-
-    //show array on console for debugging
-    console.log("type of record is: " + typeof ipAddressesLink);
-    console.log(ipAddressesLink);
-    console.log(ipAddresses);
 
     res.end();
 });
 
 //send html files when reports are accessed
-app.get('/reports/html', (req, res) => {
+app.get('/reports/*', (req, res) => {
 
     console.log(req.originalUrl);
     res.sendFile(req.originalUrl);
