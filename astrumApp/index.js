@@ -38,7 +38,7 @@ var filenames;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "reports/html")));
+app.use(express.static(path.join(__dirname, "reports/**")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -89,8 +89,6 @@ app.post("/", (req, res) => {
         //append root and child folders
         const pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
 
-        console.log(pathToReports);
-
         //return latesst entry
         return pathToReports;
 
@@ -100,12 +98,8 @@ app.post("/", (req, res) => {
     //Iterate thru filenames to create arrays for links and link labels
     function readFolder(pathValue) {
 
-        console.log(pathValue);
-
         //variable & method for reading records filenames into an array
         filenames = fs.readdirSync(pathValue);
-
-        console.log(filenames);
 
         //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
@@ -140,8 +134,7 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        //shell.exec(value);
-        
+        shell.exec(value);
 
     }
 
