@@ -59,12 +59,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
-    //hardcoded time for development purposes
-    var timeRan = '2020-10-30-03-57-16';
     
     //take values and create complete command for Astrum script
     var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-    //var pathToReports = './reports/' + timeRan + '/html';
   
     runScript(commandString);
 
@@ -147,8 +144,8 @@ app.post("/", (req, res) => {
 //send html files when reports are accessed
 app.get('/reports/*', (req, res) => {
 
-    console.log(req.originalUrl);
-    res.sendFile(req.originalUrl);
+    console.log(req.url);
+    res.sendFile(req.url);
     res.end();
 });
 
