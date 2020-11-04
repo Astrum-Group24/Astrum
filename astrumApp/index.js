@@ -76,7 +76,7 @@ app.post("/", (req, res) => {
     //function that adds path and extension to ips to create links
     function addLinkElements(value) {
 
-        return pathToReports.substring(1, (pathToReports.length)) + '/' + value + '.html'
+        return pathToReports.substring(1) + '/' + value + '.html'
 
     }
     
@@ -104,7 +104,7 @@ app.post("/", (req, res) => {
         //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
 
-        //method to sort labels ascending
+        //metdo/function to sort labels ascending
         ipAddresses.sort((a, b) => {
             const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
             const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
