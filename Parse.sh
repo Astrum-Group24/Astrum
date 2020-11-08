@@ -56,34 +56,31 @@ outputndjson="reports/$timeran/ndjson/$addressip.ndjson"
 
 #VJN 10/19/2020 7:53pm - This section will determin if the machine being scan is windows or linux and will run the appropriate commands respectivly
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
-    echo "Windows!"
+    commandoutput="temp/$addressip.temp"
 
-    #windowscommandoutput="temp/$addressip.temp"
-    windowscommandoutput="windowsoutput.txt" #VJN 10/26/2020 11:05pm - This is for debugging
+    sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $commandoutput
 
-    #sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $windowscommandoutput
-
-    drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F' ' '{ print $1 }' | tr -d "\n")
-    drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F'=' '{ print $3 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
-    driveused=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F'=' '{ print $2 }' | awk -F'Total' '{ print $1 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
+    drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $1 }' | tr -d "\n")
+    drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F'=' '{ print $3 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
+    driveused=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F'=' '{ print $2 }' | awk -F'Total' '{ print $1 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
     driveavalible=$(echo "$drivesize $driveused" | awk '{print $1-$2}')
     driveusage=$(echo "$driveused $drivesize" | awk '{print $1/$2*100}' | awk '{print int($1)}')
-    defenderstatus=$(sed -n '/<windefend/{n;:a;p;n;/<\/windefend>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
-    mcafeestatus=$(sed -n '/<mcafee/{n;:a;p;n;/<\/mcafee>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
-    nortonstatus=$(sed -n '/<norton/{n;:a;p;n;/<\/norton>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
-    kaperskystatus=$(sed -n '/<kapersky/{n;:a;p;n;/<\/kapersky>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
-    ciscoampstatus=$(sed -n '/<ciscoamp/{n;:a;p;n;/<\/ciscoamp>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
-    users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $windowscommandoutput | sed -n '/----------/{n;:a;p;n;/The command completed successfully./!ba}')
+    defenderstatus=$(sed -n '/<windefend/{n;:a;p;n;/<\/windefend>/!ba}' $commandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    mcafeestatus=$(sed -n '/<mcafee/{n;:a;p;n;/<\/mcafee>/!ba}' $commandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    nortonstatus=$(sed -n '/<norton/{n;:a;p;n;/<\/norton>/!ba}' $commandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    kaperskystatus=$(sed -n '/<kapersky/{n;:a;p;n;/<\/kapersky>/!ba}' $commandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    ciscoampstatus=$(sed -n '/<ciscoamp/{n;:a;p;n;/<\/ciscoamp>/!ba}' $commandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $commandoutput | sed -n '/----------/{n;:a;p;n;/The command completed successfully./!ba}')
     users=($(echo $users | tr "\n" "\n"))
 
-    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput | grep -ia "Instance" | wc -l)
-    usb=$(cat $windowscommandoutput | sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' ) 
+    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput | grep -ia "Instance" | wc -l)
+    usb=$(cat $commandoutput | sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' ) 
 
-    usbstatus=$(cat $windowscommandoutput | grep -ia "Status: " | awk -F'Status: ' '{ print $2 }' | awk -F' ' '{ print $1 }')
-    usbclass=$(cat $windowscommandoutput | awk -F'Class Name: ' '{ print $2 }' | awk -F'Class' '{ print $1 }')
-    usbmanufacturertemp=$(cat $windowscommandoutput | awk -F'Manufacturer Name: ' '{ print $2 }' | awk -F'Status:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
-    usbdescriptiontemp=$(cat $windowscommandoutput | awk -F'Device Description: ' '{ print $2 }' | awk -F'Class Name:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
-    usbguid=$(cat $windowscommandoutput | awk -F'Class GUID: ' '{ print $2 }' | awk -F'Manufacturer Name:' '{ print $1 }')
+    usbstatus=$(cat $commandoutput | grep -ia "Status: " | awk -F'Status: ' '{ print $2 }' | awk -F' ' '{ print $1 }')
+    usbclass=$(cat $commandoutput | awk -F'Class Name: ' '{ print $2 }' | awk -F'Class' '{ print $1 }')
+    usbmanufacturertemp=$(cat $commandoutput | awk -F'Manufacturer Name: ' '{ print $2 }' | awk -F'Status:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+    usbdescriptiontemp=$(cat $commandoutput | awk -F'Device Description: ' '{ print $2 }' | awk -F'Class Name:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+    usbguid=$(cat $commandoutput | awk -F'Class GUID: ' '{ print $2 }' | awk -F'Manufacturer Name:' '{ print $1 }')
 
     usbstatus=($(echo $usbstatus | tr "\n" "\n"))
     usbclass=($(echo $usbclass | tr "\n" "\n"))
@@ -99,48 +96,46 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
         usbmanufacturer+=( "$usbmanufacturertemp" )
     done <<< "$usbmanufacturertemp"
 else
-    echo "Linux!" #VJN 10/19/2020 - 8:42pm - This is for debug 
     #BMM 10/6/2020 6:10am this script portion is designed to remotley access a Linux machine and run the respective commands
     #BMM 10/6/2020 6:10am In order for the script to connect back to Astrum.sh it must have a clause for if the OS value equals Linux and the ability to repeat the commands for each device that it determines is Linux.
     #BMM 10/6/2020 6:40am SSHPASS MUST BE INSTALLED ON ASTRUM
     #BMM 10/7/2020 7:30am Variables from Astrum.sh can be passed as password, username, and hostname
 
-    #linuxcommandoutput="temp/$addressip.temp"
-    linuxcommandoutput="linuxoutput.txt" #VJN 10/22/2020 12:16pm - This is for debugging
+    commandoutput="temp/$addressip.temp"
 
-    # sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress '
-    # echo '\''<usb>'\''
-    # for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
-    # echo '\''</usb>'\''
-    # echo '\''<drivespace>'\''
-    # df -hP | grep -v Filesystem | awk '\''0+$5 >= 75  {print ;}'\''
-    # echo '\''</drivespace>'\''
-    # echo '\''<selinux>'\''
-    # sestatus 
-    # echo '\''</selinux>'\''
-    # echo '\''<firewalld>'\''
-    # firewall-cmd --state 
-    # echo '\''</firewalld>'\''
-    # echo '\''<iptables>'\''
-    # service iptables status
-    # echo '\''</iptables>'\''
-    # echo '\''<users>'\''
-    # awk -F: '\''{ print $1}'\'' /etc/passwd 
-    # echo '\''</users>'\''
-    # ' > $linuxcommandoutput
+    sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress '
+    echo '\''<usb>'\''
+    for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
+    echo '\''</usb>'\''
+    echo '\''<drivespace>'\''
+    df -hP | grep -v Filesystem | awk '\''0+$5 >= 75  {print ;}'\''
+    echo '\''</drivespace>'\''
+    echo '\''<selinux>'\''
+    sestatus 
+    echo '\''</selinux>'\''
+    echo '\''<firewalld>'\''
+    firewall-cmd --state 
+    echo '\''</firewalld>'\''
+    echo '\''<iptables>'\''
+    service iptables status
+    echo '\''</iptables>'\''
+    echo '\''<users>'\''
+    awk -F: '\''{ print $1}'\'' /etc/passwd 
+    echo '\''</users>'\''
+    ' > $commandoutput
 
-    selinuxstatus=$(sed -n '/<selinux/{n;:a;p;n;/<\/selinux>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $3 }')
-    drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $1 }')
-    drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $2 }')
-    driveused=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $3 }')
-    driveavalible=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $4 }')
-    driveusage=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $5 }' | awk -F'%' '{ print $1 }')
-    drivepath=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $6 }')
-    firewalldstatus=$(sed -n '/<firewalld/{n;:a;p;n;/<\/firewalld>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $1 }')
-    iptablesstatustemp=$(sed -n '/<iptables/{n;:a;p;n;/<\/iptables>/!ba}' $linuxcommandoutput | awk -F' ' '{ print $2 }')
+    selinuxstatus=$(sed -n '/<selinux/{n;:a;p;n;/<\/selinux>/!ba}' $commandoutput | awk -F' ' '{ print $3 }')
+    drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $1 }')
+    drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $2 }')
+    driveused=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $3 }')
+    driveavalible=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $4 }')
+    driveusage=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $5 }' | awk -F'%' '{ print $1 }')
+    drivepath=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $6 }')
+    firewalldstatus=$(sed -n '/<firewalld/{n;:a;p;n;/<\/firewalld>/!ba}' $commandoutput | awk -F' ' '{ print $1 }')
+    iptablesstatustemp=$(sed -n '/<iptables/{n;:a;p;n;/<\/iptables>/!ba}' $commandoutput | awk -F' ' '{ print $2 }')
     iptablesstatustemp=($(echo $iptablesstatustemp | tr "\n" "\n"))
     iptablesstatus=${iptablesstatustemp[2]}
-    users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $linuxcommandoutput)
+    users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $commandoutput)
     users=($(echo $users | tr "\n" "\n"))
 fi 
 
@@ -580,7 +575,7 @@ echo "USB Status:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
 printf "\t\t<h2>USB Status</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
-    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput | grep -ia "Instance" | wc -l)
+    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput | grep -ia "Instance" | wc -l)
     if [ -z "$usbnumber" ]; then
         printf "\tNo USB information found.\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
@@ -634,7 +629,7 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
         printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
 else
-    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $linuxcommandoutput | grep -ia "T:" | wc -l)
+    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput | grep -ia "T:" | wc -l)
     if [ -z "$usbnumber" ]; then
         printf "\tNo USB information found.\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
@@ -656,7 +651,7 @@ else
         usbnumber=$((usbnumber+1))
         for r in $(seq 2 $usbnumber)
         do 
-            usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $linuxcommandoutput) #| awk -F'T:' "{ print $"$r" }")
+            usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput) #| awk -F'T:' "{ print $"$r" }")
             t=$(echo $usb | awk -F'T:' "{ print $"$r" }")
             usbmanufacturer=$(echo $t | awk -F'Manufacturer=' '{ print $2 }' | awk -F'S:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
             usbproduct=$(echo $t | awk -F'Product=' '{ print $2 }' | awk -F'S:|C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
@@ -745,5 +740,4 @@ printf "} }" >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 
 #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
 rm temp/$host
-#rm $linuxcommandoutput #VJN 10/21/2020 2:52pm - This is commented out for debugging
-#rm $windowscommandoutput #VJN 10/26/2020 11:11pm - This is commented out for debugging
+rm $commandoutput #VJN 10/21/2020 2:52pm 
