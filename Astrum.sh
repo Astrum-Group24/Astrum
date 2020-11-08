@@ -19,9 +19,6 @@ timeran=$(date +'%Y-%m-%d-%H-%M-%S')
 [ -d "xml" ] || mkdir xml 
 [ -e "vulnerabilities.txt" ] || curl https://isc.sans.edu/services.html >> vulnerabilities.txt
 
-#VJN 9/7/2020 6:50pm - host will house the machine being scanned. This will either be a Hostname or an IP address. 
-#read -p 'Enter Hostname or IP (with or without cidr): ' host
-
 #VJN 9/28/2020 7:04pm - Setting passed variables to nothing
 scantype=
 host=

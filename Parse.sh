@@ -1,3 +1,8 @@
+#!/bin/bash
+#Astrum Created by Vincent Neiheisel, Brett Johnson, and Brenna Martz
+#Created on 9/7/2020 at 6:33pm 
+#The Parse.sh script will be launched from the Scan.sh script and will take the output of Scan.sh and parse through it and generate reports.
+
 #VJN 9/28/2020 7:04pm - Setting passed variables to nothing
 timeran=
 host=
@@ -56,7 +61,7 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
     #windowscommandoutput="temp/$addressip.temp"
     windowscommandoutput="windowsoutput.txt" #VJN 10/26/2020 11:05pm - This is for debugging
 
-    #sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress 'echo ^<usb^> && pnputil /enum-devices /connected && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend && echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms && echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc && echo ^</norton^> && echo ^<kapersky^> && sc query klnagent && echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP && echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $windowscommandoutput
+    #sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $windowscommandoutput
 
     drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F' ' '{ print $1 }' | tr -d "\n")
     drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $windowscommandoutput | awk -F'=' '{ print $3 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
@@ -64,8 +69,35 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
     driveavalible=$(echo "$drivesize $driveused" | awk '{print $1-$2}')
     driveusage=$(echo "$driveused $drivesize" | awk '{print $1/$2*100}' | awk '{print int($1)}')
     defenderstatus=$(sed -n '/<windefend/{n;:a;p;n;/<\/windefend>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    mcafeestatus=$(sed -n '/<mcafee/{n;:a;p;n;/<\/mcafee>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    nortonstatus=$(sed -n '/<norton/{n;:a;p;n;/<\/norton>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    kaperskystatus=$(sed -n '/<kapersky/{n;:a;p;n;/<\/kapersky>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
+    ciscoampstatus=$(sed -n '/<ciscoamp/{n;:a;p;n;/<\/ciscoamp>/!ba}' $windowscommandoutput | grep -ia "STATE" | awk -F' ' '{ print $4 }')
     users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $windowscommandoutput | sed -n '/----------/{n;:a;p;n;/The command completed successfully./!ba}')
     users=($(echo $users | tr "\n" "\n"))
+
+    usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput | grep -ia "Instance" | wc -l)
+    usb=$(cat $windowscommandoutput | sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' ) 
+
+    usbstatus=$(cat $windowscommandoutput | grep -ia "Status: " | awk -F'Status: ' '{ print $2 }' | awk -F' ' '{ print $1 }')
+    usbclass=$(cat $windowscommandoutput | awk -F'Class Name: ' '{ print $2 }' | awk -F'Class' '{ print $1 }')
+    usbmanufacturertemp=$(cat $windowscommandoutput | awk -F'Manufacturer Name: ' '{ print $2 }' | awk -F'Status:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+    usbdescriptiontemp=$(cat $windowscommandoutput | awk -F'Device Description: ' '{ print $2 }' | awk -F'Class Name:' '{ print $1 }' | tr '\n' ',' | sed 's/,/|/g' | sed 's/||*/\n/g' | sed 's/^[ \t]*//;s/[ \t]*$//')
+    usbguid=$(cat $windowscommandoutput | awk -F'Class GUID: ' '{ print $2 }' | awk -F'Manufacturer Name:' '{ print $1 }')
+
+    usbstatus=($(echo $usbstatus | tr "\n" "\n"))
+    usbclass=($(echo $usbclass | tr "\n" "\n"))
+    usbguid=($(echo $usbguid | tr "\n" "\n"))
+
+    usbdescription=()
+    while IFS= read -r usbdescriptiontemp; do
+        usbdescription+=( "$usbdescriptiontemp" )
+    done <<< "$usbdescriptiontemp"
+
+    usbmanufacturer=()
+    while IFS= read -r usbmanufacturertemp; do
+        usbmanufacturer+=( "$usbmanufacturertemp" )
+    done <<< "$usbmanufacturertemp"
 else
     echo "Linux!" #VJN 10/19/2020 - 8:42pm - This is for debug 
     #BMM 10/6/2020 6:10am this script portion is designed to remotley access a Linux machine and run the respective commands
@@ -325,96 +357,186 @@ echo "Firewall Status:" >> $outputtxt #VJN 10/21/2020 3:22pm - for txt report
 
 printf "\t\t<h2>Firewall Status</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
-    if [ -z "$defenderstatus" ]; then
-        printf "\tNo Firewall Detected!\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
+    if [ -z "$defenderstatus" ] && [ -z "$mcafeestatus" ] && [ -z "$nortonstatus" ] && [ -z "$kaperskystatus" ] && [ -z "$ciscoampstatus" ]; then
+        printf "\tNo Firewall Detected!\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
                 
-        printf "\t\t\t<h1>No Firewall Detected!</h1>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
-    else 
-        printf "\tWindows Defender: $defenderstatus\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
-        
-        printf "\t<firewall defender=\"$defenderstatus\"/>\n" >> $outputxml #VJN 10/26/2020 11:18pm - for xml report
-        
-        printf "\t\t\t<p>Windows Defender: $defenderstatus</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
+        printf "\t\t\t<h1>No Firewall Detected!</h1>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+    else            
+        printf "\t<firewall" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
     
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"defennder\": \"$defenderstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/26/2020 11:18pm - for json report
+        printf "\"firewall\": [ { " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+        case $defenderstatus in
+            "") ;;
+            *) 
+                printf "\tDefender: $defenderstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+        
+                printf " defender=\"$defenderstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Defender: $defenderstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+                
+                if [ -z "$mcafeestatus" ] && [ -z "$nortonstatus" ] && [ -z "$kaperskystatus" ] && [ -z "$ciscoampstatus" ]; then
+                    printf "\t\t\t\t\"defender\": \"$defenderstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"defender\": \"$defenderstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"defender\": \"$defenderstatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"defender\": \"$defenderstatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $mcafeestatus in
+            "") ;;
+            *) 
+                printf "\tMcafee: $mcafeestatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+        
+                printf " mcafee=\"$mcafeestatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Mcafee: $mcafeestatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                if [ -z "$nortonstatus" ] && [ -z "$kaperskystatus" ] && [ -z "$ciscoampstatus" ]; then
+                    printf "\t\t\t\t\"mcafee\": \"$mcafeestatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"mcafee\": \"$mcafeestatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"mcafee\": \"$mcafeestatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"mcafee\": \"$mcafeestatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $nortonstatus in
+            "") ;;
+            *) 
+                printf "\tNorton: $nortonstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+        
+                printf " norton=\"$nortonstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Norton: $nortonstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                if [ -z "$kaperskystatus" ] && [ -z "$ciscoampstatus" ]; then
+                    printf "\t\t\t\t\"norton\": \"$nortonstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"norton\": \"$nortonstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"norton\": \"$nortonstatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"norton\": \"$nortonstatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $kaperskystatus in
+            "") ;;
+            *) 
+                printf "\tKapersky: $kaperskystatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+        
+                printf " kapersky=\"$kaperskystatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Kapersky: $kaperskystatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                if [ -z "$ciscoampstatus" ]; then
+                    printf "\t\t\t\t\"kapersky\": \"$kaperskystatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"kapersky\": \"$kaperskystatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"kapersky\": \"$kaperskystatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"kapersky\": \"$kaperskystatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $ciscoampstatus in
+            "") ;;
+            *) 
+                printf "\tCiscoAmp: $ciscoampstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+        
+                printf " ciscoamp=\"$ciscoampstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>CiscoAMP: $ciscoampstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                printf "\t\t\t\t\"ciscoamp\": \"$ciscoampstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                printf "\"ciscoamp\": \"$ciscoampstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+            ;;
+        esac
+        printf "/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+        printf "\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
     
-        printf "\"firewall\": [ { \"defender\": \"$defenderstatus\" } ], " >> $outputndjson #VJN 10/26/2020 11:18pm - for ndjson report
+        printf " } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
     fi
 else
     if [ -z "$selinuxstatus" ] && [ -z "$firewalldstatus" ] && [ -z "$iptablesstatus" ]; then
         printf "\tNo Firewall Detected!\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
                 
         printf "\t\t\t<h1>No Firewall Detected!</h1>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    elif [ -z "$firewalldstatus" ] && [ -z "$iptablesstatus" ]; then
-        printf "\tSelinux: $selinuxstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+    else            
+        printf "\t<firewall" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+
+        printf "\"firewall\": [ { " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+        case $selinuxstatus in
+            "") ;;
+            *) 
+                printf "\tSelinux: $selinuxstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
         
-        printf "\t<firewall selinux=\"$selinuxstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                printf " selinux=\"$selinuxstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Selinux: $selinuxstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+                
+                if [ -z "$firewalldstatus" ] && [ -z "$iptablesstatus" ]; then
+                    printf "\t\t\t\t\"selinux\": \"$selinuxstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"selinux\": \"$selinuxstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"selinux\": \"$selinuxstatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"selinux\": \"$selinuxstatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $firewalldstatus in
+            "") ;;
+            *) 
+                printf "\tFirewalld: $firewalldstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
         
-        printf "\t\t\t<p>Selinux: $selinuxstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"selinux\": \"$selinuxstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"selinux\": \"$selinuxstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    elif [ -z "$selinuxstatus" ] && [ -z "$firewalldstatus" ]; then
-        printf "\tIptables: $iptablesstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
+                printf " firewalld=\"$firewalldstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Firewalld: $firewalldstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                if [ -z "$iptablesstatus" ]; then
+                    printf "\t\t\t\t\"firewalld\": \"$firewalldstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"firewalld\": \"$firewalldstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                else
+                    printf "\t\t\t\t\"firewalld\": \"$firewalldstatus\",\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                    printf "\"firewalld\": \"$firewalldstatus\", " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                fi
+            ;;
+        esac
+        case $iptablesstatus in
+            "") ;;
+            *) 
+                printf "\tIptables: $iptablesstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
         
-        printf "\t<firewall iptables=\"$iptablesstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Iptables: $iptablesstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"iptables\": \"$iptablesstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"iptables\": \"$iptablesstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    elif [ -z "$selinuxstatus" ] && [ -z "$iptablesstatus" ]; then
-        printf "\tFirewalld: $firewalldstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
-        
-        printf "\t<firewall firewalld=\"$firewalldstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Firewalld: $firewalldstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"firewalld\": \"$firewalldstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"firewalld\": \"$firewalldstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    elif [ -z "$selinuxstatus" ]; then
-        printf "\tFirewalld: $firewalldstatus\n\tIptables: $iptablesstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
-        
-        printf "\t<firewall firewalld=\"$firewalldstatus\" iptables=\"$iptablesstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Firewalld: $firewalldstatus</p>\n\t\t\t<p>Iptables: $iptablesstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"firewalld\": \"$firewalldstatus\",\n\t\t\t\t\"iptables\": \"$iptablesstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"firewalld\": \"$firewalldstatus\", \"iptables\": \"$iptablesstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    elif [ -z "$firewalldstatus" ]; then
-        printf "\tSelinux: $selinuxstatus\n\tIptables: $iptablesstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
-        
-        printf "\t<firewall selinux=\"$selinuxstatus\" iptables=\"$iptablesstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Selinux: $selinuxstatus</p>\n\t\t\t<p>Iptables: $iptablesstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"selinux\": \"$selinuxstatus\",\n\t\t\t\t\"iptables\": \"$iptablesstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"selinux\": \"$selinuxstatus\", \"iptables\": \"$iptablesstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    elif [ -z "$iptablesstatus" ]; then
-        printf "\tSelinux: $selinuxstatus\n\tFirewalld: $firewalldstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
-        
-        printf "\t<firewall selinux=\"$selinuxstatus\" firewalld=\"$firewalldstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Selinux: $selinuxstatus</p>\n\t\t\t<p>Firewalld: $firewalldstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"selinux\": \"$selinuxstatus\",\n\t\t\t\t\"firewalld\": \"$firewalldstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"selinux\": \"$selinuxstatus\", \"firewalld\": \"$firewalldstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
-    else
-        printf "\tSelinux: $selinuxstatus\n\tFirewalld: $firewalldstatus\n\tIptables: $iptablesstatus\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
-        
-        printf "\t<firewall selinux=\"$selinuxstatus\" firewalld=\"$firewalldstatus\" iptables=\"$iptablesstatus\"/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
-        
-        printf "\t\t\t<p>Selinux: $selinuxstatus</p>\n\t\t\t<p>Firewalld: $firewalldstatus</p>\n\t\t\t<p>Iptables: $iptablesstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
-    
-        printf "\t\t\"firewall\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"selinux\": \"$selinuxstatus\",\n\t\t\t\t\"firewalld\": \"$firewalldstatus\",\n\t\t\t\t\"iptables\": \"$iptablesstatus\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
-    
-        printf "\"firewall\": [ { \"selinux\": \"$selinuxstatus\", \"firewalld\": \"$firewalldstatus\", \"iptables\": \"$iptablesstatus\" } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+                printf " iptables=\"$iptablesstatus\"" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+                printf "\t\t\t<p>Iptables: $iptablesstatus</p>\n" >> $outputhtml #VJN 10/21/2020 5:39pm - for html report
+            
+                printf "\t\t\t\t\"iptables\": \"$iptablesstatus\"\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+            
+                printf "\"iptables\": \"$iptablesstatus\"" >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
+            ;;
+        esac
+        printf "/>\n" >> $outputxml #VJN 10/21/2020 5:39pm - for xml report
+                
+        printf "\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/21/2020 5:39pm - for json report
+
+        printf " } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
     fi
 fi
 
@@ -473,42 +595,34 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
         printf "\t\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t\t<td>Manufacturer</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>Product</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<td>Class</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t\t<td>GUID</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t\t<td>Status</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        for r in $(seq 1 $usbnumber)
-        do 
-            usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $windowscommandoutput | awk -F'Instance' "{ print $"$r" }")
-            usbstatus=$(echo $usb | awk -F'Status: ' '{ print $2 }' | awk -F' ' '{ print $1 }')
-            usbclass=$(echo $usb | awk -F'Class Name: ' '{ print $2 }' | awk -F'Class' '{ print $1 }')
-            usbmanufacturer=$(echo $usb | awk -F'Manufacturer Name: ' '{ print $2 }' | awk -F'Status:' '{ print $1 }')
-            usbdescription=$(echo $usb | awk -F'Device Description: ' '{ print $2 }' | awk -F'Class Name:' '{ print $1 }')
-            usbguid=$(echo $usb | awk -F'Class GUID: ' '{ print $2 }' | awk -F'Manufacturer Name:' '{ print $1 }')
 
-            if [ "$usbstatus" == "Started" ]; then
-                if [[ "$usbclass" == *"Keyboard"* ]] || [[ "$usbclass" == *"Mouse"* ]] || [[ "$usbclass" == *"Monitor"* ]] || [[ "$usbclass" == *"USB"* ]] || [[ "$usbclass" == *"DiskDrive"* ]]; then
-                    printf "\t$usbmanufacturer, $usbproduct \t Serial Number: $usbserialnumber\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
+        for i in $(seq 0 $usbnumber)
+        do
+            if [ ! -z "${usbstatus[$i]}" ]; then
+                printf "\t[${usbstatus[$i]}] (${usbclass[$i]}) ${usbmanufacturer[$i+1]}, ${usbdescription[$i+1]}\t GUID: ${usbguid[$i]}\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
-                    printf "\t\t<usb manufacturer=\"$usbmanufacturer\" product=\"$usbproduct\" serial=\"$usbserialnumber\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
+                printf "\t\t<usb manufacturer=\"${usbmanufacturer[$i+1]}\" class=\"${usbclass[$i]}\" description=\"${usbdescription[$i+1]}\" guid=\"${usbguid[$i]}\" status=\"${usbstatus[$i]}\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
 
-                    printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                    printf "\t\t\t\t\t<td>$usbmanufacturer</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                    printf "\t\t\t\t\t<td>$usbclass</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
-                    printf "\t\t\t\t\t<td>$usbdescription</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                    printf "\t\t\t\t\t<td>$usbguid</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                    printf "\t\t\t\t\t<td>$usbstatus</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-                    printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-
-                    if [ "$r" -eq "$usbnumber" ]; then
-                        printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                        printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
-                    else 
-                        printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                        printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" },  " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
-                    fi    
-                fi
+                printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t\t<td>${usbmanufacturer[$i+1]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t\t<td>${usbclass[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report 
+                printf "\t\t\t\t\t<td>${usbdescription[$i+1]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t\t<td>${usbguid[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t\t<td>${usbstatus[$i]}</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+                
+                if [ "$i" = "$((usbnumber-1))" ]; then
+                    printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"${usbmanufacturer[$i+1]}\",\n\t\t\t\t\"class\": \"${usbclass[$i]}\",\n\t\t\t\t\"description\": \"${usbdescription[$i+1]}\",\n\t\t\t\t\"guid\": \"${usbguid[$i]}\",\n\t\t\t\t\"status\": \"${usbstatus[$i]}\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                    printf "{ \"manufacturer\": \"${usbmanufacturer[$i+1]}\", \"class\": \"${usbclass[$i]}\", \"description\": \"${usbdescription[$i+1]}\", \"guid\": \"${usbguid[$i]}\", \"status\": \"${usbstatus[$i]}\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
+                else 
+                    printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"${usbmanufacturer[$i+1]}\",\n\t\t\t\t\"class\": \"${usbclass[$i]}\",\n\t\t\t\t\"description\": \"${usbdescription[$i+1]}\",\n\t\t\t\t\"guid\": \"${usbguid[$i]}\",\n\t\t\t\t\"status\": \"${usbstatus[$i]}\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                    printf "{ \"manufacturer\": \"${usbmanufacturer[$i+1]}\", \"class\": \"${usbclass[$i]}\", \"description\": \"${usbdescription[$i+1]}\", \"guid\": \"${usbguid[$i]}\", \"status\": \"${usbstatus[$i]}\" }, " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
+                fi    
             fi
         done
         printf "\t\t\t</table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
