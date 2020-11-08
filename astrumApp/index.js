@@ -23,7 +23,7 @@ const port = process.env.PORT || "8000";
 var ipAddresses;
 var ipAddressesLink;
 var filenames;
-
+var pathToReports
 
 
 
@@ -38,7 +38,7 @@ var filenames;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "reports/**")));
+app.use(express.static(path.join(__dirname, "reports")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -59,12 +59,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
-    //hardcoded time for development purposes
-    var timeRan = '2020-10-30-03-57-16';
     
     //take values and create complete command for Astrum script
     var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-    //var pathToReports = './reports/' + timeRan + '/html';
   
     runScript(commandString);
 
@@ -73,10 +70,10 @@ app.post("/", (req, res) => {
     renderPage();
     
 
-    //function that adds .html to the end of an item
-    function addExtension(value) {
+    //function that adds path and extension to ips to create links
+    function addLinkElements(value) {
 
-        return value + '.html'
+        return pathToReports.substring(1) + '/' + value + '.html'
 
     }
     
@@ -87,7 +84,7 @@ app.post("/", (req, res) => {
         directoryEntries = fs.readdirSync(rootPath);
 
         //append root and child folders
-        const pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
+        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
 
         //return latesst entry
         return pathToReports;
@@ -104,15 +101,17 @@ app.post("/", (req, res) => {
         //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
 
-        //method to sort labels ascending
+        //metdo/function to sort labels ascending
         ipAddresses.sort((a, b) => {
             const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
             const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
             return num1-num2;
         });
 
-        //add .html to ips to create links
-        ipAddressesLink = ipAddresses.map(addExtension);
+        //add elements and extension to ips to create links
+        ipAddressesLink = ipAddresses.map(addLinkElements);
+
+        console.log(ipAddressesLink);
 
 
     }
@@ -145,8 +144,8 @@ app.post("/", (req, res) => {
 //send html files when reports are accessed
 app.get('/reports/*', (req, res) => {
 
-    console.log(req.originalUrl);
-    res.sendFile(req.originalUrl);
+    console.log(req.url);
+    res.sendFile(req.url);
     res.end();
 });
 
