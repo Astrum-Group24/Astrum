@@ -151,10 +151,13 @@ app.post("/", (req, res) => {
 
 //send html files when reports are accessed via 'multiple' form & 'show report' button
 app.post('/reports', (req, res) => {
-    const report = `${pathToReports.substring(1)}/${req.body.host}.html`;
+    //create report path
+    const reportPath = `${pathToReports.substring(1)}/${req.body.host}.html`;
 
-    console.log(report)
-    res.sendFile(path.join(__dirname + report));
+    console.log(reportPath)
+    
+    //send file to browser
+    res.sendFile(path.join(__dirname + reportPath));
 });
 
 
