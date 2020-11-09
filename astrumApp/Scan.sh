@@ -142,5 +142,5 @@ file=($(ls temp))
 
 #VJN 9/21/2020 9:01pm - This iterates through each temp file and launches Parse.sh
 for f in "${file[@]}"; do
-    ./Parse.sh -t $timeran -h $f -u $username -p $password
+    source ./Parse.sh -t $timeran -h $f -u $username -p $password  #BRJ 11/9/2020 05:59 - added 'source' to run the commmond in current shell
 done
