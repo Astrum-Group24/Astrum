@@ -34,6 +34,7 @@ block layout-content
             //multiple group showing open ports on selected host
             div.multiple-group
               h3 Open Ports
+              
               select(id='whitelist', name='whitelist' size='6' multiple)
                 option(value="volvo") Volvo
                 option(value="saab") Saab
@@ -41,13 +42,15 @@ block layout-content
                 option(value="audi") Audi
                 option(value="bmw") BMW
 
+              p Hold Ctrl & click to select multiple
+            
             //submit button
             div.form-group
               label(for='whitelistButton')
               input(type='submit' value='Whitelist Ports')
 
           
-          div.link-list
+          //div.link-list
           
             h3 Hosts Found:  
               
