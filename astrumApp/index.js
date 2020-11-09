@@ -148,23 +148,16 @@ app.post("/", (req, res) => {
     res.end();
 });
 
-//send html files when reports are accessed
-app.get('/reports/*', (req, res) => {
-
-    console.log(req.url);
-    res.sendFile(req.url);
-    res.end();
-});
-
 
 //send html files when reports are accessed via 'multiple' form & 'show report' button
-app.post("/results", (req, res) => {
+app.post('/reports', (req, res) => {
+    const report = `${pathToReports.substring(1)}/${req.body.host}.html`;
 
-    console.log(`${req.body.host}.html`);
-    res.sendFile(`${req.body.host}.html`);
-    res.end();
-
+    console.log(report)
+    res.sendFile(path.join(__dirname + report));
 });
+
+
 
 /**
  * Server Activation
