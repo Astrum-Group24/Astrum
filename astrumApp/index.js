@@ -157,6 +157,15 @@ app.get('/reports/*', (req, res) => {
 });
 
 
+//send html files when reports are accessed via 'multiple' form & 'show report' button
+app.post("results", (req, res) => {
+
+    console.log('bort');
+    res.sendFile(`${req.body.host}.html`);
+    res.end();
+
+});
+
 /**
  * Server Activation
  */
