@@ -61,7 +61,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/", (req, res) => {
     
     //take values and create complete command for Astrum script
-    var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    var commandString = 'source ./Scan.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
   
     runScript(commandString);
 
