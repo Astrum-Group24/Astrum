@@ -39,6 +39,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "reports")));
+app.use(express.static(path.join(__dirname, 'reports/2020-11-04-04-43-40/html')));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -73,7 +74,8 @@ app.post("/", (req, res) => {
     //function that adds path and extension to ips to create links
     function addLinkElements(value) {
 
-        return pathToReports.substring(1) + '/' + value + '.html'
+        //return pathToReports.substring(1) + '/' + value + '.html'
+        return value + '.html'
 
     }
     
@@ -86,7 +88,8 @@ app.post("/", (req, res) => {
         //append root and child folders
         //pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
         pathToReports = `./reports/2020-11-04-04-43-40/html`;
-
+        
+        
         //return latesst entry
         return pathToReports;
 
