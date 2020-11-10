@@ -4,6 +4,7 @@
 #The Scan.sh script will be launched from the web interface and will scan the hosts passed to it and will launch Parse.sh
 
 timeran=$(date +'%Y-%m-%d-%H-%M-%S')
+echo $timeran
 
 #VJN 9/21/2020 7:06pm - This checks and verifies that the required directories and files are present. If not it creates them. 
 [ -d "temp" ] || mkdir temp 
@@ -138,9 +139,19 @@ for r in "${selected[@]}"; do
 done
 
 #VJN 9/21/2020 9:00pm - This reads the temp files and puts them into an array
-file=($(ls temp))
+files=($(ls temp))
 
+echo 'end'
+echo $timeran
 #VJN 9/21/2020 9:01pm - This iterates through each temp file and launches Parse.sh
-for f in "${file[@]}"; do
-    source ./Parse.sh -t $timeran -h $f -u $username -p $password  #BRJ 11/9/2020 05:59 - added 'source' to run the commmond in current shell
+for f in "${files[@]}"; do
+    ./Parse.sh -t $timeran -h $f -u $username -p $password -s $scanned
+    echo $timeran
+    echo $f
+    echo $username
+    echo $password
 done
+
+echo $file
+rm $file
+
