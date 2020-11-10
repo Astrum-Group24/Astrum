@@ -81,12 +81,14 @@ app.post("/", (req, res) => {
 
     //find newest folder, used to find the most recent (and likely most-relevant) reports folder
     function findNewestFolder(rootPath) {
-git sta
+
+        directoryEntries = fs.readdirSync(rootPath);
+
         //append root and child folders
-        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
+        //pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
         
         //alternative path for devlopment and debug
-        //pathToReports = `./reports/2020-11-04-04-43-40/html`;
+        pathToReports = `./reports/2020-11-04-04-43-40/html`;
         
         //makes files in path available
         app.use(express.static(path.join(__dirname, pathToReports)));
@@ -138,7 +140,7 @@ git sta
     //function to execute command in shell
     function runScript(value) {
 
-        shell.exec(value);
+        //shell.exec(value);
 
     }
 
