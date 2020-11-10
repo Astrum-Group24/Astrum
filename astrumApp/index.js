@@ -81,9 +81,7 @@ app.post("/", (req, res) => {
 
     //find newest folder, used to find the most recent (and likely most-relevant) reports folder
     function findNewestFolder(rootPath) {
-
-        directoryEntries = fs.readdirSync(rootPath);
-
+git sta
         //append root and child folders
         pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
         
