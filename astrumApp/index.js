@@ -85,10 +85,10 @@ app.post("/", (req, res) => {
         directoryEntries = fs.readdirSync(rootPath);
 
         //append root and child folders
-        //pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
+        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
         
         //alternative path for devlopment and debug
-        pathToReports = `./reports/2020-11-04-04-43-40/html`;
+        //pathToReports = `./reports/2020-11-04-04-43-40/html`;
         
         //makes files in path available
         app.use(express.static(path.join(__dirname, pathToReports)));
@@ -140,7 +140,7 @@ app.post("/", (req, res) => {
     //function to execute command in shell
     function runScript(value) {
 
-        //shell.exec(value);
+        shell.exec(value);
 
     }
 
