@@ -60,7 +60,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
     
-    //take values and create complete command for Astrum script
+    //take values and create complete command for Scan.sh script
     var commandString = 'source ./Scan.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
   
     runScript(commandString);
