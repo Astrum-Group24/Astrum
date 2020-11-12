@@ -38,7 +38,7 @@ var pathToReports
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "reports")));
+
 
 //code to make html forms work
 var bodyParser = require('body-parser');
@@ -60,8 +60,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
     
-    //take values and create complete command for Astrum script
-    var commandString = 'source /home/astrum/Main/Astrum.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
+    //take values and create complete command for Scan.sh script
+    var commandString = 'source ./Scan.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
   
     runScript(commandString);
 
@@ -73,7 +73,8 @@ app.post("/", (req, res) => {
     //function that adds path and extension to ips to create links
     function addLinkElements(value) {
 
-        return pathToReports.substring(1) + '/' + value + '.html'
+        //return pathToReports.substring(1) + '/' + value + '.html'
+        return `${value}.html`
 
     }
     
@@ -85,7 +86,13 @@ app.post("/", (req, res) => {
 
         //append root and child folders
         pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
-
+        
+        //alternative path for devlopment and debug
+        //pathToReports = `./reports/2020-11-04-04-43-40/html`;
+        
+        //makes files in path available
+        app.use(express.static(path.join(__dirname, pathToReports)));
+        
         //return latesst entry
         return pathToReports;
 
@@ -141,13 +148,18 @@ app.post("/", (req, res) => {
     res.end();
 });
 
-//send html files when reports are accessed
-app.get('/reports/*', (req, res) => {
 
-    console.log(req.url);
-    res.sendFile(req.url);
-    res.end();
+//send html files when reports are accessed via 'multiple' form & 'show report' button
+app.post('/reports', (req, res) => {
+    //create report path
+    const reportPath = `${pathToReports.substring(1)}/${req.body.host}.html`;
+
+    console.log(reportPath)
+    
+    //send file to browser
+    res.sendFile(path.join(__dirname + reportPath));
 });
+
 
 
 /**

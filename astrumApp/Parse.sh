@@ -8,7 +8,7 @@ timeran=
 host=
 username='root'
 password='A5t7um'
-scanned=
+scanned= 
 
 #VJN 9/28/2020 7:08pm - This section grabs the passed variables and assigns them to internal variables
 while getopts "t:h:u:p:s:" opt; do
@@ -17,11 +17,16 @@ while getopts "t:h:u:p:s:" opt; do
     h) host=$OPTARG       ;;
     u) username=$OPTARG   ;;
     p) password=$OPTARG   ;;
-    s) scanned=$OPTARG    ;;
+    s) scanned=$OPTARG   ;;
     *) echo 'Error: Invalid argument.'
        exit 1
   esac
 done
+
+echo $timeran
+echo $host
+echo $username
+echo $password
 
 #VJN 9/21/2020 7:17pm - vulnerabilities.txt is a database of ports and known uses / vulnerabilities 
 vulnerabilityfile="vulnerabilities.txt"
