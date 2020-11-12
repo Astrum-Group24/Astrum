@@ -8,14 +8,16 @@ timeran=
 host=
 username='root'
 password='A5t7um'
+scanned=
 
 #VJN 9/28/2020 7:08pm - This section grabs the passed variables and assigns them to internal variables
-while getopts "t:h:u:p:" opt; do
+while getopts "t:h:u:p:s:" opt; do
   case $opt in
-    t) timeran=$OPTARG   ;;
+    t) timeran=$OPTARG    ;;
     h) host=$OPTARG       ;;
     u) username=$OPTARG   ;;
     p) password=$OPTARG   ;;
+    s) scanned=$OPTARG    ;;
     *) echo 'Error: Invalid argument.'
        exit 1
   esac

@@ -138,9 +138,11 @@ for r in "${selected[@]}"; do
 done
 
 #VJN 9/21/2020 9:00pm - This reads the temp files and puts them into an array
-file=($(ls temp))
+files=($(ls temp))
 
 #VJN 9/21/2020 9:01pm - This iterates through each temp file and launches Parse.sh
-for f in "${file[@]}"; do
-    ./Parse.sh -t $timeran -h $f -u $username -p $password
+for f in "${files[@]}"; do
+    ./Parse.sh -t $timeran -h $f -u $username -p $password -s $scanned
 done
+
+rm $file

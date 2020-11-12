@@ -37,8 +37,8 @@ for i in "${ports[@]}"; do
   if [ -z "$whitelist" ] && [[ "$i" != *"N"* ]]; then
     echo "sudo ufw deny $i" >> $output
   else 
-  e=0
-  f=0
+    e=0
+    f=0
     for g in "${whitelist[@]}"; do
       if [ "$i" -eq "$g" ] || [[ "$i" == *"N"* ]]; then
         e=$((e+1))
