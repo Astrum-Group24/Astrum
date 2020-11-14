@@ -451,3 +451,11 @@ for i in "${users[@]}";do
     esac
   fi
 done
+
+#VIN 11/14/2020 5:13pm - This section will disable USB ports on the machine
+if [[ "${osmatch[0]}" == *"Windows"* ]]; then 
+  echo "::This section will disable all usb ports on the machine." >> $scriptoutput
+  echo 'reg add HKLM\SYSTEM\CurrentControlSet\Services\UsbStor /v "Start" /t REG_DWORD /d "4" /f' >> $scriptoutput
+else 
+
+fi
