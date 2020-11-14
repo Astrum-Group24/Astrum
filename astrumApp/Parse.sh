@@ -23,11 +23,6 @@ while getopts "t:h:u:p:s:" opt; do
   esac
 done
 
-echo $timeran
-echo $host
-echo $username
-echo $password
-
 #VJN 9/21/2020 7:17pm - vulnerabilities.txt is a database of ports and known uses / vulnerabilities 
 vulnerabilityfile="vulnerabilities.txt"
 

@@ -4,7 +4,6 @@
 #The Scan.sh script will be launched from the web interface and will scan the hosts passed to it and will launch Parse.sh
 
 timeran=$(date +'%Y-%m-%d-%H-%M-%S')
-echo $timeran
 
 #VJN 9/21/2020 7:06pm - This checks and verifies that the required directories and files are present. If not it creates them. 
 [ -d "temp" ] || mkdir temp 
@@ -15,8 +14,6 @@ echo $timeran
 [ -d "reports/$timeran/ndjson" ] || mkdir reports/$timeran/ndjson 
 [ -d "reports/$timeran/txt" ] || mkdir reports/$timeran/txt 
 [ -d "reports/$timeran/xml" ] || mkdir reports/$timeran/xml
-[ -d "rawlogs/" ] || mkdir rawlogs 
-[ -d "xml" ] || mkdir xml 
 [ -e "vulnerabilities.txt" ] || curl https://isc.sans.edu/services.html >> vulnerabilities.txt
 
 #VJN 9/28/2020 7:04pm - Setting passed variables to nothing
@@ -104,7 +101,7 @@ elif [[ $host =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}$ ]]
     fi
 fi
 
-file="rawlogs/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
+file="temp/$host_$(date +"%Y-%m-%d--%H%M%S").xml"
 
 #BMM 9/9/2020 4:04pm - This will ensure that the stat information above is valid and then run an nmap on valid hosts and output to an XML file
     if [ "$stat" -eq "0" ]; then
@@ -141,17 +138,9 @@ done
 #VJN 9/21/2020 9:00pm - This reads the temp files and puts them into an array
 files=($(ls temp))
 
-echo 'end'
-echo $timeran
 #VJN 9/21/2020 9:01pm - This iterates through each temp file and launches Parse.sh
 for f in "${files[@]}"; do
     ./Parse.sh -t $timeran -h $f -u $username -p $password -s $scanned
-    echo $timeran
-    echo $f
-    echo $username
-    echo $password
 done
 
-echo $file
 rm $file
-
