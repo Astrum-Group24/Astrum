@@ -54,6 +54,8 @@ driveused=$(cat reports/$timedirectory/json/$file | grep -ia '"used": ' | awk -F
 drivesize=$(cat reports/$timedirectory/json/$file | grep -ia '"size": ' | awk -F'"size": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 driveusage=$(cat reports/$timedirectory/json/$file | grep -ia '"usage": ' | awk -F'"usage": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 driveavalible=$(cat reports/$timedirectory/json/$file | grep -ia '"avalible": ' | awk -F'"avalible": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+users=$(cat reports/$timedirectory/json/$file | grep -ia "user" | awk -F'"user": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+users=($(echo $users | tr "\n" "\n"))
 
 #VJN 11/13/2020 2:45pm - This section will enable firewalls if disabled 
 if [[ "${osmatch[0]}" == *"Windows"* ]]; then
@@ -427,4 +429,25 @@ for i in "${ports[@]}"; do
     done
   fi
   x=$((x+1))
+done
+
+#VJN 11/14/2020 4:58pm - This section will disable defualt user accounts on the machine
+for i in "${users[@]}";do
+  if [[ "${osmatch[0]}" == *"Windows"* ]]; then 
+    case $i in
+      Guest|guest|Administrator|administrator) 
+        echo "::This command will disable the $i account." >> $scriptoutput
+        echo "net user $i /active:no" >> $scriptoutput 
+      ;;
+      *) ;;
+    esac
+  else 
+    case $i in
+      Guest|guest|Administrator|administrator) 
+        echo "#This command will disable the $i account." >> $scriptoutput
+        echo "usermod -L $i" >> $scriptoutput 
+      ;;
+      *) ;;
+    esac
+  fi
 done
