@@ -49,15 +49,36 @@ ciscoampstatus=$(cat reports/$timedirectory/json/$file | grep -ia '"ciscoamp": '
 selinuxstatus=$(cat reports/$timedirectory/json/$file | grep -ia '"selinux": ' | awk -F'"selinux": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 firewalldstatus=$(cat reports/$timedirectory/json/$file | grep -ia '"firewalld": ' | awk -F'"firewalld": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 iptablesstatus=$(cat reports/$timedirectory/json/$file | grep -ia '"iptables": ' | awk -F'"iptables": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+drivename=$(cat reports/$timedirectory/json/$file | grep -ia '"name": ' | awk -F'"name": "' '{ print $2 }' | awk -F'"' '{ print $1 }' | tail -1)
+driveused=$(cat reports/$timedirectory/json/$file | grep -ia '"used": ' | awk -F'"used": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+drivesize=$(cat reports/$timedirectory/json/$file | grep -ia '"size": ' | awk -F'"size": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+driveusage=$(cat reports/$timedirectory/json/$file | grep -ia '"usage": ' | awk -F'"usage": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+driveavalible=$(cat reports/$timedirectory/json/$file | grep -ia '"avalible": ' | awk -F'"avalible": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 
-echo "defenderstatus: ---$defenderstatus---" #DEBUG
-echo "mcafeestatus: ---$mcafeestatus---" #DEBUG
-echo "nortonstatus: ---$nortonstatus---" #DEBUG
-echo "kaperskystatus: ---$kaperskystatus---" #DEBUG
-echo "ciscoampstatus: ---$ciscoampstatus---" #DEBUG
-echo "selinuxstatus: ---$selinuxstatus---" #DEBUG
-echo "firewalldstatus: ---$firewalldstatus---" #DEBUG
-echo "iptablesstatus: ---$iptablesstatus---" #DEBUG
+#VJN 11/13/2020 2:45pm - This section will enable firewalls if disabled 
+if [[ "${osmatch[0]}" == *"Windows"* ]]; then
+  if [ "$driveusage" -gt 69 ]; then
+    echo "*************************************************************************************" >> $sugestionoutput
+    echo "*                             Low Drive Space Remedies                              *" >> $sugestionoutput
+    echo "*************************************************************************************" >> $sugestionoutput
+    echo "The drive $drivename has used $driveused/$drivesize ($driveusage%) and still has $driveavalible left until full." >> $sugestionoutput    
+    echo '1) Run this command "forfiles /S /M * /C “cmd /c if @fsize GEQ 1073741824 echo @path > largefiles.txt" to check all files over 1GB on the machine.' >> $sugestionoutput 
+    echo "2) Verify which files can be compressed, offloaded, or deleted." >> $sugestionoutput
+    echo "Reference Link: https://helpdeskgeek.com/how-to/find-the-largest-files-on-your-computer/" >> $sugestionoutput
+    echo "" >> $sugestionoutput
+  fi
+else
+  if [ "$driveusage" -gt 69 ]; then
+    echo "*************************************************************************************" >> $sugestionoutput
+    echo "*                             Low Drive Space Remedies                              *" >> $sugestionoutput
+    echo "*************************************************************************************" >> $sugestionoutput
+    echo "The drive $drivename has used $driveused/$drivesize ($driveusage%) and still has $driveavalible left until full." >> $sugestionoutput
+    echo '1) Run this commmand "du -ahx | sort -rh | head -50" to check the 50 largest files on the machine.' >> $sugestionoutput 
+    echo "2) Verify which files can be compressed, offloaded, or deleted." >> $sugestionoutput
+    echo "Reference Link: https://www.cyberciti.biz/faq/linux-find-largest-file-in-directory-recursively-using-find-du/" >> $sugestionoutput
+    echo "" >> $sugestionoutput
+  fi
+fi
 
 #VJN 11/13/2020 2:45pm - This section will enable firewalls if disabled 
 if [[ "${osmatch[0]}" == *"Windows"* ]]; then 
