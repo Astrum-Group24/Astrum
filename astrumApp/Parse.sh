@@ -741,5 +741,5 @@ printf "\t}\n}" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
 printf "} }" >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 
 #VJN 9/22/2020 12:44pm - This is used to remove the temp files 
-rm temp/$host
-rm $commandoutput #VJN 10/21/2020 2:52pm 
+#rm temp/$host
+#rm $commandoutput #VJN 10/21/2020 2:52pm 
