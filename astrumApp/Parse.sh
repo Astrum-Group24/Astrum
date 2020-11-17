@@ -139,6 +139,19 @@ else
     iptablesstatus=${iptablesstatustemp[2]}
     users=$(sed -n '/<users/{n;:a;p;n;/<\/users>/!ba}' $commandoutput)
     users=($(echo $users | tr "\n" "\n"))
+    firewalldstatusnum=$(sed -n '/<firewalld/{n;:a;p;n;/<\/firewalld>/!ba}' $commandoutput | awk -F' ' '{ print $1 }' | wc -l)
+    drivenamenum=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $1 }' | wc -l)
+    if [ "$firewalldstatusnum" -gt 1 ]; then
+        firewalldstatus=""
+    fi
+    if [ "$drivenamenum" -gt 1 ]; then
+        drivename=""
+        drivesize=""
+        driveused=""
+        driveavalible=""
+        driveusage=""
+        drivepath=""
+    fi
 fi 
 
 #VJN 9/29/2020 7:06pm - This specifies the type of xml we are exporting
