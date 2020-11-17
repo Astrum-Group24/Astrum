@@ -60,7 +60,7 @@ outputndjson="reports/$timeran/ndjson/$addressip.ndjson"
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
     commandoutput="temp/$addressip.temp"
 
-    sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $commandoutput
+    sshpass -p $password ssh -o stricthostkeychecking=no $username@$addressip ' echo ^<usb^> && pnputil /enum-devices /connected /Class Monitor && pnputil /enum-devices /connected /Class USB && pnputil /enum-devices /connected /Class Mouse && pnputil /enum-devices /connected /Class Keyboard && pnputil /enum-devices /connected /Class DiskDrive && echo ^</usb^> && echo ^<drivespace^> && for /f "tokens=1-3" %a in ('\''WMIC LOGICALDISK GET FreeSpace^,Name^,Size ^|FINDSTR /I /V "Name"'\'') do @echo wsh.echo "%b" ^& " Free=" ^& FormatNumber^(cdbl^(%a^)/1024/1024/1024, 2^)^& " GB"^& " Total Space=" ^& FormatNumber^(cdbl^(%c^)/1024/1024/1024, 2^)^& " GB" > %temp%\tmp.vbs & @if not "%c"=="" @echo( & @cscript //nologo %temp%\tmp.vbs & del %temp%\tmp.vbs && echo ^</drivespace^> && echo ^<windefend^> && sc query WinDefend & echo ^</windefend^> && echo ^<mcafee^> && sc query mfemms & echo ^</mcafee^> && echo ^<norton^> && sc query navapsvc & echo ^</norton^> && echo ^<kapersky^> && sc query klnagent & echo ^</kapersky^> && echo ^<ciscoamp^> && sc query FireAMP & echo ^</ciscoamp^> && echo ^<users^> && net user && echo ^</users^> ' > $commandoutput
 
     drivename=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F' ' '{ print $1 }' | tr -d "\n")
     drivesize=$(sed -n '/<drivespace/{n;:a;p;n;/<\/drivespace>/!ba}' $commandoutput | awk -F'=' '{ print $3 }' | awk -F' ' '{ print $1 }' | tr -d "\n")
@@ -105,7 +105,7 @@ else
 
     commandoutput="temp/$addressip.temp"
 
-    sshpass -p $password ssh -o stricthostkeychecking=no $username@$ipaddress '
+    sshpass -p $password ssh -o stricthostkeychecking=no $username@$addressip '
     echo '\''<usb>'\''
     for i in $(usb-devices | awk -F":" '\''{print $2}'\'' | grep Manufacturer | grep -v =Linux); do usb-devices | grep -B 3 -A 4 $i;done 
     echo '\''</usb>'\''
