@@ -1,7 +1,11 @@
 Astrum
 ======
+ 
+Astrum is a security application that can run on Linux distros that meet the prerequisities below. Astrum is able to utilize open source tools to perform security scans on a network (subnet or host). 
 
-This is where we will describe what Astrum is, what it is used for, why it was an issue, and why it is the best tool for the job. 
+The tool is designed with small business IT admins in mind. Set up Astrum, visit the web interface, set the scan parameters, and go! Astrum will do the hard work and proivde feedback on endpoints with any discovered vulnerabilities. This feedback will include information about the endpoint in question, its open ports, hard drive space, user accounts, usb ports, and a script that can fix a portion of vulnerabilites. 
+
+Why does this matter? Small business IT admins often can not find the time needed to care about these types of security vulnerabilities with devices on their network. They often are forced to balance networking, help desk support, server management, and cybersecurity. Astrum is designed to handle the small items left vulnerable on an endpoint that would be an exploit if discovered by the wrong individual. 
 
 # Components:
 
@@ -13,7 +17,7 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 
 # Usage:
 
-    This is where we will explain how to run the script.
+    Once everything is set up by following the prerequestists listed above, visit the web interface of your Linux server to display the Astrum page. Fill in the requested information and then click "Run" to let Astrum begin scanning. After it is complete it will show you reports of the endpoints that it discovered. If you parse through the reports and decice you want to lock ithe endpoint down, run the "Generate Script" option by clicking the button and let Astrum assist you with taking the next steps!
 
 # Example Output:
 
@@ -79,7 +83,7 @@ This is where we will describe what Astrum is, what it is used for, why it was a
 
 # Tech:
 
-    * NodeJS
+    * NodeJS / ExpressJS
     * Bash
     * Curl
     * Nmap
