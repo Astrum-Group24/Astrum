@@ -17,7 +17,7 @@ Why does this matter? Small business IT admins often can not find the time neede
 
 # Usage:
 
-    Once everything is set up by following the prerequestists listed above, visit the web interface of your Linux server to display the Astrum page. Fill in the requested information and then click "Run" to let Astrum begin scanning. After it is complete it will show you reports of the endpoints that it discovered. If you parse through the reports and decice you want to lock ithe endpoint down, run the "Generate Script" option by clicking the button and let Astrum assist you with taking the next steps!
+Once everything is set up by following the prerequestists listed above, visit the web interface of your Linux server to display the Astrum page. Fill in the requested information and then click "Run" to let Astrum begin scanning. After it is complete it will show you reports of the endpoints that it discovered. If you parse through the reports and decice you want to lock ithe endpoint down, run the "Generate Script" option by clicking the button and let Astrum assist you with taking the next steps!
 
 # Example Output:
 
@@ -87,6 +87,8 @@ Why does this matter? Small business IT admins often can not find the time neede
     * Bash
     * Curl
     * Nmap
+    * OpenSSH
+    * SSHpass
 
 # Credits: 
 
