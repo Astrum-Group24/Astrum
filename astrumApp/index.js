@@ -50,8 +50,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
  */
 
 //Show index.pug when navigting to root address
- app.get("/", (req, res) => {
-    res.render("index", { title: "Home"});
+app.get("/", (req, res) => {
+    res.render("index", { title: "Home" });
     res.end();
 });
 
@@ -59,25 +59,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
-    
+
     //take values and create complete command for Scan.sh script
     var commandString = 'source ./Scan.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-  
+
     runScript(commandString);
 
     readFolder(findNewestFolder('./reports'));
-    
-    renderPage();
-    
 
-    //function that adds path and extension to ips to create links
+    renderPage();
+
+
+    //function that adds path and extension to IPs to create links
     function addLinkElements(value) {
 
         //return pathToReports.substring(1) + '/' + value + '.html'
         return `${value}.html`
 
     }
-    
+
 
     //find newest folder, used to find the most recent (and likely most-relevant) reports folder
     function findNewestFolder(rootPath) {
@@ -86,13 +86,13 @@ app.post("/", (req, res) => {
 
         //append root and child folders
         pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
-        
+
         //alternative path for devlopment and debug
         //pathToReports = `./reports/2020-11-04-04-43-40/html`;
-        
+
         //makes files in path available
         app.use(express.static(path.join(__dirname, pathToReports)));
-        
+
         //return latesst entry
         return pathToReports;
 
@@ -110,14 +110,15 @@ app.post("/", (req, res) => {
 
         //metdo/function to sort labels ascending
         ipAddresses.sort((a, b) => {
-            const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-            const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3) ).join(""));
-            return num1-num2;
+            const num1 = Number(a.split(".").map((num) => (`000${num}`).slice(-3)).join(""));
+            const num2 = Number(b.split(".").map((num) => (`000${num}`).slice(-3)).join(""));
+            return num1 - num2;
         });
 
         //add elements and extension to ips to create links
         ipAddressesLink = ipAddresses.map(addLinkElements);
 
+        console.log(`ipAddressesLink value:`);
         console.log(ipAddressesLink);
 
 
@@ -133,17 +134,9 @@ app.post("/", (req, res) => {
     //function to render the page
     function renderPage() {
 
-        res.render("results", {ipAddressesLink, ipAddresses, title: 'Results'});
+        res.render("results", { ipAddressesLink, ipAddresses, title: 'Results' });
 
     }
-
-    //function to execute command in shell
-    function runScript(value) {
-
-        shell.exec(value);
-
-    }
-
 
     res.end();
 });
@@ -154,13 +147,27 @@ app.post('/reports', (req, res) => {
     //create report path
     const reportPath = `${pathToReports.substring(1)}/${req.body.host}.html`;
 
-    console.log(reportPath)
-    
+    //console.log(reportPath)
+
     //send file to browser
     res.sendFile(path.join(__dirname + reportPath));
 });
 
+//generate script when button is clicked
+app.post('/generate', (req, res) => {
 
+    const commandString = `source ./Resolution.sh -f ${req.body.host} -w ${req.body.whitelist}`;
+
+    runScript(commandString);
+
+});
+
+//function to execute command in shell
+function runScript(value) {
+
+    shell.exec(value);
+
+}
 
 /**
  * Server Activation
