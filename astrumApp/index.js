@@ -10,10 +10,6 @@ const shell = require("shelljs");
 const fs = require("fs");
 
 
-
-
-
-
 /**
  * App Variables
  */
@@ -24,11 +20,6 @@ var ipAddresses;
 var ipAddressesLink;
 var filenames;
 var pathToReports
-
-
-
-
-
 
 
 /**
@@ -104,9 +95,14 @@ app.post("/", (req, res) => {
 
         //variable & method for reading records filenames into an array
         filenames = fs.readdirSync(pathValue);
+        filenames.splice(0, 1);
+        console.log(`***filenames value:`);
+        console.log(filenames);
 
         //variable and method to remove file extension for link labels
         ipAddresses = filenames.map(removeExtension);
+        console.log(`***ipAddresses value:`);
+        console.log(ipAddresses);
 
         //metdo/function to sort labels ascending
         ipAddresses.sort((a, b) => {
@@ -118,7 +114,7 @@ app.post("/", (req, res) => {
         //add elements and extension to ips to create links
         ipAddressesLink = ipAddresses.map(addLinkElements);
 
-        console.log(`ipAddressesLink value:`);
+        console.log(`***ipAddressesLink value:`);
         console.log(ipAddressesLink);
 
 
@@ -157,6 +153,8 @@ app.post('/reports', (req, res) => {
 app.post('/generate', (req, res) => {
 
     const commandString = `source ./Resolution.sh -f ${req.body.host} -w ${req.body.whitelist}`;
+
+    console.log(commandString);
 
     runScript(commandString);
 
