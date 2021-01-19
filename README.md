@@ -15,7 +15,15 @@ After the scan runs you will be presented with the information Astrum found in t
 
 # Prerequisites for running the script:
 
-	This is where we will explain what the user needs to do / have accomplished before running the script.
+At its core, Astrum is a Linux web server. The recommended Linux distro is CentOS 8. With this installed, please ensure that the following dependences are installed:
+
+- curl
+- nmap
+- sshpass
+
+Then install and run a web server with the following steps:
+
+---- finish in class
 
 # Usage:
 
@@ -23,11 +31,12 @@ Once everything is set up by following the prerequestists listed above, visit th
 
 # Example Output:
 
-    This is where we will show what a successful and non-successful output of the script would be.
+    --- finish in class when web gui complete
 
 # F.A.Q:
 
 Q: What crendtials are needed for a credential-based scan? 
+
 	A: Astrum can gather the most information for security purposes when there is a local or active directory account that is able to authenticate to multiple hosts on the network. This account does NOT need administrator / sudo permissions in any way. The account is simply used to start a remote terminal session in order to gather more information about a device
 
 # Variable Reference Sheet:
