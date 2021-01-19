@@ -52,8 +52,9 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
 
     //take values and create complete command for Scan.sh script
-    var commandString = 'source ./Scan.sh -s ' + req.body.speed + ' -h ' + req.body.host + ' -u ' + req.body.username + ' -p ' + req.body.password;
-
+    var commandString = `source ./Scan.sh -s ${req.body.type} -h ${req.body.host} -u ${req.body.username} -p ${req.body.password}`;
+    console.log(commandString);
+    console.log(req.body.type);
     runScript(commandString);
 
     readFolder(findNewestFolder('./reports'));
