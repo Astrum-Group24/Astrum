@@ -9,7 +9,9 @@ Why does this matter? Small business IT admins often can not find the time neede
 
 # Components:
 
-    This is where we will list out all the components of Astrum, Reports, Genereated Script, Helpful Links, etc.
+Astrum's main interface contains its core features. The web interface will present you with the options you need to begin a scan. All that is required is a subnet or host address (s) and the scan option. Credentials are optional but they provide more information. 
+
+After the scan runs you will be presented with the information Astrum found in the form of reports. It will also list all the ports it was able to contact the device with. If you wish to whitelist these ports, select these ports and the generate script button to be provided with scripts you can run on questionable endpoints. Windows and Linux devices are supported. 
 
 # Prerequisites for running the script:
 
@@ -17,7 +19,7 @@ Why does this matter? Small business IT admins often can not find the time neede
 
 # Usage:
 
-Once everything is set up by following the prerequestists listed above, visit the web interface of your Linux server to display the Astrum page. Fill in the requested information and then click "Run" to let Astrum begin scanning. After it is complete it will show you reports of the endpoints that it discovered. If you parse through the reports and decice you want to lock ithe endpoint down, run the "Generate Script" option by clicking the button and let Astrum assist you with taking the next steps!
+Once everything is set up by following the prerequestists listed above, visit the web interface of your Linux server to display the Astrum page. Fill in the requested information and then click "Scan Now" to let Astrum begin scanning. After it is complete it will show you reports of the endpoints that it discovered. If you parse through the reports and find a device you wish to make more secure, select the ports you wish to whitelist, and then run the "Generate Script" option by clicking the button and let Astrum assist you with taking the next steps!
 
 # Example Output:
 
@@ -25,7 +27,8 @@ Once everything is set up by following the prerequestists listed above, visit th
 
 # F.A.Q:
 
-    This is where we will answere Frequently Asked Questions.
+Q: What crendtials are needed for a credential-based scan? 
+	A: Astrum can gather the most information for security purposes when there is a local or active directory account that is able to authenticate to multiple hosts on the network. This account does NOT need administrator / sudo permissions in any way. The account is simply used to start a remote terminal session in order to gather more information about a device
 
 # Variable Reference Sheet:
 
