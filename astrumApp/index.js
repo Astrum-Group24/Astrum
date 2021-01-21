@@ -16,10 +16,11 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
-var ipAddresses;
-var ipAddressesLink;
-var filenames;
-var pathToReports
+let ipAddresses;
+let ipAddressesLink;
+let filenames;
+let pathToReports;
+let ports;
 
 
 /**
@@ -59,6 +60,8 @@ app.post("/", (req, res) => {
 
     readFolder(findNewestFolder('./reports'));
 
+    //readPorts(pathToReports);
+
     renderPage();
 
 
@@ -68,6 +71,11 @@ app.post("/", (req, res) => {
         //return pathToReports.substring(1) + '/' + value + '.html'
         return `${value}.html`
 
+    }
+
+    // function to add to ports array
+    function addToPorts(port) {
+        ports.push(port);
     }
 
 
@@ -120,6 +128,25 @@ app.post("/", (req, res) => {
 
 
     }
+
+    // function to read ports from .json files
+    function readPorts(rootPathForHTML) {
+
+        const pathToJSON = `${removeExtension(rootPathForHTML)}/json`;
+        const filenames = fs.readdirSync(pathValue);
+        filenames.splice(0, 1);
+        console.log(`***JSON filenames value:`);
+        console.log(filenames);
+
+        // loop thru filenames
+        for (i = 1; i < filenames.length; i++) {
+            // read into server as a string
+            const reportString = fs.readFileSync(`${pathToJSON}/${filenames[i]}`);
+            const reportObject = JSON.parse(reportString);
+            Object.keys
+
+        };
+    };
 
     //function to remove last five characters of each element
     function removeExtension(value) {
