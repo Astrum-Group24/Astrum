@@ -17,14 +17,13 @@ function readPorts(pathToReports) {
 
 
     // loop thru filenames
-    for (i = 1; i < filenames.length; i++) {
+    for (i = 1; i < 2; i++) {
         // read into server as a string
         const reportString = fs.readFileSync(`${pathToJSON}/${filenames[i]}`, 'utf8');
         console.log(reportString);
 
         // parse string into javascript object
         const reportObject = JSON.parse(reportString);
-        console.log(reportObject);
-
+        console.log(reportObject.machine);
     };
 };
