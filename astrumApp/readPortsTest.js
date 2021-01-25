@@ -2,6 +2,7 @@ const fs = require("fs");
 const { encode } = require("querystring");
 
 const pathToReports = `./reports/2021-01-19-05-52-50/html`;
+let portsArray = [];
 
 readPorts(pathToReports);
 
@@ -17,13 +18,20 @@ function readPorts(pathToReports) {
 
 
     // loop thru filenames
-    for (i = 1; i < 2; i++) {
+    for (i = 1; i < filenames.length; i++) {
         // read into server as a string
         const reportString = fs.readFileSync(`${pathToJSON}/${filenames[i]}`, 'utf8');
-        console.log(reportString);
+        console.log(`***reportString value: ${reportString}`);
 
         // parse string into javascript object
         const reportObject = JSON.parse(reportString);
-        console.log(reportObject.machine);
+        const portsString = JSON.stringify(reportObject.machine.ports);
+        const numbersArray = portsString.match(/\d+/g);
+        portsArray.push(numbersArray);
+        console.log(portsString);
+        console.log(numbersArray);
+        console.log(portsArray);
+
+
     };
 };
