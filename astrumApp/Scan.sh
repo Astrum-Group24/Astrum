@@ -19,8 +19,8 @@ timeran=$(date +'%Y-%m-%d-%H-%M-%S')
 #VJN 9/28/2020 7:04pm - Setting passed variables to nothing
 scantype=
 host=
-username='root'
-password='A5t7um'
+username=
+password=
 
 #VJN 9/28/2020 7:08pm - This section grabs the passed variables and assigns them to internal variables
 while getopts "s:h:u:p:" opt; do
