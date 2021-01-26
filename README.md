@@ -20,10 +20,17 @@ At its core, Astrum is a Linux web server. The recommended Linux distro is CentO
 - curl
 - nmap
 - sshpass
+- Node.js
+- Node Package Manager (npm), with the following packages:
+	- Body-parser v1.19.0
+ 	- EJS v3.1.5
+	- Express v4.17.1
+	- Pug v3.0.0
+	- Shelljs v0.8.4
 
-Then install and run a web server with the following steps:
+After installing the necessary softer, or cloning the repository to a linux machine on your ntwork, astrum can be started by executing the following from the astrumApp folder:
 
----- finish in class
+	sudo node index.js
 
 # Usage:
 
