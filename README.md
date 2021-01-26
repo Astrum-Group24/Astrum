@@ -28,7 +28,7 @@ At its core, Astrum is a Linux web server. The recommended Linux distro is CentO
 	- Pug v3.0.0
 	- Shelljs v0.8.4
 
-After installing the necessary softer, or cloning the repository to a linux machine on your ntwork, astrum can be started by executing the following from the astrumApp folder:
+After installing the necessary software, or cloning the repository to a linux machine on your network, Astrum can be started by executing the following from the astrumApp folder:
 
 	sudo node index.js
 
