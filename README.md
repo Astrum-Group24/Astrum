@@ -31,6 +31,8 @@ At its core, Astrum is a Linux web server. The recommended Linux distro is CentO
 After installing the necessary software, or cloning the repository to a linux machine on your network, Astrum can be started by executing the following from the astrumApp folder:
 
 	sudo node index.js
+	
+For Windows devices, you MUST install OpenSSH Server in order for Astrum to run a remote terminal. To do this, access the Windows machine (or create an SCCM profile that has it installed), and go to Settings > Apps > Optional features > Add a feature > OpenSSH server.
 
 # Usage:
 
