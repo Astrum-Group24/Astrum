@@ -27,3 +27,5 @@ astrumApp/test.sh
 astrumApp/resolution/
 
 astrumApp/test/
+astrumApp/usbManufacturerTest.json
+astrumApp/usbProductTest
