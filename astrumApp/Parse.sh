@@ -669,7 +669,9 @@ else
             usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput) #| awk -F'T:' "{ print $"$r" }")
             t=$(echo $usb | awk -F'T:' "{ print $"$r" }")
             usbmanufacturer=$(echo $t | awk -F'Manufacturer=' '{ print $2 }' | awk -F'S:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
+            echo $usbmanufacturer > usbManufacturerTest
             usbproduct=$(echo $t | awk -F'Product=' '{ print $2 }' | awk -F'S:|C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
+            echo $usbproduct > usbProductTest
             usbserialnumber=$(echo $t | awk -F'SerialNumber=' '{ print $2 }' | awk -F'C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
 
             printf "\t$usbmanufacturer, $usbproduct \t Serial Number: $usbserialnumber\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
