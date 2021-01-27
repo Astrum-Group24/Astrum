@@ -686,9 +686,13 @@ else
 
             if [ "$r" -eq "$usbnumber" ]; then
                 printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                echo $usbmanufacturer >> usbManufacturerTest
+                echo $usbProductTest >> usbProductTest
                 printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
             else 
                 printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
+                echo $usbmanufacturer >> usbManufacturerTest
+                echo $usbProductTest >> usbProductTest
                 printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" }, " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
             fi    
         done    
