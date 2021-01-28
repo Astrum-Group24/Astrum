@@ -668,11 +668,13 @@ else
         do 
             usb=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput) #| awk -F'T:' "{ print $"$r" }")
             t=$(echo $usb | awk -F'T:' "{ print $"$r" }")
+            echo $t > moneyT
             usbmanufacturer=$(echo $t | awk -F'Manufacturer=' '{ print $2 }' | awk -F'S:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
             echo $usbmanufacturer > usbManufacturerTest
             usbproduct=$(echo $t | awk -F'Product=' '{ print $2 }' | awk -F'S:|C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
             echo $usbproduct > usbProductTest
             usbserialnumber=$(echo $t | awk -F'SerialNumber=' '{ print $2 }' | awk -F'C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
+            echo $usbserialnumber > usbSerialNumberTest
 
             printf "\t$usbmanufacturer, $usbproduct \t Serial Number: $usbserialnumber\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
@@ -686,13 +688,9 @@ else
 
             if [ "$r" -eq "$usbnumber" ]; then
                 printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                echo $usbmanufacturer >> usbManufacturerTest
-                echo $usbProductTest >> usbProductTest
                 printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" } " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
             else 
                 printf "\t\t\t{\n\t\t\t\t\"manufacturer\": \"$usbmanufacturer\",\n\t\t\t\t\"product\": \"$usbproduct\",\n\t\t\t\t\"serial\": \"$usbserialnumber\"\n\t\t\t},\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
-                echo $usbmanufacturer >> usbManufacturerTest
-                echo $usbProductTest >> usbProductTest
                 printf "{ \"manufacturer\": \"$usbmanufacturer\", \"product\": \"$usbproduct\", \"serial\": \"$usbserialnumber\" }, " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
             fi    
         done    
