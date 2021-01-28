@@ -21,6 +21,7 @@ let ipAddressesLink;
 let filenames;
 let pathToReports;
 let ports;
+let allPortsArray = [];
 
 
 /**
@@ -51,6 +52,7 @@ app.get("/", (req, res) => {
 
 //Run script when post is rec'd from root and send to results page
 app.post("/", (req, res) => {
+    console.log(`Start: ${Date().toLocaleString('en-US')}`);
 
     //take values and create complete command for Scan.sh script
     const commandString = `source ./Scan.sh -s ${req.body.scanType} -h ${req.body.host} -u ${req.body.username} -p ${req.body.password}`;
@@ -60,9 +62,13 @@ app.post("/", (req, res) => {
 
     readFolder(findNewestFolder('./reports'));
 
-    //readPorts(pathToReports);
+    console.log(readPorts(pathToReports));
 
     renderPage();
+
+    console.log(`End: ${Date().toLocaleString('en-US')}`);
+
+
 
 
     //function that adds path and extension to IPs to create links
@@ -130,22 +136,48 @@ app.post("/", (req, res) => {
     }
 
     // function to read ports from .json files
-    function readPorts(rootPathForHTML) {
+    function readPorts(pathToReports) {
 
-        const pathToJSON = `${removeExtension(rootPathForHTML)}/json`;
-        const filenames = fs.readdirSync(pathValue);
-        filenames.splice(0, 1);
-        console.log(`***JSON filenames value:`);
-        console.log(filenames);
+        const pathToJSON = `${pathToReports.substring(0, pathToReports.length - 5)}/json`;
+
+        const filenames = fs.readdirSync(pathToJSON);
+
 
         // loop thru filenames
         for (i = 1; i < filenames.length; i++) {
             // read into server as a string
-            const reportString = fs.readFileSync(`${pathToJSON}/${filenames[i]}`);
-            const reportObject = JSON.parse(reportString);
-            Object.keys
+            const reportString = fs.readFileSync(`${pathToJSON}/${filenames[i]}`, 'utf8');
+
+            // try/catch statement to handle invalid jsons
+            try {
+                // parse string into javascript object
+                const reportObject = JSON.parse(reportString);
+
+                //check if port property exists
+                if (reportObject.machine.hasOwnProperty("ports")) {
+
+                    // change ports object to string
+                    const portsString = JSON.stringify(reportObject.machine.ports);
+
+                    // match and extract found numbers to an array 
+                    const numbersArray = portsString.match(/\d+/g);
+
+                    // add newly found ports to the existing ones by concatenating the arrays
+                    allPortsArray = allPortsArray.concat(numbersArray);
+                }
+            }
+            catch (err) {
+                console.log(`Error reading/parsing ${reportString}. Likely invalid input.`);
+            }
 
         };
+        // using set() constructor fn to remove repeated elements
+        const uniquePorts = new Set(allPortsArray);
+
+        // using spread operator to map values to an array
+        const uniquePortsArray = [...uniquePorts];
+
+        return uniquePortsArray;
     };
 
     //function to remove last five characters of each element
