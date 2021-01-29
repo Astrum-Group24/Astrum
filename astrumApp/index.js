@@ -213,7 +213,7 @@ app.post('/generate', (req, res) => {
 
     runScript(commandString);
 
-    res.download(path.join(__dirname + `/resolution/${req.body.host}/ComplianceScript.sh`), `${req.body.host}script.sh`);
+    res.download(path.join(__dirname + `/resolution/${req.body.host}/ComplianceScript.sh`), `${req.body.host}_script.sh`);
 
 });
 
