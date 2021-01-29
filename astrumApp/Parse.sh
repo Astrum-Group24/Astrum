@@ -639,7 +639,11 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
         
         printf "\t</usbs>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-        printf "\t\t],\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+        if [ -z "$users" ]; then #BRJ 01/29/2020 07:50am - This if statement handles the trailing comma in the json files that was causing crashes from invlid input.
+            printf "\t\t]\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+        else
+            printf "\t\t],\n" >> $outputjson 
+        fi
 
         printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
@@ -695,7 +699,11 @@ else
         
         printf "\t</usbs>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-        printf "\t\t],\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+        if [ -z "$users" ]; then #BRJ 01/29/2020 07:50am - This if statement handles the trailing comma in the json files that was causing crashes from invlid input.
+            printf "\t\t]\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
+        else
+            printf "\t\t],\n" >> $outputjson 
+        fi
 
         printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
