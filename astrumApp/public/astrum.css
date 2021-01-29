@@ -1,0 +1,70 @@
+body { 
+    background: url('space.JPG') no-repeat center fixed;     
+    background-size: cover;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    color: white;  
+    text-shadow: 2px 2px 5px black;
+}
+main {
+    max-width: 600px;
+    margin: auto;
+}
+h1{
+    font-size: 35px;
+}
+h2{
+    font-size: 25px;
+    text-decoration: underline;
+    padding-top: 10px;
+}
+table{
+    text-align: center;
+    margin: auto;
+    border-collapse: collapse;
+    width: 75%;
+}
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    margin: auto;
+} 
+tr:nth-child(odd){background-color: #bbbbbb;} 
+tr:hover {background-color: #aaaaaa;}
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #734C8B;
+    text-align: center;
+    margin: auto;
+}
+.logoholder{
+    width: 40em;
+    margin: auto;
+    text-align: center;
+}
+.logo{ 
+    width: 50%;
+    height: 50%;
+    padding: 20px;
+}
+.graybox{
+    background: rgba(211, 211, 211, 0.5);
+    width: auto;
+    max-width: 70em;
+    height: auto;
+    border-radius: 25px;
+    text-align: center;
+    margin: auto;
+    padding-bottom: 1em;
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.wrapper li {
+    text-align: left;
+    padding-bottom: 5px;
+}
