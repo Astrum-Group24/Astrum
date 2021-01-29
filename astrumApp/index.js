@@ -62,8 +62,6 @@ app.post("/", (req, res) => {
 
     readFolder(findNewestFolder('./reports'));
 
-    console.log(readPorts(pathToReports));
-
     renderPage();
 
     console.log(`End: ${Date().toLocaleString('en-US')}`);
@@ -77,11 +75,6 @@ app.post("/", (req, res) => {
         //return pathToReports.substring(1) + '/' + value + '.html'
         return `${value}.html`
 
-    }
-
-    // function to add to ports array
-    function addToPorts(port) {
-        ports.push(port);
     }
 
 
@@ -190,7 +183,8 @@ app.post("/", (req, res) => {
     //function to render the page
     function renderPage() {
 
-        res.render("results", { ipAddressesLink, ipAddresses, title: 'Results' });
+        const ports = readPorts(pathToReports);
+        res.render("results", { ipAddressesLink, ipAddresses, ports, title: 'Results' });
 
     }
 
