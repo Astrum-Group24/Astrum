@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
+const { Script } = require("vm");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
@@ -211,6 +212,8 @@ app.post('/generate', (req, res) => {
     console.log(commandString);
 
     runScript(commandString);
+
+    res.download(path.join(__dirname + `/resolution/${req.body.host}/ComplianceScript.sh`), `${req.body.host}script.sh`);
 
 });
 
