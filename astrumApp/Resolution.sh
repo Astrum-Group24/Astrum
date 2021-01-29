@@ -53,13 +53,14 @@ drivename=$(cat reports/$timedirectory/json/${file}.json | grep -ia '"name": ' |
 driveused=$(cat reports/$timedirectory/json/${file}.json | grep -ia '"used": ' | awk -F'"used": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 drivesize=$(cat reports/$timedirectory/json/${file}.json | grep -ia '"size": ' | awk -F'"size": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 driveusage=$(cat reports/$timedirectory/json/${file}.json | grep -ia '"usage": ' | awk -F'"usage": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
+  echo $driveusage
 driveavalible=$(cat reports/$timedirectory/json/${file}.json | grep -ia '"avalible": ' | awk -F'"avalible": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 users=$(cat reports/$timedirectory/json/${file}.json | grep -ia "user" | awk -F'"user": "' '{ print $2 }' | awk -F'"' '{ print $1 }')
 users=($(echo $users | tr "\n" "\n"))
 
 #VJN 11/13/2020 2:45pm - This section will enable firewalls if disabled 
 if [[ "${osmatch[0]}" == *"Windows"* ]]; then
-  if [ "$driveusage" -gt 69 ]; then
+  if [[ "$driveusage" -gt 69 ]]; then
     echo "*************************************************************************************" >> $sugestionoutput
     echo "*                             Low Drive Space Remedies                              *" >> $sugestionoutput
     echo "*************************************************************************************" >> $sugestionoutput
@@ -70,7 +71,7 @@ if [[ "${osmatch[0]}" == *"Windows"* ]]; then
     echo "" >> $sugestionoutput
   fi
 else
-  if [ "$driveusage" -gt 69 ]; then
+  if [[ "$driveusage" -gt 69 ]]; then
     echo "*************************************************************************************" >> $sugestionoutput
     echo "*                             Low Drive Space Remedies                              *" >> $sugestionoutput
     echo "*************************************************************************************" >> $sugestionoutput
@@ -456,6 +457,4 @@ done
 if [[ "${osmatch[0]}" == *"Windows"* ]]; then 
   echo "::This section will disable all usb ports on the machine." >> $scriptoutput
   echo 'reg add HKLM\SYSTEM\CurrentControlSet\Services\UsbStor /v "Start" /t REG_DWORD /d "4" /f' >> $scriptoutput
-else
-
 fi
