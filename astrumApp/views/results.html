@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="icon" href="small_logo_transparent.PNG">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="theme-color" content="#000000">
+		<title>Results | Astrum</title>
+		<link rel="stylesheet" href="results.css">
+	</head>
+	<body>
+        <main>
+			<div class="logoholder">
+				<img src="logo_transparent.PNG" alt="Astrum" class="logo">
+            </div>
+            <div class="graybox">
+				<div class="left column width50">
+                    <form method="POST" action="/reports">
+                        <!--muiltiple group for hosts-->
+                        <div class="multiple-group">
+                            <h3>Host Reports</h3>
+                            <select id="host" name="host" class="select-css single-select">
+                                <option value="10.191.55.1">10.191.55.1</option>
+                                <option value="10.191.55.2">10.191.55.2</option>
+                                <option value="10.191.55.3">10.191.55.3</option>
+                                <option value="10.191.55.5">10.191.55.5</option>
+                                <option value="10.191.55.6">10.191.55.6</option>
+                                <option value="10.191.55.7">10.191.55.7</option>
+                                <option value="10.191.55.9">10.191.55.9</option>
+                                <option value="10.191.55.11">10.191.55.11</option>
+                            </select>
+                        </div>
+                        <p>Choose a Host Report from the drop down menu above. Once you have a report selected click the "Show Report" button. When generating a Resolution Script make sure the desired host is selected in the drop down menu above.
+                            <div class="help-tip">
+                                <p>If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.  </p>
+                            </div>
+                        </p>
+                        <!--submit button-->
+                        <div class="form-group">
+                            <label for="showReportButton"></label>
+                            <input type="submit" class= "button top-spacer" value="Show Report">
+                        </div>
+                    </form>
+                </div>
+                <div class="right column width50">
+                    <form method="POST" action="/reports">
+                        <!--multiple group showing open ports on selected host-->
+                        <div class="multiple-group">
+                            <h3>Whitelist</h3>
+                            <select id="whitelist" name="whitelist" class="select-css" size="5" multiple>
+                                <option value="7">7</option>
+                                <option value="9">9</option>
+                                <option value="13">13</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                            </select>
+                            <p>These are the ports that Astrum was able to contact a host with. Check the host reports for more information about each port.</p>
+                                <div class="help-tip">
+                                    <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+                                </div>
+                            </p>
+                        </div>
+                        <!--submit button-->
+                        <div class="form-group">
+                            <label for="whitelistButton"></label>
+                            <input type="submit" class= "button" formaction="/generate" value="Generate Script">
+                        </div>
+                    </form>
+                </div>
+			</div>
+        </main>
+        <div class="footer">
+            <p>Astrum was created by Vincent Neiheisel, Brett Johnson, and Brenna Martz in 2020. Please see the Github page for more information regarding updates and issues.
+                <a href="https://github.com/Astrum-Group24/Main" target="_blank">https://github.com/Astrum-Group24/Main</a>
+            </p>
+        </div>
+	</body>
+</html>
