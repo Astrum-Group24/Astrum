@@ -141,6 +141,7 @@ files=($(ls temp))
 #VJN 9/21/2020 9:01pm - This iterates through each temp file and launches Parse.sh
 for f in "${files[@]}"; do
     ./Parse.sh -t $timeran -h $f -u $username -p $password -s $scanned
+    echo "./Parse.sh -t " $timeran " -h " $f " -u " $username " -p " $password " -s " $scanned
 done
 
 rm $file
