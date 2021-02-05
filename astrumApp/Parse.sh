@@ -163,12 +163,12 @@ echo "<html lang=\"en\">" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t<head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<link href=\"astrum.css\" rel=\"stylesheet\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-printf "\t\t<link rel=\"icon\" href=\"./public/logos/small_logo_transparent.PNG\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf "\t\t<link rel=\"icon\" href=\"logos/small_logo_transparent.PNG\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<meta charset=\"utf-8\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<title>$addressip Vulnerability Report</title>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t</head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t<body>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-printf '\t\t<div class="logoholder">\n\t\t\t<img src="./public/logos/logo_transparent.PNG" alt="Astrum" class="logo">\n\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf '\t\t<div class="logoholder">\n\t\t\t<img src="logos/logo_transparent.PNG" alt="Astrum" class="logo">\n\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
 #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
 printf "{\n\t\"machine\":\n\t{\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
