@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="icon" href="small_logo_transparent.PNG">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>Home | Astrum</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+    <main>
+        <div class="logoholder">
+            <img src="logo_transparent.PNG" alt="Astrum" class="logo">
+        </div>
+        <div class="graybox">
+            <div class="left column width50">
+                <form method="POST" action="/">
+                    <h3>Scan Type Info</h3>
+                    <!--'host' is an open field; value is validated in the script-->
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="host" class="label">Network & Subnet:
+                                <div class="help-tip">
+                                    <p>Please type a network range in CIDR notion (x.x.x.x/x) or a single host
+                                        (x.x.x.x). IPv6 is not supported.</p>
+                                </div>
+                                <input type="text" name="host" placeholder="127.0.0.1...">
+                            </label>
+                        </div>
+                    </div>
+                    <!--variable 'type" can be either 'slow' or 'fast'-->
+                    <div class="form-group height25">
+                        <div class="row">
+                            <label for="fast" class="label container">QuickScan:
+                                <div class="help-tip">
+                                    <p>This scan takes a shorter amount of time. Use this scan when performing a regular
+                                        scan as it exempts nmap parameters and speeds up scan time.</p>
+                                </div>
+                                <input type="radio" name="type" id="fast" value="fast">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label for="slow" class="label container">DeepScan:
+                                <div class="help-tip">
+                                    <p>This scan can take a long time depending on the amount of hosts you are scanning.
+                                        Use this scan when performing a scan for the first time on your network or when
+                                        you have security concerns.</p>
+                                </div>
+                                <input type="radio" name="type" id="slow" value="slow">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="right column width50">
+                <form method="POST" action="/">
+                    <!--'username' and 'password' are also validated in the script-->
+                    <div class="form-group">
+                        <h3>Credentials</h3>
+                        <div class="row">
+                            <label for="username" class="label">Username:
+                                <div class="help-tip">
+                                    <p>Username that Astrum will use to sign in to hosts for the scan.</p>
+                                </div>
+                                <input type="text" name="username" placeholder="Username..."><br>
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label for="password" class="label">Password:
+                                <div class="help-tip">
+                                    <p>Password that Astrum will use to sign in to hosts for the scan.</p>
+                                </div>
+                                <input type="password" name="password" placeholder="Password..."><br>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="width100">
+                <form method="POST" action="/">
+                    <!--submit button-->
+                    <div class="form-group">
+                        <label for="startButton"></label>
+                        <input type="submit" class="button" value="Start Scan">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        <p>Astrum was created by Vincent Neiheisel, Brett Johnson, and Brenna Martz in 2020. Please see the Github page
+            for more information regarding updates and issues.
+            <a href="https://github.com/Astrum-Group24/Main" target="_blank">https://github.com/Astrum-Group24/Main</a>
+        </p>
+    </div>
+</body>
+
+</html>
