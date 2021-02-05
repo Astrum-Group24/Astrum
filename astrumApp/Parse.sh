@@ -163,11 +163,12 @@ echo "<html lang=\"en\">" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t<head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<link href=\"astrum.css\" rel=\"stylesheet\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-printf "\t\t<link rel=\"icon\" href=\"../../../logos/aslt.ico\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf "\t\t<link rel=\"icon\" href=\"./public/logos/small_logo_transparent.PNG\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<meta charset=\"utf-8\">\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t<title>$addressip Vulnerability Report</title>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t</head>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t<body>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t<div class="logoholder">\n\t\t\t<img src="./public/logos/logo_transparent.PNG" alt="Astrum" class="logo">\n\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
 #VJN 10/2/2020 3:25pm - This specifies the type of json we are exporting
 printf "{\n\t\"machine\":\n\t{\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
@@ -224,8 +225,10 @@ printf "\t$scanned\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
 printf "\t<scanned ports=\"$scanned\"/>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-printf "\t\t<h2>Ports Scanned</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Ports Scanned</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 printf "\t\t\t<p>$scanned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
 printf "\t\t\"scannedports\": \"$scanned\",\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
 
@@ -234,11 +237,12 @@ printf "\"scannedports\": \"$scanned\", " >> $outputndjson #VJN 10/2/2020 10:48p
 #VJN 9/22/2020 12:41pm - This section is used to print out the presumed Operating System of the host machine
 echo "Possible Operating System:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
-printf "\t\t<h2>Possible Operating System</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Possible Operating System</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 if [ -z "$osmatch" ]; then    
     printf "\tNo Operating Sysem could be discerned\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
             
-    printf "\t\t\t<p>No Operating Sysem could be discerned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t<p>No Operating Sysem could be discerned</p>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 else
     e=0
     printf "\t\t\"osmatches\":\n\t\t[\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
@@ -249,8 +253,8 @@ else
     
     printf "\t\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Operating System Guess</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Accuracy</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Operating System Guess</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Accuracy</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     
     for r in "${osmatch[@]}"
@@ -276,16 +280,19 @@ else
     printf "\t</osmatches>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
     
     printf "\t\t\t</table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-
+    
     printf "\t\t],\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
 
     printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 fi
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+
 
 #VJN 9/22/2020 12:36pm - This section is used to print out the vulnerable ports 
 echo "Vulnerable Ports:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
-printf "\t\t<h2>Vulnerable Ports</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Vulnerable Ports</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 if [ -z "$port" ]; then
     printf "\tNo vulnerable ports found\n" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
         
@@ -300,11 +307,11 @@ else
     
     printf "\t\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Port</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Protocal</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>State</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Service</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-    printf "\t\t\t\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Port</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Protocal</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>State</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Service</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+    printf "\t\t\t\t\t<th>Description</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
     printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 
     for g in "${port[@]}"
@@ -361,11 +368,14 @@ else
 
     printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
 fi
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+
 
 #VJN 10/21/2020 3:22pm - This section is used to print the firewall status and determin which firewalls are running 
 echo "Firewall Status:" >> $outputtxt #VJN 10/21/2020 3:22pm - for txt report
 
-printf "\t\t<h2>Firewall Status</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Firewall Status</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
     if [ -z "$defenderstatus" ] && [ -z "$mcafeestatus" ] && [ -z "$nortonstatus" ] && [ -z "$kaperskystatus" ] && [ -z "$ciscoampstatus" ]; then
         printf "\tNo Firewall Detected!\n" >> $outputtxt #VJN 10/21/2020 5:39pm - for txt report
@@ -549,19 +559,22 @@ else
         printf " } ], " >> $outputndjson #VJN 10/21/2020 5:39pm - for ndjson report
     fi
 fi
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
 #VJN 10/22/2020 9:03am - This section formats and prints out the Harddrive health of the system
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Harddrive Health</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
     if [ -z "$drivesize" ]; then
         printf "Harddrive Health:\n\tNo issues found.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
                 
-        printf "\t\t\t<h2>Harddrive Health</h2>\n\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
+        printf "\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
     else 
         printf "Harddrive Health:\n\t$drivename has used $driveused GB/$drivesize GB ($driveusage%%) and still has $driveavalible GB left until full.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
 
         printf "\t<harddrive name=\"$drivename\" size=\"$drivesize GB\" used=\"$driveused GB\" avalible=\"$driveavalible GB\" usage=\"$driveusage\"/>\n" >> $outputxml #VJN 10/26/2020 11:18pm - for xml report
 
-        printf "\t\t<h2>Harddrive Health</h2>\n\t\t\t<p>$drivename has used $driveused GB/$drivesize GB ($driveusage%%) and still has $driveavalible GB left until full.</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
+        printf "\t\t\t<p>$drivename has used $driveused GB/$drivesize GB ($driveusage%%) and still has $driveavalible GB left until full.</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
 
         printf "\t\t\"harddrive\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"name\": \"$drivename\",\n\t\t\t\t\"size\": \"$drivesize GB\",\n\t\t\t\t\"used\": \"$driveused GB\",\n\t\t\t\t\"avalible\": \"$driveavalible GB\",\n\t\t\t\t\"usage\": \"$driveusage\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/26/2020 11:18pm - for json report
     
@@ -571,24 +584,26 @@ else
     if [ -z "$drivesize" ]; then
         printf "Harddrive Health:\n\tNo issues found.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
                 
-        printf "\t\t\t<h2>Harddrive Health</h2>\n\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/22/2020 9:03am - for html report
+        printf "\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/22/2020 9:03am - for html report
     else 
         printf "Harddrive Health:\n\t$drivename ($drivepath) has used $driveused/$drivesize ($driveusage%%) and still has $driveavalible left until full.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
         printf "\t<harddrive name=\"$drivename\" path=\"$drivepath\" size=\"$drivesize\" used=\"$driveused\" avalible=\"$driveavalible\" usage=\"$driveusage\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
 
-        printf "\t\t<h2>Harddrive Health</h2>\n\t\t\t<p>$drivename ($drivepath) has used $driveused/$drivesize ($driveusage%%) and still has $driveavalible left until full.</p>\n" >> $outputhtml #VJN 10/22/2020 9:03am - for html report
+        printf "\t\t\t<p>$drivename ($drivepath) has used $driveused/$drivesize ($driveusage%%) and still has $driveavalible left until full.</p>\n" >> $outputhtml #VJN 10/22/2020 9:03am - for html report
 
         printf "\t\t\"harddrive\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"name\": \"$drivename\",\n\t\t\t\t\"path\": \"$drivepath\",\n\t\t\t\t\"size\": \"$drivesize\",\n\t\t\t\t\"used\": \"$driveused\",\n\t\t\t\t\"avalible\": \"$driveavalible\",\n\t\t\t\t\"usage\": \"$driveusage\"\n\t\t\t}\n\t\t],\n" >> $outputjson #VJN 10/22/2020 9:03am - for json report
     
         printf "\"harddrive\": [ { \"name\": \"$drivename\", \"path\": \"$drivepath\", \"size\": \"$drivesize\", \"used\": \"$driveused\", \"avalible\": \"$driveavalible\", \"usage\": \"$driveusage\" } ], " >> $outputndjson #VJN 10/22/2020 9:03am - for ndjson report
     fi 
 fi
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
 #VJN 10/22/2020 11:20am - This section formats and prints out usb status information
 echo "USB Status:" >> $outputtxt #VJN 9/29/2020 7:08pm - for txt report
 
-printf "\t\t<h2>USB Status</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>USB Status</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
     usbnumber=$(sed -n '/<usb/{n;:a;p;n;/<\/usb>/!ba}' $commandoutput | grep -ia "Instance" | wc -l)
     if [ -z "$usbnumber" ]; then
@@ -604,11 +619,11 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
     
         printf "\t\t\t<table>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t<tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>Manufacturer</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>Class</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>Description</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>GUID</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
-        printf "\t\t\t\t\t<td>Status</td>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<th>Manufacturer</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<th>Class</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<th>Description</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<th>GUID</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
+        printf "\t\t\t\t\t<th>Status</th>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
         printf "\t\t\t\t</tr>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 
         for i in $(seq 0 $usbnumber)
@@ -676,7 +691,6 @@ else
             usbproduct=$(echo $t | awk -F'Product=' '{ print $2 }' | awk -F'S:|C:' '{ print $1 }' | sed 's/[[:blank:]]*$//' | sed -e 's/[\r\n]//g')
             usbserialnumber=$(echo $t | awk -F'SerialNumber=' '{ print $2 }' | awk -F'C:' '{ print $1 }' | sed 's/[[:blank:]]*$//')
 
-
             printf "\t$usbmanufacturer, $usbproduct \t Serial Number: $usbserialnumber\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
             printf "\t\t<usb manufacturer=\"$usbmanufacturer\" product=\"$usbproduct\" serial=\"$usbserialnumber\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
@@ -699,27 +713,30 @@ else
         
         printf "\t</usbs>\n" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
 
-        if [ -z "$users" ]; then #BRJ 01/29/2020 07:50am - This if statement handles the trailing comma in the json files that was causing crashes from invlid input.
+         if [ -z "$users" ]; then #BRJ 01/29/2020 07:50am - This if statement handles the trailing comma in the json files that was causing crashes from invlid input.
             printf "\t\t]\n" >> $outputjson #VJN 10/2/2020 10:48pm - for json report
         else
             printf "\t\t],\n" >> $outputjson 
         fi
-
         printf "], " >> $outputndjson #VJN 10/2/2020 10:48pm - for ndjson report
     fi
 fi
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
+printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+printf "\t\t\t<h2>Users</h2>\n" >> $outputhtml #VJN 10/1/2020 2:55pm - for html report
 #VJN 10/22/2020 11:43am - This section formats and prints out active users on the machine
 if [ -z "$users" ]; then
     printf "Users:\n\tNo User information found." >> $outputtxt #VJN 10/22/2020 12:16pm - for txt report
             
-    printf "\t\t\t<h2>Users</h2>\n\t\t\t\t<p>No User information found</p>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
+    printf "\t\t\t\t<p>No User information found</p>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
 else 
     printf "Users:\n" >> $outputtxt #VJN 10/22/2020 12:16pm - for txt report
 
     printf "\t<users>\n" >> $outputxml #VJN 10/22/2020 12:16pm - for xml report
 
-    printf "\t\t<h2>Users</h2>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
+    printf "\t\t\t<h2>Users</h2>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
+    printf '\t\t\t<ol class="wrapper">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
     printf "\t\t\"users\":\n\t\t[\n" >> $outputjson #VJN 10/22/2020 12:16pm - for json report
 
@@ -732,7 +749,7 @@ else
 
         printf "\t\t<user name=\"$r\"/>\n" >> $outputxml #VJN 10/22/2020 12:16pm - for xml report
 
-        printf "\t\t\t<p>$r</p>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
+        printf "\t\t\t\t<li>$r</li>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
 
         if [ "$g" -eq "$((${#users[@]}-1))" ]; then
             printf "\t\t\t{\n\t\t\t\t\"user\": \"$r\"\n\t\t\t}\n" >> $outputjson #VJN 10/22/2020 12:16pm - for json report
@@ -747,10 +764,14 @@ else
     
     printf "\t</users>\n" >> $outputxml #VJN 10/22/2020 12:16pm - for xml report
 
+    printf '\t\t\t</ol>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+
     printf "\t\t]\n" >> $outputjson #VJN 10/22/2020 12:16pm - for json report
 
     printf "] " >> $outputndjson #VJN 10/22/2020 12:16pm - for ndjson report
 fi 
+printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
+
 
 #VJN 10/22/2020 9:03am - This section closes out the reports 
 echo "</machine>" >> $outputxml #VJN 9/29/2020 7:13pm - for xml report
