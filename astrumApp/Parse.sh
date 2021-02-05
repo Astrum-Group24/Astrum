@@ -735,7 +735,6 @@ else
 
     printf "\t<users>\n" >> $outputxml #VJN 10/22/2020 12:16pm - for xml report
 
-    printf "\t\t\t<h2>Users</h2>\n" >> $outputhtml #VJN 10/22/2020 12:16pm - for html report
     printf '\t\t\t<ol class="wrapper">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
     printf "\t\t\"users\":\n\t\t[\n" >> $outputjson #VJN 10/22/2020 12:16pm - for json report
