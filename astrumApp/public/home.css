@@ -10,6 +10,7 @@ body {
 main {
     max-width: 600px;
     margin: auto;
+    text-align: center;
 }
 h3{
     font-size: 25px;
@@ -30,6 +31,8 @@ h3{
     width: 40em;
     height: 25em;
     border-radius: 25px;
+    display: table;
+    margin: 0 auto;
 }
 .column {
     padding: 10px;
