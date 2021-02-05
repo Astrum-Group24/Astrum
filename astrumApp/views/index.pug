@@ -1,46 +1,60 @@
 extends layout
 
 block layout-content
-  div.View
-    div.Message
-      div.Title
-        h1 Astrum Network Analysis
-      
-      //- create form for data to send to script
-      form(method='POST' action='/')
-       
-        //- variable 'type' can be either 'slow' or 'fast'
-        div.form-group
-          h3 Scan Type
-          label(for="fast") QuickScan
-          input(type="radio", name="scanType", id="fast", value="fast")
-          label(for="slow") DeepScan
-          input(type="radio", name="scanType", id="slow", value="slow")  
-        
-    
-        //- 'host' is an open field; value is validated in the script
-        div.form-group
-          h3 Scan Range
-          label(for='host') Network & Subnet: 
-          input(type='text', name='host')
-
-        //- 'username' and 'password' are also validated in the script
-        div.form-group
-          h3 Credentials
-          label(for='username') Username: 
-          input(type='text', name='username')
-          br
-
-          label(for='password') Password: 
-          input(type='password', name='password')
-          br
-
-        //- submit button
-        div.form-group
-          label(for='startButton')
-          input(type='submit' value='Start Scan')
-
-
-
-
-      
+  main
+  .logoholder
+    img.logo(src='logos/logo_transparent.PNG' alt='Astrum')
+  .graybox
+    form(method='POST' action='/')
+      .left.column.width50
+          h3 Scan Type Info
+          // 'host' is an open field; value is validated in the script
+          .form-group
+            .row
+              label.label(for='host')
+                | Network & Subnet:
+                .help-tip
+                  p
+                    | Please type a network range in CIDR notion (x.x.x.x/x) or a single host (x.x.x.x). IPv6 is not supported.
+                input(type='text' name='host' placeholder='127.0.0.1...')
+          // variable 'type" can be either 'slow' or 'fast'
+          .form-group.height25
+            .row
+              label.label.container(for='fast')
+                | QuickScan:
+                .help-tip
+                  p
+                    | This scan takes a shorter amount of time. Use this scan when performing a regular scan as it exempts nmap parameters and speeds up scan time.
+                input#fast(type='radio' name='scanType' value='fast')
+                span.checkmark
+            .row
+              label.label.container(for='slow')
+                | DeepScan:
+                .help-tip
+                  p
+                    | This scan can take a long time depending on the amount of hosts you are scanning. Use this scan when performing a scan for the first time on your network or when you have security concerns.
+                input#slow(type='radio' name='scanType' value='slow')
+                span.checkmark
+      .right.column.width50
+          // 'username' and 'password' are also validated in the script
+          .form-group
+            h3 Credentials
+            .row
+              label.label(for='username')
+                | Username:
+                .help-tip
+                  p Username that Astrum will use to sign in to hosts for the scan.
+                input(type='text' name='username' placeholder='Username...')
+                br
+            .row
+              label.label(for='password')
+                | Password:
+                .help-tip
+                  p Password that Astrum will use to sign in to hosts for the scan.
+                input(type='password' name='password' placeholder='Password...')
+                br
+      .width100
+          // submit button
+          .form-group
+            label(for='startButton')
+            input.button(type='submit' value='Start Scan')

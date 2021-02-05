@@ -1,0 +1,46 @@
+extends layout
+
+block layout-content
+  div.View
+    div.Message
+      div.Title
+        h1 Astrum Network Analysis
+      
+      //- create form for data to send to script
+      form(method='POST' action='/')
+       
+        //- variable 'type' can be either 'slow' or 'fast'
+        div.form-group
+          h3 Scan Type
+          label(for="fast") QuickScan
+          input(type="radio", name="scanType", id="fast", value="fast")
+          label(for="slow") DeepScan
+          input(type="radio", name="scanType", id="slow", value="slow")  
+        
+    
+        //- 'host' is an open field; value is validated in the script
+        div.form-group
+          h3 Scan Range
+          label(for='host') Network & Subnet: 
+          input(type='text', name='host')
+
+        //- 'username' and 'password' are also validated in the script
+        div.form-group
+          h3 Credentials
+          label(for='username') Username: 
+          input(type='text', name='username')
+          br
+
+          label(for='password') Password: 
+          input(type='password', name='password')
+          br
+
+        //- submit button
+        div.form-group
+          label(for='startButton')
+          input(type='submit' value='Start Scan')
+
+
+
+
+      

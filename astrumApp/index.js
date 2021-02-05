@@ -56,7 +56,7 @@ app.post("/", (req, res) => {
     console.log(`Start: ${Date().toLocaleString('en-US')}`);
 
     //take values and create complete command for Scan.sh script
-    const commandString = `source ./Scan.sh -s ${req.body.scanType} -h ${req.body.host} -u ${req.body.username} -p ${req.body.password}`;
+    const commandString = `source ./Scan.sh -s ${req.body.main.scanType} -h ${req.body.host} -u ${req.body.username} -p ${req.body.password}`;
     console.log(commandString);
     console.log(`${req.body.scanType}`);
     runScript(commandString);
