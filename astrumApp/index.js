@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Show index.pug when navigting to root address
 app.get("/", (req, res) => {
-    res.render("index", { title: "Home" });
+    res.render("index", { title: "Home" }, { stylesheet: "home.css" });
     res.end();
 });
 
@@ -185,7 +185,7 @@ app.post("/", (req, res) => {
     function renderPage() {
 
         const ports = readPorts(pathToReports);
-        res.render("results", { ipAddressesLink, ipAddresses, ports, title: 'Results' });
+        res.render("results", { ipAddressesLink, ipAddresses, ports, title: 'Results', stylesheet: 'results.css' });
 
     }
 
