@@ -1,0 +1,43 @@
+extends layout
+
+block layout-content
+  
+  div.View
+    
+    div.Message
+      
+      div.Title
+        
+        h1 Astrum Network Analysis
+      
+        div.Body          
+
+          //form to select and display reports        
+          form(method='POST' action='/reports')
+            
+            //muiltiple group for hosts
+            div.multiple-group
+              h3 Hosts Found
+              select(id='host', name='host' size='6' multiple)
+                each val in ipAddresses
+                  option(value = val) #{val}
+            
+            //submit button
+            div.form-group
+              label(for='showReportButton')
+              input(type='submit' value='Show Report')
+
+            //multiple group showing open ports on selected host
+            div.multiple-group
+              h3 Open Ports
+              
+              select(id='whitelist', name='whitelist' size='6' multiple)
+                each val in ports
+                  option(value = val) #{val}
+            
+              p Hold Ctrl & click to select multiple
+            
+            //submit button
+            div.form-group
+              label(for='whitelistButton')
+              input(type='submit' formaction='/generate' value='Generate Script')
