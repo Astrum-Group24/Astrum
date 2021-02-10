@@ -39,7 +39,6 @@ h3{
     margin: 0 auto;
     width: 40em;
     height: 25em;
-    display: table;
 }
 
 .column {
@@ -51,7 +50,7 @@ h3{
 .resultsColumn {
     padding: 10px;
     display: inline;
-    height: 100%;
+    min-height: 420px;
     text-align: center;
     background: rgba(211, 211, 211, 0.5);
     border-radius: 25px;
@@ -82,10 +81,35 @@ h3{
     border-radius: 8px;
     width: 33%;
 }
+
+.resultsButton {
+    background-color: #734C8B; /* Purple */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    position: absoluter
+}
+
+
 .button:hover{
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, .7);
     background-color: #5f3f73;
 }
+
+.resultsButton:hover{
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, .7);
+    background-color: #5f3f73;
+}
+
+.top-spacer{
+    margin-top: 1.5em;
+}
+
 input[type=text], [type=password] {
     width: 66%;
     padding: 12px 20px;

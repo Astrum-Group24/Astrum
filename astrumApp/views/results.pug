@@ -11,7 +11,7 @@ block layout-content
             // muiltiple group for hosts
             .multiple-group
               h3 Host Reports
-              select(id='host', name='host' size='6' multiple)
+              select.select-css.single-select(id='host', name='host')
                 each val in ipAddresses
                   option(value = val) #{val}
               p
@@ -22,7 +22,7 @@ block layout-content
             // submit button
             .form-group
               label(for='showReportButton')
-              input.button.top-spacer(type='submit' value='Show Report')
+              input.resultsButton.top-spacer(type='submit' value='Show Report')
         .right.resultsColumn.width50
             // multiple group showing open ports on selected host
             .multiple-group
@@ -38,4 +38,4 @@ block layout-content
             // submit button
             .form-group
               label(for='whitelistButton')
-              input.button(type='submit' formaction='/generate' value='Generate Script')
+              input.resultsButton(type='submit' formaction='/generate' value='Generate Script')
