@@ -37,24 +37,26 @@ block layout-content
                 span.checkmark
       .right.column.width50
           // 'username' and 'password' are also validated in the script
+          h3 Credentials
           .form-group
-            h3 Credentials
             .row
-              label.label(for='username')
+              label(for='username')
                 | Username:
                 .help-tip
                   p Username that Astrum will use to sign in to hosts for the scan.
+                br
                 input(type='text' name='username' placeholder='Username...')
                 br
             .row
-              label.label(for='password')
+              label(for='password')
                 | Password:
                 .help-tip
                   p Password that Astrum will use to sign in to hosts for the scan.
+                br
                 input(type='password' name='password' placeholder='Password...')
                 br
-      .width100
-          // submit button
-          .form-group
-            label(for='startButton')
-            input.button(type='submit' value='Start Scan')
+                br
+    // submit button
+    .form-group
+      label(for='startButton')
+      input.button(type='submit' value='Start Scan')
