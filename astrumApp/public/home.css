@@ -34,11 +34,27 @@ h3{
     margin: 0 auto;
     display: table
 }
+
+.resultsGraybox{
+    margin: 0 auto;
+    width: 40em;
+    height: 25em;
+    display: table;
+}
+
 .column {
     padding: 10px;
     display: inline;
     height: 70%;
     text-align: center;
+}
+.resultsColumn {
+    padding: 10px;
+    display: inline;
+    height: 100%;
+    text-align: center;
+    background: rgba(211, 211, 211, 0.5);
+    border-radius: 25px;
 }
 .width100{ width: 100%;
     text-align: center;

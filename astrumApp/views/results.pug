@@ -5,9 +5,9 @@ block layout-content
     main
     .logoholder
       img.logo(src='logos/logo_transparent.PNG' alt='Astrum')
-    .graybox
+    .resultsGraybox
       form(method='POST' action='/reports')
-        .left.column.width50
+        .left.resultsColumn.width50
             // muiltiple group for hosts
             .multiple-group
               h3 Host Reports
@@ -23,7 +23,7 @@ block layout-content
             .form-group
               label(for='showReportButton')
               input.button.top-spacer(type='submit' value='Show Report')
-        .right.column.width50
+        .right.resultsColumn.width50
             // multiple group showing open ports on selected host
             .multiple-group
               h3 Whitelist
