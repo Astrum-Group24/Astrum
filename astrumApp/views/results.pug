@@ -2,42 +2,40 @@ extends layout
 
 block layout-content
   
-  div.View
-    
-    div.Message
-      
-      div.Title
-        
-        h1 Astrum Network Analysis
-      
-        div.Body          
-
-          //form to select and display reports        
-          form(method='POST' action='/reports')
-            
-            //muiltiple group for hosts
-            div.multiple-group
-              h3 Hosts Found
+    main
+    .logoholder
+      img.logo(src='logos/logo_transparent.PNG' alt='Astrum')
+    .graybox
+      form(method='POST' action='/reports')
+        .left.column.width50
+            // muiltiple group for hosts
+            .multiple-group
+              h3 Host Reports
               select(id='host', name='host' size='6' multiple)
                 each val in ipAddresses
                   option(value = val) #{val}
-            
-            //submit button
-            div.form-group
+              p
+              | Choose a Host Report from the drop down menu above. Once you have a report selected click the &quot;Show Report&quot; button. When generating a Resolution Script make sure the desired host is selected in the drop down menu above.
+              .help-tip
+                p
+                  | If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.
+            // submit button
+            .form-group
               label(for='showReportButton')
-              input(type='submit' value='Show Report')
-
-            //multiple group showing open ports on selected host
-            div.multiple-group
-              h3 Open Ports
-              
+              input.button.top-spacer(type='submit' value='Show Report')
+        .right.column.width50
+            // multiple group showing open ports on selected host
+            .multiple-group
+              h3 Whitelist
               select(id='whitelist', name='whitelist' size='6' multiple)
                 each val in ports
                   option(value = val) #{val}
-            
-              p Hold Ctrl & click to select multiple
-            
-            //submit button
-            div.form-group
+              p
+                | These are the ports that Astrum was able to contact a host with. Check the host reports for more information about each port.
+              .help-tip
+                p Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.
+              p
+            // submit button
+            .form-group
               label(for='whitelistButton')
-              input(type='submit' formaction='/generate' value='Generate Script')
+              input.button(type='submit' formaction='/generate' value='Generate Script')
