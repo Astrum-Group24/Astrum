@@ -253,6 +253,7 @@ input[type=text]:hover, [type=password]:hover {
     color: #FFF;
     font-size: 13px;
     line-height: 1.4;
+    z-index: 10;
 }
 .help-tip p:before{ /* The pointer of the tooltip */
     position: relative;
