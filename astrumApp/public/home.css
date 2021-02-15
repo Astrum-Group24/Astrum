@@ -81,6 +81,8 @@ h3{
     font-size: 16px;
     border-radius: 8px;
     width: 33%;
+    position: relative;
+    bottom: -15px;
 }
 
 .resultsButton {
