@@ -561,16 +561,16 @@ else
 fi
 printf '\t\t</div>\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
 
-#VJN 10/22/2020 9:03am - This section formats and prints out the Harddrive health of the system
+#VJN 10/22/2020 9:03am - This section formats and prints out the Hard Drive Space of the system
 printf '\t\t<div class="graybox">\n' >> $outputhtml #VJN 2/4/2020 10:52am - for html report
-printf "\t\t\t<h2>Harddrive Health</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
+printf "\t\t\t<h2>Hard Drive Space</h2>\n" >> $outputhtml #VJN 10/21/2020 3:22pm - for html report
 if [[ "${osmatch[0]}" == *"Windows"* ]];then
     if [ -z "$drivesize" ]; then
-        printf "Harddrive Health:\n\tNo issues found.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
+        printf "Hard Drive Space:\n\tNo issues found.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
                 
         printf "\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/26/2020 11:18pm - for html report
     else 
-        printf "Harddrive Health:\n\t$drivename has used $driveused GB/$drivesize GB ($driveusage%%) and still has $driveavalible GB left until full.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
+        printf "Hard Drive Space:\n\t$drivename has used $driveused GB/$drivesize GB ($driveusage%%) and still has $driveavalible GB left until full.\n" >> $outputtxt #VJN 10/26/2020 11:18pm - for txt report
 
         printf "\t<harddrive name=\"$drivename\" size=\"$drivesize GB\" used=\"$driveused GB\" avalible=\"$driveavalible GB\" usage=\"$driveusage\"/>\n" >> $outputxml #VJN 10/26/2020 11:18pm - for xml report
 
@@ -582,11 +582,11 @@ if [[ "${osmatch[0]}" == *"Windows"* ]];then
     fi 
 else
     if [ -z "$drivesize" ]; then
-        printf "Harddrive Health:\n\tNo issues found.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
+        printf "Hard Drive Space:\n\tNo issues found.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
                 
         printf "\t\t\t\t<p>No issues found</p>\n" >> $outputhtml #VJN 10/22/2020 9:03am - for html report
     else 
-        printf "Harddrive Health:\n\t$drivename ($drivepath) has used $driveused/$drivesize ($driveusage%%) and still has $driveavalible left until full.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
+        printf "Hard Drive Space:\n\t$drivename ($drivepath) has used $driveused/$drivesize ($driveusage%%) and still has $driveavalible left until full.\n" >> $outputtxt #VJN 10/22/2020 9:03am - for txt report
 
         printf "\t<harddrive name=\"$drivename\" path=\"$drivepath\" size=\"$drivesize\" used=\"$driveused\" avalible=\"$driveavalible\" usage=\"$driveusage\"/>\n" >> $outputxml #VJN 10/22/2020 9:03am - for xml report
 
