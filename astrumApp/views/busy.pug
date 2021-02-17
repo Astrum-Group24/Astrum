@@ -1,0 +1,11 @@
+extends layout
+
+block layout-content
+
+    .logoholder
+        img.logo(src='logo_transparent.PNG' alt='Astrum')
+    .loader
+        h2.ml2 Running Astrum Vulnerability Scan...
+        p This may take a while... You may leave it running.
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js')
+    script(src='busy.js')
