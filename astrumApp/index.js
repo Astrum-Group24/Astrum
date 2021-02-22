@@ -20,7 +20,6 @@ let ipAddresses;
 let ipAddressesLink;
 let filenames;
 let pathToReports;
-let ports;
 let allPortsArray = [];
 
 
