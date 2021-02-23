@@ -16,7 +16,7 @@ const WebSocket = require("ws");
  */
 
 const app = express();
-const port = process.env.PORT || "8000";
+const port = 8000;
 const wsPort = 8020;
 let ipAddresses;
 let ipAddressesLink;
@@ -236,7 +236,8 @@ app.listen(port, () => {
 
 const wsServer = new WebSocket.Server({
     port: `${wsPort}`
-}, function () {
+})
 
+wsServer.on('connection', function (ws) {
     console.log(`WebSocket ready on port ${wsPort}`);
 })
