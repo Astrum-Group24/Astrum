@@ -8,6 +8,7 @@ const express = require("express");
 const path = require("path");
 const shell = require("shelljs");
 const fs = require("fs");
+const WebSocket = require("ws");
 
 
 /**
@@ -16,11 +17,13 @@ const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || "8000";
+const wsPort = 8020;
 let ipAddresses;
 let ipAddressesLink;
 let filenames;
 let pathToReports;
 let allPortsArray = [];
+
 
 
 /**
@@ -230,3 +233,10 @@ function runScript(value) {
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
 });
+
+const wsServer = new WebSocket.Server({
+    port: `${wsPort}`
+}, function () {
+
+    console.log(`WebSocket ready on port ${wsPort}`);
+})
