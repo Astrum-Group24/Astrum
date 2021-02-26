@@ -35,7 +35,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //code to make html forms work
 var bodyParser = require('body-parser');
-const { Script } = require("vm");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
