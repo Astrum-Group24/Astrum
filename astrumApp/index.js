@@ -17,13 +17,11 @@ const WebSocket = require("ws");
 
 const app = express();
 const port = 8000;
-const wsPort = 8020;
 let ipAddresses;
 let ipAddressesLink;
 let filenames;
 let pathToReports;
 let allPortsArray = [];
-
 
 
 /**
@@ -230,14 +228,15 @@ function runScript(value) {
  * Server Activation
  */
 
-app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
-});
+const server = app.listen(port, console.log(`Listening to requests on http://localhost:${port}`))
 
-const wsServer = new WebSocket.Server({
-    port: `${wsPort}`
-})
+const wsServer = new WebSocket.Server({ server })
 
 wsServer.on('connection', function (ws) {
-    console.log(`WebSocket ready on port ${wsPort}`);
+    console.log(`WebSocket ready on ws://localhost:${port}`);
+    ws.send('Hello from Astrum WebSocket Server');
+    ws.on('message', function (data) {
+        console.log(data);
+        ws.send(data);
+    })
 })
