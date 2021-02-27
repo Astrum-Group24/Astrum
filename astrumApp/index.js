@@ -170,6 +170,22 @@ function runScan(commandString) {
 
     }
 
+
+
+    //function to remove last five characters of each element
+    function removeExtension(value) {
+
+        return value.substring(0, value.length - 5);
+
+    };
+
+
+}
+
+app.get('/showResults', (req, res) => { 
+
+    renderPage();
+
     // function to read ports from .json files
     function readPorts(pathToReports) {
 
@@ -215,14 +231,6 @@ function runScan(commandString) {
         return uniquePortsArray;
     };
 
-    //function to remove last five characters of each element
-    function removeExtension(value) {
-
-        return value.substring(0, value.length - 5);
-
-    };
-
-    /*
     //function to render the page
     function renderPage() {
 
@@ -230,8 +238,10 @@ function runScan(commandString) {
         res.render("results", { ipAddressesLink, ipAddresses, ports, title: 'Results' });
 
     }
-    */
-}
+
+    res.end();
+
+})
 
 /**
  * Server Activation
@@ -248,6 +258,9 @@ wsServer.on('connection', function (ws) {
         if (data === `runScan`) {
             runScan(commandString);
             ws.send(`scanComplete`);
+        } else if (data === `closeWS`) {
+            ws.send(`allDone`);
+            ws.close();
         }
     })
 })
