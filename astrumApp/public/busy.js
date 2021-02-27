@@ -16,9 +16,11 @@ ws.onopen = function(onopen) {
 
                 ws.send(`closeWS`)
 
-                ws.readyState()
+                ws.readyState(3);
 
-            }        
+            } else if(event.data === `allDone`) {
+                ws.readyState(3);
+            }
         }
     })
 
