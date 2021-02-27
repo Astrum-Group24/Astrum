@@ -6,21 +6,11 @@ ws.onopen = function(onopen) {
     ws.send(`runScan`);
 
     ws.addEventListener('message', function(event) {
-        for(i = 0; i < 1; i++) {
+        if (event.data === `scanComplete`) {
+            console.log(`scanComplete received`);
+            
+            window.location = '/showResults';
 
-            if (event.data === `scanComplete`) {
-                
-                console.log(`scanComplete received`);
-                
-                window.location = '/showResults';
-
-                ws.send(`closeWS`)
-
-                ws.readyState(3);
-
-            } else if(event.data === `allDone`) {
-                ws.readyState(3);
-            }
         }
     })
 

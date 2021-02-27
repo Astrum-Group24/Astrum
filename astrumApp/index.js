@@ -258,9 +258,6 @@ wsServer.on('connection', function (ws) {
         if (data === `runScan`) {
             runScan(commandString);
             ws.send(`scanComplete`);
-        } else if (data === `closeWS`) {
-            ws.send(`allDone`);
-            ws.close();
         }
     })
 })
