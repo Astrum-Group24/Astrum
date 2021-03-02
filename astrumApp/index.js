@@ -73,8 +73,6 @@ app.post('/reports', (req, res) => {
     //create report path
     const reportPath = `${pathToReports.substring(1)}/${req.body.host}.html`;
 
-    //console.log(reportPath)
-
     //send file to browser
     res.sendFile(path.join(__dirname + reportPath));
 });
