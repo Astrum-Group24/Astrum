@@ -75,6 +75,7 @@ app.post('/reports', (req, res) => {
 
     //send file to browser
     res.sendFile(path.join(__dirname + reportPath));
+    
 });
 
 //generate script when button is clicked
