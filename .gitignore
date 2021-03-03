@@ -16,8 +16,8 @@ astrumApp/reports/
 #BRJ 10/07/2020 04:42 - Ignore astrumApp/rawlogs
 astrumApp/rawlogs/
 
-#BRJ 10/13/2020 05:32 - Inorre node_modules, keeps 'npm' from creating huge lists of staged changes after installing new packages.
-astrumApp/node_modules
+#BRJ 10/13/2020 05:32 - Ignorre node_modules, keeps 'npm' from creating huge lists of staged changes after installing new packages.
+astrumApp/node_modules/
 
 #BRJ 10/23/2020 05:36 - Ignore top-level temp directory
 temp
