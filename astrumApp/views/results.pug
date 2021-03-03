@@ -15,13 +15,24 @@ block layout-content
               select.select-css.single-select(id='host', name='host')
                 each val in ipAddresses
                   option(value = val) #{val}
+            .form-group
+              // Radio Buttons for type of report selection
+              label(for="htmlRB") HTML
+              input(type="radio" id="htmlRB" name="htmlRB" value="html" checked="checked")
+              label(for="jsonRB") JSON
+              input(type="radio" id="jsonRB" name="jsonRB" value="json")
+              label(for="ndjsonRB") NDJSON
+              input(type="radio" id="ndjsonRB" name="ndjsonRB" value="ndjson")
+              label(for="txtRB") TXT
+              input(type="radio" id="txtRB" name="txtRB" value="txt")
+              label(for="xmlRB") XML
+              input(type="radio" id="xmlRB" name="xmlRB" value="xml")
               p
               | Choose a Host Report from the drop down menu above. Once you have a report selected click the &quot;Show Report&quot; button. When generating a Resolution Script make sure the desired host is selected in the drop down menu above.
               .help-tip
                 p
                   | If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.
-            // submit button
-            .form-group
+              // submit button
               label(for='showReportButton')
               input.showResultsButton(type='submit' value='Show Report')
         .right.resultsColumn.width50
