@@ -71,50 +71,36 @@ app.post("/", (req, res) => {
 //send report files when reports are accessed via 'multiple' form & 'show report' button
 app.post('/reports', (req, res) => {
     let reportPath;
+
     switch (req.body.reportType) {
 
         case "html":
-            //create report path
-            reportPath = `${pathToReports.substring(1)}/html/${req.body.host}.html`;
 
-            //send file to browser
-            res.sendFile(path.join(__dirname + reportPath));
+            uploadAppropriateFile();
 
             break;
 
         case "json":
-            //create report path
-            reportPath = `${pathToReports.substring(1)}/json/${req.body.host}.json`;
 
-            //send file to browser as a download
-            uploadToUser(req.body.reportType);
+            uploadAppropriateFile();
 
             break;
 
         case "ndjson":
-            //create report path
-            reportPath = `${pathToReports.substring(1)}/ndjson/${req.body.host}.ndjson`;
 
-            //send file to browser as a download
-            uploadToUser(req.body.reportType);
+            uploadAppropriateFile();
 
             break;
 
         case "txt":
-            //create report path
-            reportPath = `${pathToReports.substring(1)}/txt/${req.body.host}.txt`;
 
-            //send file to browser as a download
-            uploadToUser(req.body.reportType);
+            uploadAppropriateFile();
 
             break;
 
         case "xml":
-            //create report path
-            reportPath = `${pathToReports.substring(1)}/xml/${req.body.host}.xml`;
 
-            //send file to browser as a download
-            uploadToUser(req.body.reportType);
+            uploadAppropriateFile();
 
             break;
 
@@ -123,6 +109,37 @@ app.post('/reports', (req, res) => {
     function uploadToUser() {
         res.download(path.join(__dirname + reportPath));
     }
+
+    function showToUser() {
+        res.sendFile(path.join(__dirname + reportPath));
+    }
+
+    function defineReportPath(type, host) {
+        reportPath = `${pathToReports.substring(1)}/${type}/${host}.${type}`;
+        return reportPath
+    }
+
+    function uploadAppropriateFile() {
+        reportPath = defineReportPath(req.body.reportType, req.body.host);
+
+        switch (req.body.choice) {
+
+            case "Show Report":
+
+                //send file to browser
+                showToUser(req.body.reportType);
+
+                break;
+
+            case "Download Report":
+
+                //send file to browser as dowload
+                uploadToUser(req.body.reportType);
+
+                break;
+        }
+
+    };
 
 });
 
