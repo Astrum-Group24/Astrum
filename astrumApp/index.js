@@ -61,21 +61,67 @@ app.post("/", (req, res) => {
     console.log(`${req.body.scanType}`);
 
     //render the busy page
-    res.render("busy", {title: "Scanning"})
-    
+    res.render("busy", { title: "Scanning" })
+
     res.end();
 
 });
 
 
-//send html files when reports are accessed via 'multiple' form & 'show report' button
+//send report files when reports are accessed via 'multiple' form & 'show report' button
 app.post('/reports', (req, res) => {
-    //create report path
-    const reportPath = `${pathToReports.substring(1)}/${req.body.host}.html`;
 
-    //send file to browser
-    res.sendFile(path.join(__dirname + reportPath));
-    
+    switch (req.body.reportType) {
+
+        case "html":
+            //create report path
+            const reportPath = `${pathToReports.substring(1)}/html/${req.body.host}.html`;
+
+            //send file to browser
+            res.sendFile(path.join(__dirname + reportPath));
+
+            break;
+
+        case "json":
+            //create report path
+            const reportPath = `${pathToReports.substring(1)}/json/${req.body.host}.json`;
+
+            //send file to browser
+            res.sendFile(path.join(__dirname + reportPath));
+
+            break;
+
+        case "ndjson":
+            //create report path
+            const reportPath = `${pathToReports.substring(1)}/ndjson/${req.body.host}.ndjson`;
+
+            //send file to browser
+            res.sendFile(path.join(__dirname + reportPath));
+
+            break;
+
+        case "txt":
+            //create report path
+            const reportPath = `${pathToReports.substring(1)}/txt/${req.body.host}.txt`;
+
+            //send file to browser
+            res.sendFile(path.join(__dirname + reportPath));
+
+            break;
+
+        case "xml":
+            //create report path
+            const reportPath = `${pathToReports.substring(1)}/xml/${req.body.host}.xml`;
+
+            //send file to browser
+            res.sendFile(path.join(__dirname + reportPath));
+
+            break;
+
+    }
+
+
+
 });
 
 //generate script when button is clicked
@@ -125,7 +171,7 @@ function runScan(commandString) {
         directoryEntries = fs.readdirSync(rootPath);
 
         //append root and child folders
-        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/html`;
+        pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/`;
 
         //alternative path for devlopment and debug
         //pathToReports = `./reports/2020-11-04-04-43-40/html`;
@@ -181,7 +227,7 @@ function runScan(commandString) {
 
 }
 
-app.get('/showResults', (req, res) => { 
+app.get('/showResults', (req, res) => {
 
     renderPage();
 
