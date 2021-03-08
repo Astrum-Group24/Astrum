@@ -115,15 +115,13 @@ h3{
     background-color: #734C8B;
     border: none;
     color: white;
+    margin: 3px;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
-    position: absolute;
-    bottom: 30px;
-    left: 75px;
 }
 
 .generateScriptButton {
