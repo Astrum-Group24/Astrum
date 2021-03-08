@@ -33,8 +33,8 @@ block layout-content
                 p
                   | If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.
               // submit button
-              label(for='showReportButton')
-              input.showResultsButton(type='submit' value='Show Report')
+              input.showResultsButton(type='submit' name='choice' value='Show Report')
+              input.showResultsButton(type='submit' name='choice' value='Download Report')
         .right.resultsColumn.width50
             // multiple group showing open ports on selected host
             .multiple-group
