@@ -70,12 +70,12 @@ app.post("/", (req, res) => {
 
 //send report files when reports are accessed via 'multiple' form & 'show report' button
 app.post('/reports', (req, res) => {
-
+    let reportPath;
     switch (req.body.reportType) {
 
         case "html":
             //create report path
-            const reportPath = `${pathToReports.substring(1)}/html/${req.body.host}.html`;
+            reportPath = `${pathToReports.substring(1)}/html/${req.body.host}.html`;
 
             //send file to browser
             res.sendFile(path.join(__dirname + reportPath));
@@ -84,43 +84,45 @@ app.post('/reports', (req, res) => {
 
         case "json":
             //create report path
-            const reportPath = `${pathToReports.substring(1)}/json/${req.body.host}.json`;
+            reportPath = `${pathToReports.substring(1)}/json/${req.body.host}.json`;
 
-            //send file to browser
-            res.sendFile(path.join(__dirname + reportPath));
+            //send file to browser as a download
+            uploadToUser(req.body.reportType);
 
             break;
 
         case "ndjson":
             //create report path
-            const reportPath = `${pathToReports.substring(1)}/ndjson/${req.body.host}.ndjson`;
+            reportPath = `${pathToReports.substring(1)}/ndjson/${req.body.host}.ndjson`;
 
-            //send file to browser
-            res.sendFile(path.join(__dirname + reportPath));
+            //send file to browser as a download
+            uploadToUser(req.body.reportType);
 
             break;
 
         case "txt":
             //create report path
-            const reportPath = `${pathToReports.substring(1)}/txt/${req.body.host}.txt`;
+            reportPath = `${pathToReports.substring(1)}/txt/${req.body.host}.txt`;
 
-            //send file to browser
-            res.sendFile(path.join(__dirname + reportPath));
+            //send file to browser as a download
+            uploadToUser(req.body.reportType);
 
             break;
 
         case "xml":
             //create report path
-            const reportPath = `${pathToReports.substring(1)}/xml/${req.body.host}.xml`;
+            reportPath = `${pathToReports.substring(1)}/xml/${req.body.host}.xml`;
 
-            //send file to browser
-            res.sendFile(path.join(__dirname + reportPath));
+            //send file to browser as a download
+            uploadToUser(req.body.reportType);
 
             break;
 
     }
 
-
+    function uploadToUser() {
+        res.download(path.join(__dirname + reportPath));
+    }
 
 });
 
@@ -147,9 +149,7 @@ function runScript(value) {
 function runScan(commandString) {
     runScript(commandString);
 
-    readFolder(findNewestFolder('./reports'));
-
-    //renderPage();
+    readFolder(`${findNewestFolder('./reports')}/html`);
 
     console.log(`End: ${Date().toLocaleString('en-US')}`);
 
@@ -173,8 +173,6 @@ function runScan(commandString) {
         //append root and child folders
         pathToReports = `./reports/${directoryEntries[(directoryEntries.length - 1)]}/`;
 
-        //alternative path for devlopment and debug
-        //pathToReports = `./reports/2020-11-04-04-43-40/html`;
 
         //makes files in path available
         app.use(express.static(path.join(__dirname, pathToReports)));
@@ -234,7 +232,7 @@ app.get('/showResults', (req, res) => {
     // function to read ports from .json files
     function readPorts(pathToReports) {
 
-        const pathToJSON = `${pathToReports.substring(0, pathToReports.length - 5)}/json`;
+        const pathToJSON = `${pathToReports}/json`;
 
         const filenames = fs.readdirSync(pathToJSON);
 
