@@ -8,7 +8,6 @@ body {
     text-shadow: 2px 2px 5px black;
 }
 main {
-    max-width: 600px;
     margin: auto;
     text-align: center;
 }
@@ -50,7 +49,7 @@ h3{
 
 .resultsGraybox{
     margin: 0 auto;
-    width: 40em;
+    width: 45em;
     height: 25em;
 }
 
@@ -115,7 +114,7 @@ h3{
     background-color: #734C8B;
     border: none;
     color: white;
-    margin: 3px;
+    margin: 0.5em;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
@@ -134,9 +133,9 @@ h3{
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
-    position: absolute;
     bottom: 30px;
     left: 66px;
+    margin-top: 2.5em;
 }
 
 .button:hover{
@@ -144,7 +143,12 @@ h3{
     background-color: #5f3f73;
 }
 
-.resultsButton:hover{
+.showResultsButton:hover{
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, .7);
+    background-color: #5f3f73;
+}
+
+.generateScriptButton:hover{
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, .7);
     background-color: #5f3f73;
 }
@@ -357,4 +361,8 @@ input[type=text]:hover, [type=password]:hover {
 }
 .select-css option {
 	font-weight:normal;
+}
+
+.top-Margin {
+    padding-top: 1em;
 }

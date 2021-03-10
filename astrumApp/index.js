@@ -112,10 +112,11 @@ app.post('/reports', (req, res) => {
 
     function showToUser() {
         res.sendFile(path.join(__dirname + reportPath));
+        console.log(reportPath);
     }
 
     function defineReportPath(type, host) {
-        reportPath = `${pathToReports.substring(1)}/${type}/${host}.${type}`;
+        reportPath = `${pathToReports.substring(1)}${type}/${host}.${type}`;
         return reportPath
     }
 

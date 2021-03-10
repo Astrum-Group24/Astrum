@@ -3,51 +3,51 @@ extends layout
 block layout-content
   
     main
-    .logoholder
-      a(href='/')
-        img.logo(src='logos/logo_transparent.PNG' alt='Astrum')
-    .resultsGraybox
-      form(method='POST' action='/reports')
-        .left.resultsColumn.width50
-            // muiltiple group for hosts
-            .multiple-group
-              h3 Host Reports
-              select.select-css.single-select(id='host', name='host')
-                each val in ipAddresses
-                  option(value = val) #{val}
-            .form-group
-              // Radio Buttons for type of report selection
-              label(for="htmlRB") HTML
-              input(type="radio" id="htmlRB" name="reportType" value="html" checked="checked")
-              label(for="jsonRB") JSON
-              input(type="radio" id="jsonRB" name="reportType" value="json")
-              label(for="ndjsonRB") NDJSON
-              input(type="radio" id="ndjsonRB" name="reportType" value="ndjson")
-              label(for="txtRB") TXT
-              input(type="radio" id="txtRB" name="reportType" value="txt")
-              label(for="xmlRB") XML
-              input(type="radio" id="xmlRB" name="reportType" value="xml")
-              p
-              | Choose a Host Report from the drop down menu above. Once you have a report selected click the &quot;Show Report&quot; button. When generating a Resolution Script make sure the desired host is selected in the drop down menu above.
-              .help-tip
+      .logoholder
+        a(href='/')
+          img.logo(src='logos/logo_transparent.PNG' alt='Astrum')
+      .resultsGraybox
+        form(method='POST' action='/reports')
+          .left.resultsColumn.width50
+              // muiltiple group for hosts
+              .multiple-group
+                h3 Host Reports
+                select.select-css.single-select(id='host', name='host')
+                  each val in ipAddresses
+                    option(value = val) #{val}
+              .form-group.top-Margin
+                // Radio Buttons for type of report selection
+                label(for="htmlRB") HTML
+                input(type="radio" id="htmlRB" name="reportType" value="html" checked="checked")
+                label(for="jsonRB") JSON
+                input(type="radio" id="jsonRB" name="reportType" value="json")
+                label(for="ndjsonRB") NDJSON
+                input(type="radio" id="ndjsonRB" name="reportType" value="ndjson")
+                label(for="txtRB") TXT
+                input(type="radio" id="txtRB" name="reportType" value="txt")
+                label(for="xmlRB") XML
+                input(type="radio" id="xmlRB" name="reportType" value="xml")
                 p
-                  | If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.
+                | Choose a Host Report from the drop down menu above. Once you have a report selected click the &quot;Show Report&quot; button. When generating a Resolution Script make sure the desired host is selected in the drop down menu above.
+                .help-tip
+                  p
+                    | If a host is not listed here it means that Astrum can not see it on the network. Make sure the device is powered on and not behind a firewall. Please click on a host to see the information that Astrum was able to gather. Click on the show report button to see all reports at once.
+                // submit button
+                input.showResultsButton(type='submit' name='choice' value='Show Report')
+                input.showResultsButton(type='submit' name='choice' value='Download Report')
+          .right.resultsColumn.width50
+              // multiple group showing open ports on selected host
+              .multiple-group
+                h3 Whitelist
+                select.select-css(id='whitelist', name='whitelist' size='6' multiple)
+                  each val in ports
+                    option(value = val) #{val}
+                p
+                | These are the ports that Astrum was able to contact a host with. Check the host reports for more information about each port.
+                .help-tip
+                  p
+                    | Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.
               // submit button
-              input.showResultsButton(type='submit' name='choice' value='Show Report')
-              input.showResultsButton(type='submit' name='choice' value='Download Report')
-        .right.resultsColumn.width50
-            // multiple group showing open ports on selected host
-            .multiple-group
-              h3 Whitelist
-              select.select-css(id='whitelist', name='whitelist' size='6' multiple)
-                each val in ports
-                  option(value = val) #{val}
-              p
-              | These are the ports that Astrum was able to contact a host with. Check the host reports for more information about each port.
-              .help-tip
-                p
-                  | Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.
-            // submit button
-            .form-group
-              label(for='whitelistButton')
-              input.generateScriptButton(type='submit' formaction='/generate' value='Generate Script')
+              .form-group
+                label(for='whitelistButton')
+                input.generateScriptButton(type='submit' formaction='/generate' value='Generate Script')
