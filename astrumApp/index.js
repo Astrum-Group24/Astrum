@@ -72,39 +72,7 @@ app.post("/", (req, res) => {
 app.post('/reports', (req, res) => {
     let reportPath;
 
-    switch (req.body.reportType) {
-
-        case "html":
-
-            uploadAppropriateFile();
-
-            break;
-
-        case "json":
-
-            uploadAppropriateFile();
-
-            break;
-
-        case "ndjson":
-
-            uploadAppropriateFile();
-
-            break;
-
-        case "txt":
-
-            uploadAppropriateFile();
-
-            break;
-
-        case "xml":
-
-            uploadAppropriateFile();
-
-            break;
-
-    }
+    uploadAppropriateFile();
 
     function uploadToUser() {
         res.download(path.join(__dirname + reportPath));
