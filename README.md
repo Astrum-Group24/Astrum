@@ -40,7 +40,23 @@ Once everything is set up by following the prerequestists listed above, visit th
 
 # Example Output:
 
-    --- finish in class when web gui complete
+    An example report from Astrum comes in many downloadable forms such as html, json, ndjson, txt, and xml. It is best viewed directly on the web page by clicking the "Show Report" option. An example output would include (or may not, depedning on vulnerabiltiy status) the following information:
+    
+    hostname, IP, and MAC address of the endpoint - linux-device.test.home (192.168.0.8, 02:81:15:3B:73:DC)
+    
+    nmap ports discovered "Ports Scanned" - 7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445
+    
+    guessed operating system "Possible Operating System" - Linux-2.6.32 	96%
+    
+    ports determined as vulnerable "Vulnerable Ports" - 22 	tcp 	open 	ssh 	SSH Remote Login Protocol
+    
+    which firewalls are running on the endpoint and their status "Firewall Status" - Selinux: disabled
+    
+    listing issues with hard drive space "Hard Drive Space" - No issues found
+    
+    which usb devices are plugged into the enpoint "USB Status" - Apple, Inc.	Apple Keyboard	000000000000
+    
+    user accounts on the endpoint "Users" - root   daemon
 
 # F.A.Q:
 
