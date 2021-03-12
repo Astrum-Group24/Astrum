@@ -40,7 +40,7 @@ Once everything is set up by following the prerequestists listed above, visit th
 
 # Example Output:
 
-    An example report from Astrum comes in many downloadable forms such as html, json, ndjson, txt, and xml. It is best viewed directly on the web page by clicking the "Show Report" option. An example output would include (or may not, depedning on vulnerabiltiy status) the following information:
+   An example report from Astrum comes in many downloadable forms such as html, json, ndjson, txt, and xml. It is best viewed directly on the web page by clicking the "Show Report" option. An example output would include (or may not, depedning on vulnerabiltiy status) the following information:
     
     hostname, IP, and MAC address of the endpoint - linux-device.test.home (192.168.0.8, 02:81:15:3B:73:DC)
     
